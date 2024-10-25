@@ -818,6 +818,21 @@ a:focus {
   }
 }
 
+.cta {
+  background: url("../images/bg/bg-4.webp") no-repeat 50% 50%;
+  background-size: cover;
+  position: relative;
+}
+
+.cta:before {
+  position: absolute;
+  content: "";
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(34, 58, 102, 0.95);
+}
 
 .mb-30 {
   margin-bottom: 30px;
@@ -825,6 +840,21 @@ a:focus {
 
 .text-color-primary {
   color: #223a66;
+}
+
+.cta-section {
+  margin-bottom: -80px;
+}
+
+.cta-2 {
+  background: url("../images/bg/cta-bg.webp") no-repeat;
+  background-position: center center;
+}
+
+.cta-page {
+  background: url("../images/bg/banner.webp") no-repeat;
+  background-size: cover;
+  position: relative;
 }
 
 .testimonial {
