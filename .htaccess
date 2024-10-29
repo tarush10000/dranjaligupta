@@ -17,9 +17,18 @@
 
 # Redirect non-www to www with HTTPS
 RewriteEngine On
+
+# Redirect index.html to the base URL
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteRule ^index\.html$ https://www.dranjaligupta.in/ [L,R=301]
+
+# Enforce HTTPS if not already enabled
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect non-www to www
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Custom 404 error page
 ErrorDocument 404 /404.html
