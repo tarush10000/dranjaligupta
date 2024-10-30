@@ -500,7 +500,7 @@ a:focus {
   background: #e12454;
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .banner .block h1 {
     font-size: 38px;
     line-height: 50px;
@@ -541,6 +541,48 @@ a:focus {
 .about-img img {
   border-radius: 5px;
   box-shadow: 0px 0px 30px 0px rgba(0, 42, 106, 0.1);
+} */
+
+@media (max-width: 480px) {
+  .banner .block h1 {
+    font-size: 38px;
+    line-height: 50px;
+  }
+  .banner {
+    min-height: 450px;
+    /* background: #fff !important; */
+    background: url("../images/bg/slider-bg-1.webp") no-repeat;
+  }
+}
+
+@media (max-width: 400px) {
+  .banner .block h1 {
+    font-size: 28px;
+    line-height: 40px;
+  }
+  .banner {
+    min-height: 450px;
+    /* background: #fff !important; */
+    background: url("../images/bg/slider-bg-1.webp") no-repeat;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner .block h1 {
+    font-size: 56px;
+    line-height: 70px;
+  }
+  .banner {
+    /* background: #fff !important; */
+    background: url("../images/bg/slider-bg-1.webp") no-repeat;
+  }
+}
+
+@media (max-width: 992px) {
+  .banner {
+    /* background: #fff !important; */
+    background: url("../images/bg/slider-bg-1.webp") no-repeat;
+  }
 }
 
 .award-img {
