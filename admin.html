@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Dr. Anjali's Women Wellness Centre</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .admin-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 2rem 0;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 10vh auto;
+        }
+
+        .section-header {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-card {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats-card h3 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .stats-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-seen {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        .service-type {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-content {
+            border: 1px solid #dee2e6;
+            border-top: none;
+            padding: 2rem;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .search-filters {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .phone-input {
+            position: relative;
+        }
+
+        .phone-prefix {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 10;
+        }
+
+        .phone-input input {
+            padding-left: 50px;
+        }
+
+        .bulk-actions {
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .bulk-actions.show {
+            display: block;
+        }
+
+        .checkbox-column {
+            width: 50px;
+        }
+
+        /* Quick Actions Styles */
+        .quick-actions {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .patient-row {
+            transition: all 0.3s ease;
+        }
+
+        .patient-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .patient-row.seen {
+            opacity: 0.7;
+            background-color: #f8f9fa;
+        }
+
+        .time-shift-panel {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .time-shift-panel.show {
+            display: block;
+        }
+
+        .slot-group {
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .slot-header {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slot-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .quick-mark-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .btn-seen {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-seen:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            color: white;
+        }
+
+        .btn-next {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-next:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            color: white;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .new-location-banner {
+            background: linear-gradient(135d, #d4edda, #c3e6cb);
+            border: 2px solid #b8dacc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .new-location-banner h6 {
+            color: #155724;
+            margin-bottom: 5px;
+        }
+
+        .new-location-banner p {
+            color: #155724;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-sm {
+                font-size: 0.7rem;
+            }
+
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+
+            .quick-actions {
+                padding: 1rem;
+            }
+
+            .slot-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Section -->
+    <div class="login-container" id="loginSection">
+        <div class="admin-container">
+            <h3 class="section-header">
+                <i class="fas fa-user-shield"></i>
+                Admin Login
+            </h3>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                Enter your admin credentials to access the appointment management system for the new Women's Wellness
+                Centre.
+            </div>
+            <div class="mb-3">
+                <label for="adminPassword" class="form-label">
+                    <i class="fas fa-lock"></i> Password:
+                </label>
+                <input type="password" id="adminPassword" class="form-control" placeholder="Enter admin password">
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">
+                    Remember me for 30 days
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Access:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="loginDestination" id="adminPanel" value="admin"
+                        checked>
+                    <label class="form-check-label" for="adminPanel">
+                        <i class="fas fa-cog"></i> Admin Panel (Manage Appointments)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="loginDestination" id="calendarView"
+                        value="calendar">
+                    <label class="form-check-label" for="calendarView">
+                        <i class="fas fa-calendar-alt"></i> Calendar View (Monthly Overview)
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100" onclick="loginAdmin()">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="container-fluid" id="adminSection" style="display: none;">
+        <div class="admin-container">
+
+            <!-- Header -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h3 class="section-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        Women's Wellness Centre - Appointment Management
+                    </h3>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-outline-info me-2" onclick="window.open('admin-calendar.html', '_blank')">
+                        <i class="fas fa-calendar"></i> Calendar View
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions Panel -->
+            <div class="quick-actions">
+                <h5 class="mb-3">
+                    <i class="fas fa-bolt"></i> Quick Actions
+                </h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="quick-action-btn" onclick="markAllSeenInSlot()">
+                        <i class="fas fa-eye"></i> Mark Slot as Seen
+                    </button>
+                    <button class="quick-action-btn" onclick="showTimeShiftPanel()">
+                        <i class="fas fa-clock"></i> Shift Appointment Times
+                    </button>
+                    <button class="quick-action-btn" onclick="confirmNextPatients()">
+                        <i class="fas fa-user-check"></i> Confirm Next Patients
+                    </button>
+                    <button class="quick-action-btn" onclick="sendReminderSMS()">
+                        <i class="fas fa-sms"></i> Send Reminders
+                    </button>
+                    <button class="quick-action-btn" onclick="showEmergencySlot()">
+                        <i class="fas fa-plus-circle"></i> Emergency Slot
+                    </button>
+                    <button class="quick-action-btn" onclick="bulkReschedule()">
+                        <i class="fas fa-calendar-times"></i> Bulk Reschedule
+                    </button>
+                </div>
+            </div>
+
+            <!-- Time Shift Panel -->
+            <div class="time-shift-panel" id="timeShiftPanel">
+                <h6><i class="fas fa-clock"></i> Shift Appointment Times</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Target Slot:</label>
+                        <select class="form-select" id="shiftTargetSlot">
+                            <option value="">Select Slot</option>
+                            <option value="10:30 AM - 11:30 AM">Morning Slot 1 (10:30 AM - 11:30 AM)</option>
+                            <option value="11:30 AM - 12:30 PM">Morning Slot 2 (11:30 AM - 12:30 PM)</option>
+                            <option value="12:30 PM - 1:30 PM">Morning Slot 3 (12:30 PM - 1:30 PM)</option>
+                            <option value="1:30 PM - 2:00 PM">Morning Slot 4 (1:30 PM - 2:00 PM)</option>
+                            <option value="4:30 PM - 5:30 PM">Evening Slot 1 (4:30 PM - 5:30 PM)</option>
+                            <option value="5:30 PM - 6:00 PM">Evening Slot 2 (5:30 PM - 6:00 PM)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Shift by (minutes):</label>
+                        <select class="form-select" id="shiftMinutes">
+                            <option value="15">+15 minutes</option>
+                            <option value="30">+30 minutes</option>
+                            <option value="45">+45 minutes</option>
+                            <option value="60">+1 hour</option>
+                            <option value="-15">-15 minutes</option>
+                            <option value="-30">-30 minutes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Apply to:</label>
+                        <select class="form-select" id="shiftScope">
+                            <option value="remaining">Remaining appointments only</option>
+                            <option value="all">All appointments in slot</option>
+                            <option value="pending">Pending appointments only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn btn-warning me-2" onclick="applyTimeShift()">
+                            <i class="fas fa-clock"></i> Apply Shift
+                        </button>
+                        <button class="btn btn-secondary" onclick="hideTimeShiftPanel()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 id="totalAppointments">0</h3>
+                        <p>Today's Appointments</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card" style="position: relative;">
+                        <h3 id="pendingAppointments">0</h3>
+                        <p>Pending Appointments</p>
+                        <div class="notification-badge" id="pendingBadge" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 id="monthlyAppointments">0</h3>
+                        <p>This Month's Total</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 id="blockedDays">0</h3>
+                        <p>Blocked Days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="adminTabs">
+                <li class="nav-item">
+                    <button class="nav-link active" id="appointments-tab" data-bs-toggle="tab"
+                        data-bs-target="#appointments" type="button">
+                        <i class="fas fa-calendar-check"></i> View Appointments
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="add-appointment-tab" data-bs-toggle="tab"
+                        data-bs-target="#add-appointment" type="button">
+                        <i class="fas fa-calendar-plus"></i> Add Appointment
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="search-tab" data-bs-toggle="tab" data-bs-target="#search"
+                        type="button">
+                        <i class="fas fa-search"></i> Search & Manage
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="blocked-days-tab" data-bs-toggle="tab" data-bs-target="#blocked-days"
+                        type="button">
+                        <i class="fas fa-ban"></i> Blocked Days
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="adminTabsContent">
+                <!-- View Appointments Tab -->
+                <div class="tab-pane fade show active" id="appointments">
+                    <h5><i class="fas fa-eye"></i> View Daily Appointments</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="viewDate" class="form-label">Select Date:</label>
+                            <input type="date" id="viewDate" class="form-control">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button class="btn btn-info" onclick="viewAppointments()">
+                                <i class="fas fa-eye"></i> View Appointments
+                            </button>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end justify-content-end">
+                            <button class="btn btn-outline-success" onclick="exportAppointments()" id="exportBtn"
+                                disabled>
+                                <i class="fas fa-download"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Actions -->
+                    <div class="bulk-actions" id="bulkActions">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Bulk Actions:</label>
+                                <select class="form-select" id="bulkStatus">
+                                    <option value="">Select Action</option>
+                                    <option value="confirmed">Mark as Confirmed</option>
+                                    <option value="completed">Mark as Completed</option>
+                                    <option value="seen">Mark as Seen</option>
+                                    <option value="cancelled">Mark as Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Given Time (Optional):</label>
+                                <input type="time" class="form-control" id="bulkGivenTime">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button class="btn btn-warning me-2" onclick="applyBulkAction()">
+                                    <i class="fas fa-edit"></i> Apply to Selected
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearSelection()">
+                                    <i class="fas fa-times"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <span id="selectedCount" class="badge bg-primary">0 selected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="appointmentsTable" class="mt-4"></div>
+                </div>
+
+                <!-- Add Appointment Tab -->
+                <div class="tab-pane fade" id="add-appointment">
+                    <h5><i class="fas fa-calendar-plus"></i> Add New Appointment</h5>
+                    <!-- AI-Powered Quick Entry -->
+                    <div class="card mb-4"
+                        style="border: 2px solid #28a745; background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-robot"></i> AI-Powered Quick Entry
+                                <small class="float-end">Powered by Gemini AI</small>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-lightbulb"></i>
+                                <strong>Quick Entry Examples:</strong><br>
+                                • "Sumeeta, 8767898765, morning slot 1, Pregnancy"<br>
+                                • "John Doe, 9876543210, evening slot, general consultation"<br>
+                                • "Dr. Smith appointment for Sarah, phone 8888888888, afternoon slot, family planning"
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label for="aiInput" class="form-label">
+                                        <i class="fas fa-magic"></i> Enter appointment details in natural language:
+                                    </label>
+                                    <textarea id="aiInput" class="form-control" rows="3"
+                                        placeholder="Example: Priya Sharma, 9876543210, morning slot 2, high risk pregnancy consultation"></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Quick Actions:</label>
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-outline-danger" id="voiceRecordBtn"
+                                            onclick="toggleVoiceRecording()">
+                                            <i class="fas fa-microphone" id="micIcon"></i>
+                                            <span id="recordBtnText">Start Recording</span>
+                                        </button>
+                                        <button type="button" class="btn btn-success" onclick="processWithAI()"
+                                            id="processAIBtn">
+                                            <i class="fas fa-robot"></i> Process with AI
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            onclick="clearAIInput()">
+                                            <i class="fas fa-trash"></i> Clear
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Voice Recording Status -->
+                            <div id="voiceStatus" class="mt-3" style="display: none;">
+                                <div class="alert alert-primary">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <span id="voiceStatusText">Ready to record...</span>
+                                    <div class="progress mt-2" style="height: 8px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            id="voiceProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Processing Status -->
+                            <div id="aiProcessingStatus" class="mt-3" style="display: none;">
+                                <div class="alert alert-info">
+                                    <div class="d-flex align-items-center">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <span id="aiStatusText">Processing with Gemini AI...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Result Preview -->
+                            <div id="aiResultPreview" class="mt-3" style="display: none;">
+                                <div class="alert alert-success">
+                                    <h6><i class="fas fa-check-circle"></i> AI Processed Successfully!</h6>
+                                    <div id="aiResultContent"></div>
+                                    <div class="mt-2">
+                                        <button class="btn btn-sm btn-success me-2" onclick="fillFormWithAIData()">
+                                            <i class="fas fa-fill"></i> Fill Form
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="editAIData()">
+                                            <i class="fas fa-edit"></i> Edit Before Fill
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Traditional Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-form"></i> Manual Entry Form
+                                <button class="btn btn-sm btn-outline-primary float-end" onclick="toggleFormMode()">
+                                    <i class="fas fa-exchange-alt"></i> <span id="formModeText">Switch to Simple
+                                        Mode</span>
+                                </button>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="addAppointmentForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addName" class="form-label">
+                                                <i class="fas fa-user"></i> Full Name *
+                                            </label>
+                                            <input type="text" id="addName" class="form-control"
+                                                placeholder="Enter patient's full name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addPhone" class="form-label">
+                                                <i class="fas fa-phone"></i> Phone Number *
+                                            </label>
+                                            <div class="phone-input">
+                                                <span class="phone-prefix">+91</span>
+                                                <input type="text" id="addPhone" class="form-control"
+                                                    placeholder="Enter 10-digit mobile number" maxlength="10" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addDate" class="form-label">
+                                                <i class="fas fa-calendar"></i> Appointment Date *
+                                            </label>
+                                            <input type="date" id="addDate" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addTimeSlot" class="form-label">
+                                                <i class="fas fa-clock"></i> Time Slot *
+                                            </label>
+
+                                            <select id="addTimeSlot" class="form-select" required>
+                                                <option value="">Select Time Slot</option>
+                                                <option value="10:30 AM - 11:30 AM">Morning Slot 1: 10:30 AM - 11:30 AM
+                                                    (4 slots)</option>
+                                                <option value="11:30 AM - 12:30 PM">Morning Slot 2: 11:30 AM - 12:30 PM
+                                                    (4 slots)</option>
+                                                <option value="12:30 PM - 1:30 PM">Morning Slot 3: 12:30 PM - 1:30 PM (4
+                                                    slots)</option>
+                                                <option value="1:30 PM - 2:00 PM">Morning Slot 4: 1:30 PM - 2:00 PM (2
+                                                    slots)</option>
+                                                <option value="4:30 PM - 5:30 PM">Evening Slot 1: 4:30 PM - 5:30 PM (4
+                                                    slots)</option>
+                                                <option value="5:30 PM - 6:00 PM">Evening Slot 2: 5:30 PM - 6:00 PM (2
+                                                    slots)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addServiceType" class="form-label">
+                                                <i class="fas fa-stethoscope"></i> Service Type *
+                                            </label>
+                                            <select id="addServiceType" class="form-select" required>
+                                                <option value="">Select Service Type</option>
+                                                <option value="High Risk Pregnancy">High Risk Pregnancy</option>
+                                                <option value="Family Planning">Family Planning</option>
+                                                <option value="Infertility">Infertility Treatment</option>
+                                                <option value="Laparoscopic Surgeries">Laparoscopic Surgeries</option>
+                                                <option value="Hysteroscopy">Hysteroscopy</option>
+                                                <option value="Cancer Screening & Surgery">Cancer Screening & Surgery
+                                                </option>
+                                                <option value="Colposcopy">Colposcopy</option>
+                                                <option value="Adolescent & Menopausal Problems">Adolescent & Menopausal
+                                                    Problems</option>
+                                                <option value="Cosmetic Gynecology">Cosmetic Gynecology</option>
+                                                <option value="General Consultation">General Consultation</option>
+                                                <option value="Wellness & Yoga Session">Wellness & Yoga Session</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="addStatus" class="form-label">
+                                                <i class="fas fa-flag"></i> Status
+                                            </label>
+                                            <select id="addStatus" class="form-select">
+                                                <option value="pending">Pending</option>
+                                                <option value="confirmed">Confirmed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="addMessage" class="form-label">
+                                                <i class="fas fa-comment"></i> Additional Notes (Optional)
+                                            </label>
+                                            <textarea id="addMessage" class="form-control" rows="3"
+                                                placeholder="Any additional notes or comments..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Slot Availability Info -->
+                                <div id="slotAvailability" class="alert alert-info" style="display: none;">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="availabilityText"></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Add Appointment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Manage Tab -->
+                <div class="tab-pane fade" id="search">
+                    <h5><i class="fas fa-search"></i> Search & Manage Appointments</h5>
+
+                    <div class="search-filters">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Search Query:</label>
+                                <input type="text" id="searchQuery" class="form-control"
+                                    placeholder="Name, phone, or service...">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Phone:</label>
+                                <input type="text" id="searchPhone" class="form-control" placeholder="Phone number">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Status:</label>
+                                <select id="searchStatus" class="form-select">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="seen">Seen</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">From Date:</label>
+                                <input type="date" id="searchFromDate" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">To Date:</label>
+                                <input type="date" id="searchToDate" class="form-control">
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button class="btn btn-primary" onclick="searchAppointments()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="searchResults"></div>
+                </div>
+
+                <!-- Blocked Days Tab -->
+                <div class="tab-pane fade" id="blocked-days">
+                    <h5><i class="fas fa-ban"></i> Manage Blocked Days</h5>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="blockDate" class="form-label">Block New Date:</label>
+                            <input type="date" id="blockDate" class="form-control">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button class="btn btn-danger" onclick="blockDay()">
+                                <i class="fas fa-ban"></i> Block Day
+                            </button>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end justify-content-end">
+                            <button class="btn btn-outline-info" onclick="loadBlockedDays()">
+                                <i class="fas fa-refresh"></i> Refresh List
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="blockedDaysTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div class="modal fade" id="updateStatusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Appointment Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateStatusForm">
+                        <input type="hidden" id="updateAppointmentId">
+                        <div class="mb-3">
+                            <label for="newStatus" class="form-label">Status:</label>
+                            <select class="form-select" id="newStatus">
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="seen">Seen</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newGivenTime" class="form-label">Given Time (Optional):</label>
+                            <input type="time" class="form-control" id="newGivenTime">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateAppointmentStatus()">
+                        <i class="fas fa-save"></i> Update Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Slot Modal -->
+    <div class="modal fade" id="emergencySlotModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus-circle"></i> Add Emergency Appointment
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="emergencyForm">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Emergency appointments can exceed normal slot limits and will be prioritized.
+                        </div>
+                        <div class="mb-3">
+                            <label for="emergencyName" class="form-label">Patient Name *</label>
+                            <input type="text" id="emergencyName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emergencyPhone" class="form-label">Phone Number *</label>
+                            <div class="phone-input">
+                                <span class="phone-prefix">+91</span>
+                                <input type="text" id="emergencyPhone" class="form-control" maxlength="10" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emergencySlot" class="form-label">Preferred Time Slot *</label>
+                            <select id="emergencySlot" class="form-select" required>
+                                <option value="">Select Slot</option>
+                                <option value="10:30 AM - 11:30 AM">Morning Slot 1 (10:30 AM - 11:30 AM)</option>
+                                <option value="11:30 AM - 12:30 PM">Morning Slot 2 (11:30 AM - 12:30 PM)</option>
+                                <option value="12:30 PM - 1:30 PM">Morning Slot 3 (12:30 PM - 1:30 PM)</option>
+                                <option value="1:30 PM - 2:00 PM">Morning Slot 4 (1:30 PM - 2:00 PM)</option>
+                                <option value="4:30 PM - 5:30 PM">Evening Slot 1 (4:30 PM - 5:30 PM)</option>
+                                <option value="5:30 PM - 6:00 PM">Evening Slot 2 (5:30 PM - 6:00 PM)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emergencyReason" class="form-label">Emergency Reason *</label>
+                            <textarea id="emergencyReason" class="form-control" rows="3"
+                                placeholder="Describe the emergency situation..." required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="addEmergencyAppointment()">
+                        <i class="fas fa-plus"></i> Add Emergency Slot
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Reschedule Modal -->
+    <div class="modal fade" id="bulkRescheduleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-calendar-times"></i> Bulk Reschedule Appointments
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Select appointments to reschedule to a new date and time slot.
+                    </div>
+                    <form id="rescheduleForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="rescheduleFromDate" class="form-label">From Date:</label>
+                                <input type="date" id="rescheduleFromDate" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rescheduleFromSlot" class="form-label">From Slot:</label>
+                                <select id="rescheduleFromSlot" class="form-select" required>
+                                    <option value="">Select Original Slot</option>
+                                    <option value="10:30 AM - 11:30 AM">Morning Slot 1 (10:30 AM - 11:30 AM)</option>
+                                    <option value="11:30 AM - 12:30 PM">Morning Slot 2 (11:30 AM - 12:30 PM)</option>
+                                    <option value="12:30 PM - 1:30 PM">Morning Slot 3 (12:30 PM - 1:30 PM)</option>
+                                    <option value="1:30 PM - 2:00 PM">Morning Slot 4 (1:30 PM - 2:00 PM)</option>
+                                    <option value="4:30 PM - 5:30 PM">Evening Slot 1 (4:30 PM - 5:30 PM)</option>
+                                    <option value="5:30 PM - 6:00 PM">Evening Slot 2 (5:30 PM - 6:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="rescheduleToDate" class="form-label">To Date:</label>
+                                <input type="date" id="rescheduleToDate" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rescheduleToSlot" class="form-label">To Slot:</label>
+                                <select id="rescheduleToSlot" class="form-select" required>
+                                    <option value="">Select New Slot</option>
+                                    <option value="10:30 AM - 11:30 AM">Morning Slot 1 (10:30 AM - 11:30 AM)</option>
+                                    <option value="11:30 AM - 12:30 PM">Morning Slot 2 (11:30 AM - 12:30 PM)</option>
+                                    <option value="12:30 PM - 1:30 PM">Morning Slot 3 (12:30 PM - 1:30 PM)</option>
+                                    <option value="1:30 PM - 2:00 PM">Morning Slot 4 (1:30 PM - 2:00 PM)</option>
+                                    <option value="4:30 PM - 5:30 PM">Evening Slot 1 (4:30 PM - 5:30 PM)</option>
+                                    <option value="5:30 PM - 6:00 PM">Evening Slot 2 (5:30 PM - 6:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label for="rescheduleReason" class="form-label">Reason for Reschedule:</label>
+                            <textarea id="rescheduleReason" class="form-control" rows="2"
+                                placeholder="Optional reason for reschedule..."></textarea>
+                        </div>
+                    </form>
+                    <div id="reschedulePreview" class="mt-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-info" onclick="previewReschedule()">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="executeReschedule()" disabled
+                        id="executeRescheduleBtn">
+                        <i class="fas fa-calendar-times"></i> Execute Reschedule
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const API_BASE_URL = 'https://appointment-5tt0.onrender.com/api';
+        const ADMIN_PASSWORD = 'admin@123'; // In production, use environment variable
+        let selectedAppointments = [];
+        let currentAppointments = [];
+
+        // Updated slot configuration for new timings
+        const SLOT_CONFIG = {
+            '10:30 AM - 11:30 AM': { max: 4, name: 'Morning Slot 1', duration: '1 hour' },
+            '11:30 AM - 12:30 PM': { max: 4, name: 'Morning Slot 2', duration: '1 hour' },
+            '12:30 PM - 1:30 PM': { max: 4, name: 'Morning Slot 3', duration: '1 hour' },
+            '1:30 PM - 2:00 PM': { max: 2, name: 'Morning Slot 4', duration: '30 minutes' },
+            '4:30 PM - 5:30 PM': { max: 4, name: 'Evening Slot 1', duration: '1 hour' },
+            '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', duration: '30 minutes' }
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            checkRememberedLogin();
+
+            document.getElementById('adminPassword').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    loginAdmin();
+                }
+            });
+
+            document.getElementById('addPhone').addEventListener('input', function (e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+
+            setInterval(() => {
+                if (document.getElementById('adminSection').style.display !== 'none') {
+                    loadDashboardStats();
+                    const viewDate = document.getElementById('viewDate').value;
+                    const today = new Date().toISOString().split('T')[0];
+                    if (viewDate === today) {
+                        viewAppointments();
+                    }
+                }
+            }, 2 * 60 * 1000);
+        });
+
+        function checkRememberedLogin() {
+            const rememberedAuth = localStorage.getItem('adminAuth');
+            if (rememberedAuth) {
+                const authData = JSON.parse(rememberedAuth);
+                const now = new Date().getTime();
+
+                if (now - authData.timestamp < 30 * 24 * 60 * 60 * 1000) {
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminSection').style.display = 'block';
+                    loadDashboardStats();
+                    loadBlockedDays();
+                    setDefaultDates();
+                    return;
+                }
+
+                localStorage.removeItem('adminAuth');
+            }
+        }
+
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const destination = document.querySelector('input[name="loginDestination"]:checked').value;
+
+            if (password === ADMIN_PASSWORD) {
+                if (rememberMe) {
+                    const authData = {
+                        timestamp: new Date().getTime(),
+                        destination: destination
+                    };
+                    localStorage.setItem('adminAuth', JSON.stringify(authData));
+                }
+
+                if (destination === 'calendar') {
+                    window.location.href = 'admin-calendar.html';
+                } else {
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminSection').style.display = 'block';
+                    loadDashboardStats();
+                    loadBlockedDays();
+                    setDefaultDates();
+                }
+            } else {
+                alert('Incorrect password. Please try again.');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminAuth');
+
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('adminSection').style.display = 'none';
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('rememberMe').checked = false;
+            }
+        }
+
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('viewDate').value = today;
+            document.getElementById('addDate').value = today;
+            document.getElementById('addDate').min = today;
+            document.getElementById('blockDate').min = today;
+
+            viewAppointments();
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/stats`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('totalAppointments').textContent = data.today_appointments || 0;
+                    document.getElementById('pendingAppointments').textContent = data.pending_appointments || 0;
+                    document.getElementById('monthlyAppointments').textContent = data.monthly_appointments || 0;
+                    document.getElementById('blockedDays').textContent = data.blocked_days || 0;
+
+                    const pendingBadge = document.getElementById('pendingBadge');
+                    if (data.pending_appointments > 0) {
+                        pendingBadge.textContent = data.pending_appointments;
+                        pendingBadge.style.display = 'flex';
+                    } else {
+                        pendingBadge.style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        async function viewAppointments() {
+            const date = document.getElementById('viewDate').value;
+            if (!date) {
+                alert('Please select a date.');
+                return;
+            }
+
+            try {
+                showLoading('appointmentsTable', 'Loading appointments...');
+
+                const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${date}`);
+                const data = await response.json();
+
+                currentAppointments = data.appointments || [];
+                displayAppointments(currentAppointments, date);
+                document.getElementById('exportBtn').disabled = currentAppointments.length === 0;
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+                document.getElementById('appointmentsTable').innerHTML =
+                    '<div class="alert alert-danger">Error loading appointments. Please try again.</div>';
+            }
+        }
+
+        function displayAppointments(appointments, date) {
+            let html = `<h6 class="mt-4">
+                <i class="fas fa-calendar-day"></i> 
+                Appointments for ${formatDate(date)} (${appointments.length} total):
+            </h6>`;
+
+            if (appointments.length === 0) {
+                html += '<div class="alert alert-info">No appointments found for this date.</div>';
+            } else {
+                // Group appointments by new time slots
+                const timeSlots = {
+                    '10:30 AM - 11:30 AM': appointments.filter(apt => apt.time_slot === '10:30 AM - 11:30 AM'),
+                    '11:30 AM - 12:30 PM': appointments.filter(apt => apt.time_slot === '11:30 AM - 12:30 PM'),
+                    '12:30 PM - 1:30 PM': appointments.filter(apt => apt.time_slot === '12:30 PM - 1:30 PM'),
+                    '1:30 PM - 2:00 PM': appointments.filter(apt => apt.time_slot === '1:30 PM - 2:00 PM'),
+                    '4:30 PM - 5:30 PM': appointments.filter(apt => apt.time_slot === '4:30 PM - 5:30 PM'),
+                    '5:30 PM - 6:00 PM': appointments.filter(apt => apt.time_slot === '5:30 PM - 6:00 PM')
+                };
+
+                Object.entries(timeSlots).forEach(([slot, slotAppointments]) => {
+                    if (slotAppointments.length > 0) {
+                        const slotConfig = SLOT_CONFIG[slot];
+                        const pendingCount = slotAppointments.filter(apt => apt.status === 'pending').length;
+                        const confirmedCount = slotAppointments.filter(apt => apt.status === 'confirmed').length;
+                        const seenCount = slotAppointments.filter(apt => apt.status === 'seen').length;
+                        const completedCount = slotAppointments.filter(apt => apt.status === 'completed').length;
+
+                        html += `
+                            <div class="slot-group">
+                                <div class="slot-header">
+                                    <div>
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-clock"></i> ${slot} (${slotConfig.name})
+                                            <span class="badge bg-light text-dark ms-2">${slotAppointments.length}/${slotConfig.max}</span>
+                                            <small class="ms-2">${slotConfig.duration}</small>
+                                        </h6>
+                                    </div>
+                                    <div class="slot-stats">
+                                        <span><i class="fas fa-hourglass-half"></i> Pending: ${pendingCount}</span>
+                                        <span><i class="fas fa-check"></i> Confirmed: ${confirmedCount}</span>
+                                        <span><i class="fas fa-eye"></i> Seen: ${seenCount}</span>
+                                        <span><i class="fas fa-check-double"></i> Completed: ${completedCount}</span>
+                                        <div class="quick-mark-buttons">
+                                            <button class="btn btn-seen btn-sm" onclick="markSlotAsSeen('${slot}')" title="Mark all as seen">
+                                                <i class="fas fa-eye"></i> All Seen
+                                            </button>
+                                            <button class="btn btn-next btn-sm" onclick="confirmNextInSlot('${slot}')" title="Confirm next patient">
+                                                <i class="fas fa-user-check"></i> Next
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="checkbox-column">
+                                                    <input type="checkbox" onchange="toggleSlotSelection('${slot}', this.checked)">
+                                                </th>
+                                                <th>Name</th>
+                                                <th>Phone</th>
+                                                <th>Service</th>
+                                                <th>Given Time</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                        `;
+
+                        slotAppointments.forEach(appointment => {
+                            const rowClass = appointment.status === 'seen' ? 'patient-row seen' : 'patient-row';
+                            html += `
+                                <tr class="${rowClass}">
+                                    <td>
+                                        <input type="checkbox" class="appointment-checkbox" value="${appointment.id}" onchange="updateSelection()">
+                                    </td>
+                                    <td><strong>${appointment.name}</strong></td>
+                                    <td>${appointment.phone}</td>
+                                    <td><span class="service-type">${appointment.service_type || 'N/A'}</span></td>
+                                    <td>${appointment.given_time || appointment.estimated_time}</td>
+                                    <td><span class="status-badge status-${appointment.status}">${appointment.status}</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class='btn btn-sm btn-outline-secondary' onclick='quickMarkSeen(${appointment.id})' title="Mark as seen">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class='btn btn-sm btn-outline-primary' onclick='openUpdateStatusModal(${appointment.id}, "${appointment.status}")' title="Update status">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class='btn btn-sm btn-outline-danger' onclick='deleteAppointment(${appointment.id})' title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+
+                        html += '</tbody></table></div></div>';
+                    }
+                });
+            }
+
+            document.getElementById('appointmentsTable').innerHTML = html;
+        }
+
+        async function markSlotAsSeen(timeSlot) {
+            const slotAppointments = currentAppointments.filter(apt =>
+                apt.time_slot === timeSlot && apt.status !== 'seen' && apt.status !== 'completed'
+            );
+
+            if (slotAppointments.length === 0) {
+                alert('No appointments to mark as seen in this slot.');
+                return;
+            }
+
+            if (!confirm(`Mark ${slotAppointments.length} patients in ${timeSlot} as seen?`)) {
+                return;
+            }
+
+            try {
+                const appointmentIds = slotAppointments.map(apt => apt.id);
+
+                const response = await fetch(`${API_BASE_URL}/admin/bulk-update`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        appointment_ids: appointmentIds,
+                        status: 'seen'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification(`Marked ${appointmentIds.length} patients as seen!`, 'success');
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update appointments'));
+                }
+            } catch (error) {
+                console.error('Error marking slot as seen:', error);
+                alert('Error updating appointments. Please try again.');
+            }
+        }
+
+        async function quickMarkSeen(appointmentId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/update-status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: appointmentId,
+                        status: 'seen'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Patient marked as seen!', 'success');
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update status'));
+                }
+            } catch (error) {
+                console.error('Error marking as seen:', error);
+                alert('Error updating status. Please try again.');
+            }
+        }
+
+        async function confirmNextInSlot(timeSlot) {
+            const pendingAppointments = currentAppointments.filter(apt =>
+                apt.time_slot === timeSlot && apt.status === 'pending'
+            ).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+            if (pendingAppointments.length === 0) {
+                alert('No pending appointments in this slot.');
+                return;
+            }
+
+            const nextPatient = pendingAppointments[0];
+
+            if (!confirm(`Confirm ${nextPatient.name} as the next patient?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/update-status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: nextPatient.id,
+                        status: 'confirmed'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification(`${nextPatient.name} confirmed as next patient!`, 'success');
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update status'));
+                }
+            } catch (error) {
+                console.error('Error confirming next patient:', error);
+                alert('Error updating status. Please try again.');
+            }
+        }
+
+        function showTimeShiftPanel() {
+            document.getElementById('timeShiftPanel').classList.add('show');
+        }
+
+        function hideTimeShiftPanel() {
+            document.getElementById('timeShiftPanel').classList.remove('show');
+        }
+
+        async function applyTimeShift() {
+            const targetSlot = document.getElementById('shiftTargetSlot').value;
+            const shiftMinutes = parseInt(document.getElementById('shiftMinutes').value);
+            const scope = document.getElementById('shiftScope').value;
+
+            if (!targetSlot) {
+                alert('Please select a target slot.');
+                return;
+            }
+
+            const targetAppointments = currentAppointments.filter(apt => {
+                if (apt.time_slot !== targetSlot) return false;
+
+                switch (scope) {
+                    case 'remaining':
+                        return apt.status === 'pending' || apt.status === 'confirmed';
+                    case 'all':
+                        return true;
+                    case 'pending':
+                        return apt.status === 'pending';
+                    default:
+                        return false;
+                }
+            });
+
+            if (targetAppointments.length === 0) {
+                alert('No appointments found matching the criteria.');
+                return;
+            }
+
+            if (!confirm(`Shift ${targetAppointments.length} appointment times by ${shiftMinutes > 0 ? '+' : ''}${shiftMinutes} minutes?`)) {
+                return;
+            }
+
+            try {
+                const updates = targetAppointments.map(apt => {
+                    const currentTime = apt.given_time || apt.estimated_time;
+                    const newTime = shiftTime(currentTime, shiftMinutes);
+                    return {
+                        id: apt.id,
+                        given_time: newTime
+                    };
+                });
+
+                const updatePromises = updates.map(update =>
+                    fetch(`${API_BASE_URL}/admin/update-status`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: update.id,
+                            status: 'confirmed',
+                            given_time: update.given_time
+                        })
+                    })
+                );
+
+                const results = await Promise.all(updatePromises);
+                const successCount = results.filter(r => r.ok).length;
+
+                if (successCount === updates.length) {
+                    showNotification(`Successfully shifted ${successCount} appointment times!`, 'success');
+                    hideTimeShiftPanel();
+                    viewAppointments();
+                } else {
+                    alert(`Updated ${successCount} of ${updates.length} appointments. Some updates failed.`);
+                }
+            } catch (error) {
+                console.error('Error shifting times:', error);
+                alert('Error shifting appointment times. Please try again.');
+            }
+        }
+
+        function shiftTime(timeString, minutes) {
+            if (!timeString) return null;
+
+            const match = timeString.match(/(\d+):(\d+)\s*(AM|PM)/i);
+            if (!match) return timeString;
+
+            let [, hours, mins, period] = match;
+            hours = parseInt(hours);
+            mins = parseInt(mins);
+
+            if (period.toUpperCase() === 'PM' && hours !== 12) hours += 12;
+            if (period.toUpperCase() === 'AM' && hours === 12) hours = 0;
+
+            const date = new Date();
+            date.setHours(hours, mins + minutes, 0, 0);
+
+            return date.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        function showEmergencySlot() {
+            const modal = new bootstrap.Modal(document.getElementById('emergencySlotModal'));
+            modal.show();
+        }
+
+        async function addEmergencyAppointment() {
+            const name = document.getElementById('emergencyName').value.trim();
+            const phone = document.getElementById('emergencyPhone').value.trim();
+            const slot = document.getElementById('emergencySlot').value;
+            const reason = document.getElementById('emergencyReason').value.trim();
+
+            if (!name || !phone || !slot || !reason) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (phone.length !== 10) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            try {
+                const appointmentData = {
+                    name: name,
+                    phone: phone,
+                    appointment_date: document.getElementById('viewDate').value || new Date().toISOString().split('T')[0],
+                    time_slot: slot,
+                    service_type: 'Emergency',
+                    message: `EMERGENCY: ${reason}`,
+                    status: 'confirmed'
+                };
+
+                const response = await fetch(`${API_BASE_URL}/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(appointmentData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Emergency appointment added successfully!', 'success');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('emergencySlotModal'));
+                    modal.hide();
+                    document.getElementById('emergencyForm').reset();
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || result.message || 'Failed to add emergency appointment'));
+                }
+            } catch (error) {
+                console.error('Error adding emergency appointment:', error);
+                alert('Error adding emergency appointment. Please try again.');
+            }
+        }
+
+        function bulkReschedule() {
+            const modal = new bootstrap.Modal(document.getElementById('bulkRescheduleModal'));
+            modal.show();
+        }
+
+        async function previewReschedule() {
+            const fromDate = document.getElementById('rescheduleFromDate').value;
+            const fromSlot = document.getElementById('rescheduleFromSlot').value;
+            const toDate = document.getElementById('rescheduleToDate').value;
+            const toSlot = document.getElementById('rescheduleToSlot').value;
+
+            if (!fromDate || !fromSlot || !toDate || !toSlot) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${fromDate}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    const appointmentsToMove = (data.appointments || []).filter(
+                        apt => apt.time_slot === fromSlot && apt.status !== 'completed' && apt.status !== 'cancelled'
+                    );
+
+                    const previewDiv = document.getElementById('reschedulePreview');
+
+                    if (appointmentsToMove.length === 0) {
+                        previewDiv.innerHTML = `
+                            <div class="alert alert-info">
+                                No appointments found to reschedule from ${fromDate} ${fromSlot}.
+                            </div>
+                        `;
+                        document.getElementById('executeRescheduleBtn').disabled = true;
+                        return;
+                    }
+
+                    const toResponse = await fetch(`${API_BASE_URL}/available-slots/${toDate}`);
+                    const toData = await toResponse.json();
+
+                    let availabilityHtml = '';
+                    if (toResponse.ok && !toData.blocked) {
+                        const targetSlotInfo = toData.slots?.find(s => s.time_slot === toSlot);
+                        if (targetSlotInfo && targetSlotInfo.available_slots >= appointmentsToMove.length) {
+                            availabilityHtml = `
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check"></i> Target slot has ${targetSlotInfo.available_slots} available spots. 
+                                    Moving ${appointmentsToMove.length} appointments.
+                                </div>
+                            `;
+                            document.getElementById('executeRescheduleBtn').disabled = false;
+                        } else {
+                            availabilityHtml = `
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i> Target slot may not have enough space. 
+                                    Available: ${targetSlotInfo?.available_slots || 0}, 
+                                    Moving: ${appointmentsToMove.length}
+                                </div>
+                            `;
+                            document.getElementById('executeRescheduleBtn').disabled = false;
+                        }
+                    } else {
+                        availabilityHtml = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-ban"></i> Target date/slot is blocked or unavailable.
+                            </div>
+                        `;
+                        document.getElementById('executeRescheduleBtn').disabled = true;
+                    }
+
+                    previewDiv.innerHTML = `
+                        ${availabilityHtml}
+                        <h6>Appointments to Reschedule (${appointmentsToMove.length}):</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Service</th>
+                                        <th>Current Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${appointmentsToMove.map(apt => `
+                                        <tr>
+                                            <td>${apt.name}</td>
+                                            <td>${apt.phone}</td>
+                                            <td>${apt.service_type || 'General'}</td>
+                                            <td><span class="badge bg-${getStatusColor(apt.status)}">${apt.status}</span></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <p><strong>From:</strong> ${formatDate(fromDate)} - ${fromSlot}</p>
+                        <p><strong>To:</strong> ${formatDate(toDate)} - ${toSlot}</p>
+                    `;
+
+                    window.appointmentsToReschedule = appointmentsToMove;
+                } else {
+                    document.getElementById('reschedulePreview').innerHTML = `
+                        <div class="alert alert-danger">Error loading appointments: ${data.error}</div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error previewing reschedule:', error);
+                document.getElementById('reschedulePreview').innerHTML = `
+                    <div class="alert alert-danger">Error loading data. Please try again.</div>
+                `;
+            }
+        }
+
+        async function executeReschedule() {
+            if (!window.appointmentsToReschedule || window.appointmentsToReschedule.length === 0) {
+                alert('No appointments to reschedule. Please preview first.');
+                return;
+            }
+
+            const toDate = document.getElementById('rescheduleToDate').value;
+            const toSlot = document.getElementById('rescheduleToSlot').value;
+            const reason = document.getElementById('rescheduleReason').value.trim();
+
+            if (!confirm(`Reschedule ${window.appointmentsToReschedule.length} appointments to ${formatDate(toDate)} ${toSlot}?`)) {
+                return;
+            }
+
+            try {
+                const updates = window.appointmentsToReschedule.map(apt => ({
+                    ...apt,
+                    appointment_date: toDate,
+                    time_slot: toSlot,
+                    message: apt.message + (reason ? ` | Rescheduled: ${reason}` : ' | Rescheduled by admin'),
+                    status: 'confirmed'
+                }));
+
+                const deletePromises = window.appointmentsToReschedule.map(apt =>
+                    fetch(`${API_BASE_URL}/admin/delete`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: apt.id })
+                    })
+                );
+
+                await Promise.all(deletePromises);
+
+                const createPromises = updates.map(apt =>
+                    fetch(`${API_BASE_URL}/appointments`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: apt.name,
+                            phone: apt.phone,
+                            appointment_date: apt.appointment_date,
+                            time_slot: apt.time_slot,
+                            service_type: apt.service_type,
+                            message: apt.message,
+                            status: apt.status
+                        })
+                    })
+                );
+
+                const results = await Promise.all(createPromises);
+                const successCount = results.filter(r => r.ok).length;
+
+                if (successCount === updates.length) {
+                    showNotification(`Successfully rescheduled ${successCount} appointments!`, 'success');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('bulkRescheduleModal'));
+                    modal.hide();
+                    document.getElementById('rescheduleForm').reset();
+                    document.getElementById('reschedulePreview').innerHTML = '';
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert(`Rescheduled ${successCount} of ${updates.length} appointments. Some operations failed.`);
+                }
+
+                window.appointmentsToReschedule = null;
+            } catch (error) {
+                console.error('Error executing reschedule:', error);
+                alert('Error rescheduling appointments. Please try again.');
+            }
+        }
+
+        function sendReminderSMS() {
+            const pendingAppointments = currentAppointments.filter(apt =>
+                apt.status === 'confirmed' || apt.status === 'pending'
+            );
+
+            if (pendingAppointments.length === 0) {
+                alert('No appointments found to send reminders for.');
+                return;
+            }
+
+            if (confirm(`Send reminder messages to ${pendingAppointments.length} patients?`)) {
+                showNotification(`Reminder sent to ${pendingAppointments.length} patients!`, 'info');
+            }
+        }
+
+        function confirmNextPatients() {
+            const pendingAppointments = currentAppointments.filter(apt => apt.status === 'pending');
+
+            if (pendingAppointments.length === 0) {
+                alert('No pending appointments to confirm.');
+                return;
+            }
+
+            const count = Math.min(5, pendingAppointments.length);
+
+            if (confirm(`Confirm the next ${count} pending patients?`)) {
+                const toConfirm = pendingAppointments
+                    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                    .slice(0, count);
+
+                toConfirm.forEach(apt => {
+                    fetch(`${API_BASE_URL}/admin/update-status`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: apt.id,
+                            status: 'confirmed'
+                        })
+                    });
+                });
+
+                setTimeout(() => {
+                    viewAppointments();
+                    loadDashboardStats();
+                    showNotification(`Confirmed ${count} patients!`, 'success');
+                }, 1000);
+            }
+        }
+
+        function markAllSeenInSlot() {
+            const viewDate = document.getElementById('viewDate').value;
+            if (!viewDate) {
+                alert('Please select a date first.');
+                return;
+            }
+
+            const slots = ['11 AM - 1 PM', '1 PM - 3 PM', '3:30 PM - 5:30 PM'];
+            const slotButtons = slots.map(slot =>
+                `<button class="btn btn-outline-primary m-1" onclick="markSlotAsSeen('${slot}')">${slot}</button>`
+            ).join('');
+
+            const html = `
+                <div class="alert alert-info">
+                    <h6>Select time slot to mark all patients as seen:</h6>
+                    ${slotButtons}
+                </div>
+            `;
+
+            const tempModal = document.createElement('div');
+            tempModal.innerHTML = `
+                <div class="modal fade" id="tempSlotModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Mark Slot as Seen</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">${html}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(tempModal);
+
+            const modal = new bootstrap.Modal(document.getElementById('tempSlotModal'));
+            modal.show();
+
+            document.getElementById('tempSlotModal').addEventListener('hidden.bs.modal', function () {
+                document.body.removeChild(tempModal);
+            });
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.appointment-checkbox');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+
+            updateSelection();
+        }
+
+        function toggleSlotSelection(timeSlot, checked) {
+            const slotAppointments = currentAppointments.filter(apt => apt.time_slot === timeSlot);
+
+            slotAppointments.forEach(apt => {
+                const checkbox = document.querySelector(`.appointment-checkbox[value="${apt.id}"]`);
+                if (checkbox) {
+                    checkbox.checked = checked;
+                }
+            });
+
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const checkboxes = document.querySelectorAll('.appointment-checkbox:checked');
+            selectedAppointments = Array.from(checkboxes).map(cb => cb.value);
+
+            document.getElementById('selectedCount').textContent = `${selectedAppointments.length} selected`;
+
+            if (selectedAppointments.length > 0) {
+                document.getElementById('bulkActions').classList.add('show');
+            } else {
+                document.getElementById('bulkActions').classList.remove('show');
+            }
+        }
+
+        function clearSelection() {
+            document.querySelectorAll('.appointment-checkbox').forEach(cb => cb.checked = false);
+
+            // Clear selectAll checkbox if it exists (it may not exist in slot-grouped view)
+            const selectAllCheckbox = document.getElementById('selectAll');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = false;
+            }
+
+            // Clear any slot-level checkboxes
+            document.querySelectorAll('input[type="checkbox"][onchange*="toggleSlotSelection"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            updateSelection();
+        }
+
+        async function applyBulkAction() {
+            const status = document.getElementById('bulkStatus').value;
+            const givenTime = document.getElementById('bulkGivenTime').value;
+
+            if (!status) {
+                alert('Please select an action.');
+                return;
+            }
+
+            if (selectedAppointments.length === 0) {
+                alert('Please select appointments to update.');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to update ${selectedAppointments.length} appointments?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/bulk-update`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        appointment_ids: selectedAppointments.map(id => parseInt(id)),
+                        status: status,
+                        given_time: givenTime || null
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification(`Successfully updated ${selectedAppointments.length} appointments!`, 'success');
+                    clearSelection();
+                    viewAppointments();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update appointments'));
+                }
+            } catch (error) {
+                console.error('Error updating appointments:', error);
+                alert('Error updating appointments. Please try again.');
+            }
+        }
+
+        document.getElementById('addAppointmentForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const appointmentData = {
+                name: document.getElementById('addName').value.trim(),
+                phone: document.getElementById('addPhone').value.trim(),
+                appointment_date: document.getElementById('addDate').value,
+                time_slot: document.getElementById('addTimeSlot').value,
+                service_type: document.getElementById('addServiceType').value,
+                message: document.getElementById('addMessage').value.trim(),
+                status: document.getElementById('addStatus').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(appointmentData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Appointment added successfully!', 'success');
+                    document.getElementById('addAppointmentForm').reset();
+                    setDefaultDates();
+                    loadDashboardStats();
+                    document.getElementById('slotAvailability').style.display = 'none';
+                } else {
+                    alert('Error: ' + (result.error || result.message || 'Failed to add appointment'));
+                }
+            } catch (error) {
+                console.error('Error adding appointment:', error);
+                alert('Error adding appointment. Please try again.');
+            }
+        });
+
+        async function checkSlotAvailability() {
+            const date = document.getElementById('addDate').value;
+            const timeSlot = document.getElementById('addTimeSlot').value;
+
+            if (!date || !timeSlot) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/available-slots/${date}`);
+                const data = await response.json();
+
+                if (data.blocked) {
+                    document.getElementById('slotAvailability').innerHTML =
+                        '<i class="fas fa-ban"></i> This date is blocked for appointments.';
+                    document.getElementById('slotAvailability').className = 'alert alert-danger';
+                    document.getElementById('slotAvailability').style.display = 'block';
+                    return;
+                }
+
+                const slot = data.slots?.find(s => s.time_slot === timeSlot);
+                if (slot) {
+                    if (slot.available_slots > 0) {
+                        document.getElementById('slotAvailability').innerHTML =
+                            `<i class="fas fa-check-circle"></i> ${slot.available_slots} of ${slot.total_slots} slots available.`;
+                        document.getElementById('slotAvailability').className = 'alert alert-success';
+                    } else {
+                        document.getElementById('slotAvailability').innerHTML =
+                            '<i class="fas fa-exclamation-triangle"></i> This time slot is full.';
+                        document.getElementById('slotAvailability').className = 'alert alert-warning';
+                    }
+                    document.getElementById('slotAvailability').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error checking availability:', error);
+            }
+        }
+
+        document.getElementById('addDate').addEventListener('change', checkSlotAvailability);
+        document.getElementById('addTimeSlot').addEventListener('change', checkSlotAvailability);
+
+        async function searchAppointments() {
+            const searchData = {
+                query: document.getElementById('searchQuery').value.trim(),
+                phone: document.getElementById('searchPhone').value.trim(),
+                status: document.getElementById('searchStatus').value,
+                date_from: document.getElementById('searchFromDate').value,
+                date_to: document.getElementById('searchToDate').value
+            };
+
+            try {
+                showLoading('searchResults', 'Searching appointments...');
+
+                const response = await fetch(`${API_BASE_URL}/admin/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(searchData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    displaySearchResults(result.appointments || []);
+                } else {
+                    document.getElementById('searchResults').innerHTML =
+                        '<div class="alert alert-danger">Error searching appointments.</div>';
+                }
+            } catch (error) {
+                console.error('Error searching appointments:', error);
+                document.getElementById('searchResults').innerHTML =
+                    '<div class="alert alert-danger">Error searching appointments.</div>';
+            }
+        }
+
+        function displaySearchResults(appointments) {
+            let html = `<h6 class="mt-4">
+                <i class="fas fa-search"></i> 
+                Search Results (${appointments.length} found):
+            </h6>`;
+
+            if (appointments.length === 0) {
+                html += '<div class="alert alert-info">No appointments found matching your search criteria.</div>';
+            } else {
+                html += `
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Service</th>
+                                    <th>Time Slot</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                appointments.forEach(appointment => {
+                    html += `
+                        <tr class="${appointment.status === 'seen' ? 'patient-row seen' : 'patient-row'}">
+                            <td>${formatDate(appointment.appointment_date)}</td>
+                            <td><strong>${appointment.name}</strong></td>
+                            <td>${appointment.phone}</td>
+                            <td><span class="service-type">${appointment.service_type || 'N/A'}</span></td>
+                            <td>${appointment.time_slot}</td>
+                            <td><span class="status-badge status-${appointment.status}">${appointment.status}</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class='btn btn-sm btn-outline-secondary' onclick='quickMarkSeen(${appointment.id})' title="Mark as seen">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class='btn btn-sm btn-outline-primary' onclick='openUpdateStatusModal(${appointment.id}, "${appointment.status}")' title="Update status">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class='btn btn-sm btn-outline-danger' onclick='deleteAppointment(${appointment.id})' title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+            }
+
+            document.getElementById('searchResults').innerHTML = html;
+        }
+
+        function openUpdateStatusModal(appointmentId, currentStatus) {
+            document.getElementById('updateAppointmentId').value = appointmentId;
+            document.getElementById('newStatus').value = currentStatus;
+            new bootstrap.Modal(document.getElementById('updateStatusModal')).show();
+        }
+
+        async function updateAppointmentStatus() {
+            const appointmentId = document.getElementById('updateAppointmentId').value;
+            const newStatus = document.getElementById('newStatus').value;
+            const givenTime = document.getElementById('newGivenTime').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/update-status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: appointmentId,
+                        status: newStatus,
+                        given_time: givenTime || null
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Appointment status updated successfully!', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('updateStatusModal')).hide();
+
+                    const activeTab = document.querySelector('.nav-link.active').getAttribute('data-bs-target');
+                    if (activeTab === '#appointments') {
+                        viewAppointments();
+                    } else if (activeTab === '#search') {
+                        searchAppointments();
+                    }
+
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update status'));
+                }
+            } catch (error) {
+                console.error('Error updating appointment status:', error);
+                alert('Error updating appointment status. Please try again.');
+            }
+        }
+
+        async function deleteAppointment(id) {
+            if (!confirm('Are you sure you want to delete this appointment? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Appointment deleted successfully!', 'success');
+
+                    const activeTab = document.querySelector('.nav-link.active').getAttribute('data-bs-target');
+                    if (activeTab === '#appointments') {
+                        viewAppointments();
+                    } else if (activeTab === '#search') {
+                        searchAppointments();
+                    }
+
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to delete appointment'));
+                }
+            } catch (error) {
+                console.error('Error deleting appointment:', error);
+                alert('Error deleting appointment. Please try again.');
+            }
+        }
+
+        async function blockDay() {
+            const date = document.getElementById('blockDate').value;
+            if (!date) {
+                alert('Please select a date to block.');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to block ${formatDate(date)}? No appointments can be booked on this day.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/block`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Day blocked successfully!', 'success');
+                    document.getElementById('blockDate').value = '';
+                    loadBlockedDays();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to block day'));
+                }
+            } catch (error) {
+                console.error('Error blocking day:', error);
+                alert('Error blocking day. Please try again.');
+            }
+        }
+
+        async function loadBlockedDays() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/blocked-days`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayBlockedDays(data.blocked_days || []);
+                } else {
+                    console.error('Error loading blocked days:', data.error);
+                }
+            } catch (error) {
+                console.error('Error loading blocked days:', error);
+            }
+        }
+
+        function displayBlockedDays(blockedDays) {
+            let html = `<h6><i class="fas fa-calendar-times"></i> Blocked Days (${blockedDays.length} total):</h6>`;
+
+            if (blockedDays.length === 0) {
+                html += '<div class="alert alert-info">No blocked days found.</div>';
+            } else {
+                html += `
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Reason</th>
+                                    <th>Blocked On</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                blockedDays.forEach(blockedDay => {
+                    const date = new Date(blockedDay.date);
+                    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+                    const createdAt = new Date(blockedDay.created_at).toLocaleDateString();
+
+                    html += `
+                        <tr>
+                            <td><strong>${formatDate(blockedDay.date)}</strong></td>
+                            <td>${dayName}</td>
+                            <td>${blockedDay.reason || 'Holiday/Clinic Closed'}</td>
+                            <td>${createdAt}</td>
+                            <td>
+                                <button class='btn btn-sm btn-outline-danger' onclick='unblockDay("${blockedDay.date}")'>
+                                    <i class="fas fa-unlock"></i> Unblock
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+            }
+
+            document.getElementById('blockedDaysTable').innerHTML = html;
+        }
+
+        async function unblockDay(date) {
+            if (!confirm(`Are you sure you want to unblock ${formatDate(date)}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/unblock`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showNotification('Day unblocked successfully!', 'success');
+                    loadBlockedDays();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to unblock day'));
+                }
+            } catch (error) {
+                console.error('Error unblocking day:', error);
+                alert('Error unblocking day. Please try again.');
+            }
+        }
+
+        function exportAppointments() {
+            const date = document.getElementById('viewDate').value;
+            if (!date) {
+                alert('Please select a date first.');
+                return;
+            }
+
+            window.open(`${API_BASE_URL}/admin/export/${date}`, '_blank');
+        }
+
+        function showLoading(elementId, message) {
+            document.getElementById(elementId).innerHTML = `
+                <div class="loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">${message}</p>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'pending': return 'warning';
+                case 'confirmed': return 'success';
+                case 'completed': return 'info';
+                case 'seen': return 'secondary';
+                case 'cancelled': return 'danger';
+                default: return 'secondary';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        document.getElementById('emergencyPhone').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                return;
+            }
+
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'r':
+                        e.preventDefault();
+                        loadDashboardStats();
+                        viewAppointments();
+                        showNotification('Data refreshed!', 'info');
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        showEmergencySlot();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        markAllSeenInSlot();
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        showTimeShiftPanel();
+                        break;
+                }
+            }
+
+            switch (e.key) {
+                case 'F5':
+                    e.preventDefault();
+                    loadDashboardStats();
+                    viewAppointments();
+                    break;
+            }
+        });
+
+        // AI and Voice Recognition Variables
+        let recognition = null;
+        let isRecording = false;
+        let aiProcessedData = null;
+        const GEMINI_API_KEY = 'AIzaSyBlk5ego2XV0tnevuj2UKOEF1j9oMpfh5w';
+
+        // Initialize Speech Recognition
+        function initializeSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-IN'; // Indian English
+
+                recognition.onstart = function () {
+                    document.getElementById('voiceStatusText').textContent = 'Listening... Speak now';
+                    animateVoiceProgress();
+                };
+
+                recognition.onresult = function (event) {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            transcript += event.results[i][0].transcript;
+                        }
+                    }
+
+                    if (transcript) {
+                        const currentText = document.getElementById('aiInput').value;
+                        document.getElementById('aiInput').value = currentText + ' ' + transcript;
+                    }
+                };
+
+                recognition.onerror = function (event) {
+                    console.error('Speech recognition error:', event.error);
+                    stopVoiceRecording();
+                    showNotification('Speech recognition error: ' + event.error, 'error');
+                };
+
+                recognition.onend = function () {
+                    stopVoiceRecording();
+                };
+            }
+        }
+
+        // Toggle Voice Recording
+        function toggleVoiceRecording() {
+            if (!recognition) {
+                initializeSpeechRecognition();
+            }
+
+            if (!recognition) {
+                showNotification('Speech recognition not supported in this browser', 'error');
+                return;
+            }
+
+            if (isRecording) {
+                stopVoiceRecording();
+            } else {
+                startVoiceRecording();
+            }
+        }
+
+        // Start Voice Recording
+        function startVoiceRecording() {
+            isRecording = true;
+            document.getElementById('voiceStatus').style.display = 'block';
+            document.getElementById('recordBtnText').textContent = 'Stop Recording';
+            document.getElementById('micIcon').className = 'fas fa-stop';
+            document.getElementById('voiceRecordBtn').className = 'btn btn-danger';
+
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error('Error starting recognition:', error);
+                stopVoiceRecording();
+                showNotification('Could not start voice recording', 'error');
+            }
+        }
+
+        // Stop Voice Recording
+        function stopVoiceRecording() {
+            isRecording = false;
+            document.getElementById('voiceStatus').style.display = 'none';
+            document.getElementById('recordBtnText').textContent = 'Start Recording';
+            document.getElementById('micIcon').className = 'fas fa-microphone';
+            document.getElementById('voiceRecordBtn').className = 'btn btn-outline-danger';
+            document.getElementById('voiceProgress').style.width = '0%';
+
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+
+        // Animate Voice Progress
+        function animateVoiceProgress() {
+            if (!isRecording) return;
+
+            const progressBar = document.getElementById('voiceProgress');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                if (!isRecording) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                width = (width + 2) % 100;
+                progressBar.style.width = width + '%';
+            }, 100);
+        }
+
+        // Process with AI (Gemini)
+        async function processWithAI() {
+            const inputText = document.getElementById('aiInput').value.trim();
+
+            if (!inputText) {
+                showNotification('Please enter some text or use voice recording first', 'warning');
+                return;
+            }
+
+            if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
+                showNotification('Gemini API key not configured', 'error');
+                return;
+            }
+
+            try {
+                // Show processing status
+                document.getElementById('aiProcessingStatus').style.display = 'block';
+                document.getElementById('aiStatusText').textContent = 'Processing with Gemini AI...';
+                document.getElementById('processAIBtn').disabled = true;
+
+                const prompt = `
+        Extract appointment information from this text and return ONLY a valid JSON object with these exact fields:
+        {
+            "name": "patient name",
+            "phone": "10-digit phone number only",
+            "appointment_date": "YYYY-MM-DD format (today or future date)",
+            "time_slot": "exactly one of: '11 AM - 1 PM', '1 PM - 3 PM', '3:30 PM - 5:30 PM'",
+            "service_type": "one of: High Risk Pregnancy, Family Planning, Infertility, Laparoscopic Surgeries, Hysteroscopy, Cancer Screening & Surgery, Colposcopy, Adolescent & Menopausal Problems, Cosmetic Gynecology, General Consultation, Other",
+            "message": "any additional notes"
+        }
+        
+        Rules:
+        - For "noon" or "11-1" use "11 AM - 1 PM"
+        - For "afternoon" or "1-3" use "1 PM - 3 PM"
+        - For "evening" or "3:30-5:30" use "3:30 PM - 5:30 PM"
+        - If no date specified, use today's date
+        - Phone must be exactly 10 digits
+        - Choose the most appropriate service_type based on the context
+        
+        Text to process: "${inputText}"
+        `;
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.candidates && data.candidates[0]) {
+                    const generatedText = data.candidates[0].content.parts[0].text;
+
+                    // Extract JSON from the response
+                    const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        try {
+                            aiProcessedData = JSON.parse(jsonMatch[0]);
+
+                            // Validate and clean the data
+                            aiProcessedData = validateAndCleanAIData(aiProcessedData);
+
+                            showAIResults(aiProcessedData);
+                        } catch (parseError) {
+                            console.error('JSON parse error:', parseError);
+                            showNotification('AI returned invalid data format', 'error');
+                        }
+                    } else {
+                        showNotification('Could not extract appointment data from the text', 'error');
+                    }
+                } else {
+                    console.error('Gemini API error:', data);
+                    showNotification('AI processing failed: ' + (data.error?.message || 'Unknown error'), 'error');
+                }
+
+            } catch (error) {
+                console.error('Error processing with AI:', error);
+                showNotification('Network error while processing with AI', 'error');
+            } finally {
+                document.getElementById('aiProcessingStatus').style.display = 'none';
+                document.getElementById('processAIBtn').disabled = false;
+            }
+        }
+
+        // Validate and clean AI data
+        function validateAndCleanAIData(data) {
+            const cleaned = { ...data };
+
+            // Clean phone number
+            if (cleaned.phone) {
+                cleaned.phone = cleaned.phone.replace(/\D/g, '').slice(-10);
+            }
+
+            // Validate date
+            if (cleaned.appointment_date) {
+                const date = new Date(cleaned.appointment_date);
+                const today = new Date();
+                if (date < today) {
+                    cleaned.appointment_date = today.toISOString().split('T')[0];
+                }
+            } else {
+                cleaned.appointment_date = new Date().toISOString().split('T')[0];
+            }
+
+            // Validate time slot
+            const validSlots = ['11 AM - 1 PM', '1 PM - 3 PM', '3:30 PM - 5:30 PM'];
+            if (!validSlots.includes(cleaned.time_slot)) {
+                cleaned.time_slot = '11 AM - 1 PM'; // Default
+            }
+
+            // Validate service type
+            const validServices = [
+                'High Risk Pregnancy', 'Family Planning', 'Infertility',
+                'Laparoscopic Surgeries', 'Hysteroscopy', 'Cancer Screening & Surgery',
+                'Colposcopy', 'Adolescent & Menopausal Problems', 'Cosmetic Gynecology',
+                'General Consultation', 'Other'
+            ];
+            if (!validServices.includes(cleaned.service_type)) {
+                cleaned.service_type = 'General Consultation'; // Default
+            }
+
+            return cleaned;
+        }
+
+        // Show AI Results
+        function showAIResults(data) {
+            const resultDiv = document.getElementById('aiResultContent');
+            resultDiv.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Name:</strong> ${data.name || 'Not provided'}<br>
+                <strong>Phone:</strong> ${data.phone || 'Not provided'}<br>
+                <strong>Date:</strong> ${data.appointment_date ? formatDate(data.appointment_date) : 'Not provided'}
+            </div>
+            <div class="col-md-6">
+                <strong>Time Slot:</strong> ${data.time_slot || 'Not provided'}<br>
+                <strong>Service:</strong> ${data.service_type || 'Not provided'}<br>
+                <strong>Notes:</strong> ${data.message || 'None'}
+            </div>
+        </div>
+    `;
+
+            document.getElementById('aiResultPreview').style.display = 'block';
+        }
+
+        // Fill Form with AI Data
+        function fillFormWithAIData() {
+            if (!aiProcessedData) {
+                showNotification('No AI data available', 'error');
+                return;
+            }
+
+            // Fill the form fields
+            if (aiProcessedData.name) document.getElementById('addName').value = aiProcessedData.name;
+            if (aiProcessedData.phone) document.getElementById('addPhone').value = aiProcessedData.phone;
+            if (aiProcessedData.appointment_date) document.getElementById('addDate').value = aiProcessedData.appointment_date;
+            if (aiProcessedData.time_slot) document.getElementById('addTimeSlot').value = aiProcessedData.time_slot;
+            if (aiProcessedData.service_type) document.getElementById('addServiceType').value = aiProcessedData.service_type;
+            if (aiProcessedData.message) document.getElementById('addMessage').value = aiProcessedData.message;
+
+            // Check slot availability for the filled data
+            checkSlotAvailability();
+
+            // Hide AI preview and clear input
+            document.getElementById('aiResultPreview').style.display = 'none';
+            document.getElementById('aiInput').value = '';
+
+            showNotification('Form filled successfully with AI data!', 'success');
+
+            // Scroll to form
+            document.getElementById('addAppointmentForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Edit AI Data (allow manual editing before filling)
+        function editAIData() {
+            if (!aiProcessedData) return;
+
+            // Create an editable preview
+            const resultDiv = document.getElementById('aiResultContent');
+            resultDiv.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control form-control-sm mb-2" id="editName" value="${aiProcessedData.name || ''}">
+                <label class="form-label">Phone:</label>
+                <input type="text" class="form-control form-control-sm mb-2" id="editPhone" value="${aiProcessedData.phone || ''}" maxlength="10">
+                <label class="form-label">Date:</label>
+                <input type="date" class="form-control form-control-sm" id="editDate" value="${aiProcessedData.appointment_date || ''}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Time Slot:</label>
+                <select class="form-select form-select-sm mb-2" id="editTimeSlot">
+                    <option value="11 AM - 1 PM" ${aiProcessedData.time_slot === '11 AM - 1 PM' ? 'selected' : ''}>11 AM - 1 PM</option>
+                    <option value="1 PM - 3 PM" ${aiProcessedData.time_slot === '1 PM - 3 PM' ? 'selected' : ''}>1 PM - 3 PM</option>
+                    <option value="3:30 PM - 5:30 PM" ${aiProcessedData.time_slot === '3:30 PM - 5:30 PM' ? 'selected' : ''}>3:30 PM - 5:30 PM</option>
+                </select>
+                <label class="form-label">Service:</label>
+                <select class="form-select form-select-sm mb-2" id="editService">
+                    <option value="General Consultation" ${aiProcessedData.service_type === 'General Consultation' ? 'selected' : ''}>General Consultation</option>
+                    <option value="High Risk Pregnancy" ${aiProcessedData.service_type === 'High Risk Pregnancy' ? 'selected' : ''}>High Risk Pregnancy</option>
+                    <option value="Family Planning" ${aiProcessedData.service_type === 'Family Planning' ? 'selected' : ''}>Family Planning</option>
+                    <!-- Add other options -->
+                </select>
+                <label class="form-label">Notes:</label>
+                <textarea class="form-control form-control-sm" id="editMessage" rows="2">${aiProcessedData.message || ''}</textarea>
+            </div>
+        </div>
+        <div class="mt-2">
+            <button class="btn btn-sm btn-success me-2" onclick="saveEditedData()">
+                <i class="fas fa-save"></i> Save & Fill Form
+            </button>
+            <button class="btn btn-sm btn-secondary" onclick="showAIResults(aiProcessedData)">
+                <i class="fas fa-times"></i> Cancel Edit
+            </button>
+        </div>
+    `;
+        }
+
+        // Save Edited Data
+        function saveEditedData() {
+            aiProcessedData = {
+                name: document.getElementById('editName').value.trim(),
+                phone: document.getElementById('editPhone').value.trim(),
+                appointment_date: document.getElementById('editDate').value,
+                time_slot: document.getElementById('editTimeSlot').value,
+                service_type: document.getElementById('editService').value,
+                message: document.getElementById('editMessage').value.trim()
+            };
+
+            fillFormWithAIData();
+        }
+
+        // Clear AI Input
+        function clearAIInput() {
+            document.getElementById('aiInput').value = '';
+            document.getElementById('aiResultPreview').style.display = 'none';
+            aiProcessedData = null;
+        }
+
+        // Toggle Form Mode (placeholder for future enhancement)
+        function toggleFormMode() {
+            // Could switch between detailed and simple form modes
+            showNotification('Form mode toggle coming soon!', 'info');
+        }
+
+        // Initialize speech recognition when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add to existing DOMContentLoaded function
+            initializeSpeechRecognition();
+        });
+
+    </script>
+</body>
+
+</html>

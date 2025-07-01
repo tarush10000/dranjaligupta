@@ -1,299 +1,1541 @@
 <!DOCTYPE html>
-<html lang="zxx">
-
 <html lang="en">
-	<meta http-equiv="Content-Language" content="en">
-	<meta charset="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment with Dr. Anjali Gupta - Leading Gynecologist in Meerut</title>
-    <meta name="description" content="Schedule an appointment with Dr. Anjali Gupta, expert gynecologist & obstetrician in Meerut. Available at Agarwal Clinic and Anand Hospital. CGHS & ECHS panels accepted.">
-    <meta name="keywords" content="gynecologist appointment meerut, book doctor appointment, dr anjali gupta booking, gynecology consultation">
-    
+    <title>Book Appointment - Dr. Anjali's Women Wellness Centre</title>
+    <meta name="description"
+        content="Schedule an appointment at Dr. Anjali's Women Wellness Centre in Meerut. Expert gynecological care, wellness services, and comprehensive women's healthcare.">
+    <meta name="keywords"
+        content="gynecologist appointment meerut, book doctor appointment, dr anjali gupta booking, women wellness centre">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://dranjaligupta.in/appointment.html">
-    <meta property="og:title" content="Book Appointment - Dr. Anjali Gupta, Gynecologist Meerut">
-    <meta property="og:description" content="Schedule your consultation with Dr. Anjali Gupta. Expert gynecological care at Agarwal Clinic and Anand Hospital.">
+    <meta property="og:title" content="Book Appointment - Dr. Anjali's Women Wellness Centre">
+    <meta property="og:description"
+        content="Schedule your consultation at Dr. Anjali's Women Wellness Centre. Complete women's healthcare with expert medical care and wellness services.">
     <meta property="og:image" content="https://dranjaligupta.in/images/logo2.svg">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://dranjaligupta.in/appointment.html">
-    <meta name="twitter:title" content="Book Appointment - Dr. Anjali Gupta, Gynecologist Meerut">
-    <meta name="twitter:description" content="Schedule your consultation with Dr. Anjali Gupta. Expert gynecological care at Agarwal Clinic and Anand Hospital.">
+    <meta name="twitter:title" content="Book Appointment - Dr. Anjali's Women Wellness Centre">
+    <meta name="twitter:description"
+        content="Schedule your consultation at Dr. Anjali's Women Wellness Centre. Complete women's healthcare with expert medical care and wellness services.">
     <meta name="twitter:image" content="https://dranjaligupta.in/images/logo2.svg">
-    
+
     <link rel="canonical" href="https://dranjaligupta.in/appointment.html">
     <meta name="robots" content="index, follow">
 
-	<!-- Favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
-	<!-- bootstrap.min css -->
-	<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
-	<!-- Icon Font Css -->
-	<link rel="stylesheet" href="plugins/icofont/icofont.min.css">
-	<!-- Slick Slider  CSS -->
-	<link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
-	<link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="plugins/icofont/icofont.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Slick Slider CSS -->
+    <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
 
-	<!-- Main Stylesheet -->
-	<link rel="stylesheet" href="css/style.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
 
+    <style>
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .appointment-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-main {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            border-left: 4px solid #007bff;
+            transition: transform 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .status-pending {
+            border-left-color: #ffc107;
+        }
+
+        .status-confirmed {
+            border-left-color: #28a745;
+        }
+
+        .status-completed {
+            border-left-color: #17a2b8;
+        }
+
+        .status-cancelled {
+            border-left-color: #dc3545;
+        }
+
+        .phone-input {
+            position: relative;
+        }
+
+        .phone-prefix {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 10;
+        }
+
+        .phone-input input {
+            padding-left: 50px;
+        }
+
+        .service-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .time-slot-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .slot-availability {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .slot-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .slot-available {
+            background-color: #28a745;
+        }
+
+        .slot-limited {
+            background-color: #ffc107;
+        }
+
+        .slot-full {
+            background-color: #dc3545;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 350px;
+            max-width: 500px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-animation {
+            animation: successPulse 0.6s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .error-shake {
+            animation: errorShake 0.5s ease-in-out;
+        }
+
+        @keyframes errorShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .new-location-badge {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .appointment-form {
+                padding: 1rem;
+            }
+
+            .notification {
+                min-width: 280px;
+                right: 10px;
+                top: 10px;
+            }
+
+            .time-slot-info {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QQS3K4V1RE"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-QQS3K4V1RE');
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-QQS3K4V1RE');
 </script>
+
 <body id="top">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h5 id="loadingText">Processing your appointment...</h5>
+            <p class="text-muted mb-0">Please wait while we book your appointment</p>
+        </div>
+    </div>
 
-	<header>
-		<div class="header-top-bar">
-			<div class="container">
-				<div class="row align-items-center">
-					<div class="col-lg-6">
-						<ul class="top-bar-info list-inline-item pl-0 mb-0">
-							<li class="list-inline-item"><a href="mailto:anjali.agarwal.clinic@gmail.com"><i
-										class="icofont-support-faq mr-2"></i>anjali.agarwal.clinic@gmail.com</a></li>
-							<li class="list-inline-item"><i class="icofont-location-pin mr-2"></i>Shop No.4, Kirti
-								Plaza, Meerut</li>
-						</ul>
-					</div>
-					<div class="col-lg-6">
-						<div class="text-lg-right top-right-bar mt-2 mt-lg-0">
-							<a href="tel:+91 9837033107">
-								<span>Call Now : </span>
-								<span class="h4">+91 9837033107</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<nav class="navbar navbar-expand-lg navigation" id="navbar">
-			<div class="container">
-				<a class="navbar-brand" href="index.html">
-					<img src="images/logo.webp" alt="Dr. Anjali Gupta" class="img-fluid" style="height: 70px;">
-				</a>
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
 
-				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain"
-					aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icofont-navigation-menu"></span>
-				</button>
+    <header>
+        <div class="header-top-bar">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <ul class="top-bar-info list-inline-item pl-0 mb-0">
+                            <li class="list-inline-item">
+                                <a href="mailto:dranjaliwwc@outlook.com">
+                                    <i class="icofont-support-faq mr-2"></i>dranjaliwwc@outlook.com
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="icofont-location-pin mr-2"></i>Plot - 22, Harsh Commercial Park, Meerut
+                                <span class="new-location-badge">New Location</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="text-lg-right top-right-bar mt-2 mt-lg-0">
+                            <a href="tel:+91 9837033107">
+                                <span>Call Now : </span>
+                                <span class="h4">+91 9837033107</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navigation" id="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/logo.webp" alt="Dr. Anjali's Women Wellness Centre" class="img-fluid"
+                        style="height: 70px;">
+                </a>
 
-				<div class="collapse navbar-collapse" id="navbarmain">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-						<li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
-						<li class="nav-item"><a class="nav-link" href="appointment.html">Appointment</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="icofont-navigation-menu"></span>
+                </button>
 
+                <div class="collapse navbar-collapse" id="navbarmain">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="appointment.html">Appointment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <section class="page-title bg-1">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block text-center">
+                        <span class="text-white">Book your Appointment</span>
+                        <h1 class="text-capitalize mb-5 text-lg">Complete Women's Healthcare</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<section class="page-title bg-1">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="block text-center">
-						<span class="text-white">Book your Seat</span>
-						<h1 class="text-capitalize mb-5 text-lg">appointment</h1>
+    <section class="appointment section">
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-clock"></i> Confirm Your Appointment
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="confirmationModalBody">
+                        <!-- Confirmation details will be populated here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" id="finalConfirmBtn">
+                            <i class="fas fa-check"></i> Confirm Appointment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-						<!-- <ul class="list-inline breadcumb-nav">
-            <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
-            <li class="list-inline-item"><span class="text-white">/</span></li>
-            <li class="list-inline-item"><a href="#" class="text-white-50">Book your Seat</a></li>
-          </ul> -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <!-- Success Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-check-circle"></i> Appointment Booked Successfully!
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="successModalBody">
+                        <!-- Success details will be populated here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                            <i class="fas fa-thumbs-up"></i> Got it!
+                        </button>
+                        <button type="button" class="btn btn-outline-success" onclick="bookAnother()">
+                            <i class="fas fa-plus"></i> Book Another
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	<section class="appointment section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4">
-					<div class="mt-3">
-						<div class="feature-icon mb-3">
-							<i class="icofont-support text-lg"></i>
-						</div>
-						<span class="h3">Call for an Emergency Service!</span>
-						<h2 class="text-color mt-3">+91 9837033107</h2>
-						<h2 class="text-color mt-3">+91 9837794524</h2>
-					</div>
-				</div>
+        <!-- Status Modal -->
+        <div class="modal fade" id="statusModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-calendar-check"></i> Appointment Status
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="statusForm" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label for="statusPhone" class="form-label">
+                                        <i class="fas fa-phone"></i> Phone Number
+                                    </label>
+                                    <div class="phone-input">
+                                        <span class="phone-prefix">+91</span>
+                                        <input type="text" class="form-control" id="statusPhone"
+                                            placeholder="Enter your phone number" maxlength="10" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button type="button" class="btn btn-primary w-100" id="checkStatusBtn">
+                                        <i class="fas fa-search"></i> Check Status
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
-				<div class="col-lg-8">
-					<div class="appointment-wrap mt-5 mt-lg-0 pl-lg-5">
-						<h2 class="mb-2 title-color">Book an Appointment</h2>
-						<p class="mb-4">Schedule your visit with Dr. Anjali Gupta for expert gynecological care. Please fill out the form below, and we’ll confirm your appointment.</p>
-						
-						<form id="appointmentForm" class="appointment-form">
-							<div class="row">
-								<!-- Full Name -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<input type="text" name="name" id="name" class="form-control" placeholder="Full Name" required>
-									</div>
-								</div>
-				
-								<!-- Phone Number -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<input type="text" name="phone" id="phone" class="form-control" placeholder="Phone Number" required>
-									</div>
-								</div>
-				
-								<!-- Date of Appointment -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<input type="date" name="appointment_date" id="appointment_date" class="form-control" required>
-									</div>
-								</div>
-				
-								<!-- Appointment Reason -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<select class="form-control" name="service_type" id="service_type" required>
-											<option value="">Select Service</option>
-											<option value="High Risk Pregnancy">High Risk Pregnancy</option>
-											<option value="Family Planning">Family Planning</option>
-											<option value="Infertility">Infertility</option>
-											<option value="Laparoscopic Surgeries">Laparoscopic Surgeries</option>
-											<option value="Hysteroscopy">Hysteroscopy</option>
-											<option value="Cancer Screening & Surgery">Cancer Screening & Surgery</option>
-											<option value="Colposcopy">Colposcopy</option>
-											<option value="Adolescent & Menopausal Problems">Adolescent & Menopausal Problems</option>
-											<option value="Cosmetic Gynecology">Cosmetic Gynecology</option>
-											<option value="Other">Other</option>
-										</select>
-									</div>
-								</div>
-							</div>
-				
-							<!-- Message -->
-							<div class="form-group mb-4">
-								<textarea name="message" id="message" class="form-control" rows="6" placeholder="Additional Message (Optional)"></textarea>
-							</div>
-				
-							<!-- WhatsApp Button -->
-							<button type="button" class="btn btn-main btn-round-full" onclick="sendToWhatsApp()">Send to WhatsApp<i class="icofont-simple-right ml-2"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		</div>
-	</section>
+                        <div id="statusLoading" style="display: none;">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary mb-3" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mb-0">Checking your appointments...</p>
+                            </div>
+                        </div>
 
+                        <div id="statusResults"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	<!-- Footer Start -->
-	<footer class="footer section gray-bg">
-		<div class="container">
-			<div class="row">
-				<!-- About and Socials -->
-				<div class="col-lg-4 mr-auto col-sm-6">
-					<div class="widget mb-5 mb-lg-0">
-						<div class="logo mb-4">
-							<img src="images/logo.webp" alt="Dr. Anjali Gupta" class="img-fluid">
-						</div>
-						<p>Dr. Anjali Gupta provides personalized gynecological and obstetric care, including advanced
-							laparoscopic surgery. Visit us for compassionate, expert care.</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mt-3">
+                        <div class="feature-icon mb-3">
+                            <i class="icofont-support text-lg"></i>
+                        </div>
+                        <span class="h3">Call for Emergency Service!</span>
+                        <h2 class="text-color mt-3">+91 9837033107</h2>
+                        <h2 class="text-color mt-3">+91 9837794524</h2>
 
-						<ul class="list-inline footer-socials mt-4">
-							<li class="list-inline-item"><a href="https://www.instagram.com/dr_anjali_gupta01/"><i
-										class="icofont-instagram"></i></a></li>
-							<li class="list-inline-item"><a href="https://wa.me/9837033107"><i
-										class="icofont-whatsapp"></i></a></li>
-							<li class="list-inline-item"><a href="https://www.youtube.com/@drvishal1"><i
-										class="icofont-youtube"></i></a></li>
-						</ul>
-					</div>
-				</div>
+                        <div class="mt-4">
+                            <h5><i class="fas fa-clock"></i> Consultation Hours</h5>
+                            <div class="time-slot-info">
+                                <strong>Morning Session:</strong><br>
+                                • Slot 1: 10:30 AM - 11:30 AM (4 appointments)<br>
+                                • Slot 2: 11:30 AM - 12:30 PM (4 appointments)<br>
+                                • Slot 3: 12:30 PM - 1:30 PM (4 appointments)<br>
+                                • Slot 4: 1:30 PM - 2:00 PM (2 appointments)<br><br>
 
-				<!-- Useful Links -->
-				<div class="col-lg-2 col-md-6 col-sm-6">
-					<div class="widget mb-5 mb-lg-0">
-						<h4 class="text-capitalize mb-3">Quick Links</h4>
-						<div class="divider mb-4"></div>
+                                <strong>Evening Session:</strong><br>
+                                • Slot 5: 4:30 PM - 5:30 PM (4 appointments)<br>
+                                • Slot 6: 5:30 PM - 6:00 PM (2 appointments)<br>
 
-						<ul class="list-unstyled footer-menu lh-35">
-							<li><a href="about.html">About</a></li>
-							<li><a href="service.html">Services</a></li>
-							<li><a href="appointment.html">Appointment</a></li>
-							<li><a href="contact.html">Contact</a></li>
-						</ul>
-					</div>
-				</div>
+                                <strong>Closed:</strong> Sundays<br><br>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    Total appointments per day: 20 slots available
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<!-- Google Map -->
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="widget widget-contact mb-5 mb-lg-0">
-						<h4 class="text-capitalize mb-3">Our Location</h4>
-						<div class="divider mb-4"></div>
-						<!-- Google Map -->
-						<iframe
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d65073868.81759184!2d25.88822224999998!3d5.4482515647680385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c7b03f190045f%3A0xb9cb079cc7bf070e!2sAgarwal%20Clinic%20(Dr.%20Anjali%20Gupta)!5e0!3m2!1sen!2sin!4v1729783504327!5m2!1sen!2sin"
-							width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                <div class="col-lg-8">
+                    <div class="appointment-wrap mt-5 mt-lg-0 pl-lg-5">
+                        <h2 class="mb-2 title-color">Book an Appointment</h2>
+                        <p class="mb-4">Schedule your visit at our new Women's Wellness Centre for expert gynecological
+                            care and comprehensive wellness services. Please fill out the form below, and we'll confirm
+                            your appointment.</p>
+
+                        <form id="appointmentForm" class="appointment-form">
+                            <div class="row">
+                                <!-- Full Name -->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">
+                                            <i class="fas fa-user"></i> Full Name *
+                                        </label>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            placeholder="Enter your full name" required>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">
+                                            <i class="fas fa-phone"></i> Phone Number *
+                                        </label>
+                                        <div class="phone-input">
+                                            <span class="phone-prefix">+91</span>
+                                            <input type="text" name="phone" id="phone" class="form-control"
+                                                placeholder="Enter 10-digit mobile number" maxlength="10" required>
+                                        </div>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Date of Appointment -->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="appointment_date" class="form-label">
+                                            <i class="fas fa-calendar"></i> Appointment Date *
+                                        </label>
+                                        <input type="date" name="appointment_date" id="appointment_date"
+                                            class="form-control" required>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Time Slot -->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="time_slot" class="form-label">
+                                            <i class="fas fa-clock"></i> Preferred Time Slot *
+                                        </label>
+                                        <select class="form-select" name="time_slot" id="time_slot" required>
+                                            <option value="" disabled selected>Select Time Slot</option>
+                                            <option value="10:30 AM - 11:30 AM">Morning Slot 1 (10:30 AM - 11:30 AM) - 4
+                                                slots</option>
+                                            <option value="11:30 AM - 12:30 PM">Morning Slot 2 (11:30 AM - 12:30 PM) - 4
+                                                slots</option>
+                                            <option value="12:30 PM - 1:30 PM">Morning Slot 3 (12:30 PM - 1:30 PM) - 4
+                                                slots</option>
+                                            <option value="1:30 PM - 2:00 PM">Morning Slot 4 (1:30 PM - 2:00 PM) - 2
+                                                slots</option>
+                                            <option value="4:30 PM - 5:30 PM">Evening Slot 1 (4:30 PM - 5:30 PM) - 4
+                                                slots</option>
+                                            <option value="5:30 PM - 6:00 PM">Evening Slot 2 (5:30 PM - 6:00 PM) - 2
+                                                slots</option>
+                                        </select>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Service Type -->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="service_type" class="form-label">
+                                            <i class="fas fa-stethoscope"></i> Type of Consultation *
+                                        </label>
+                                        <select class="form-select" name="service_type" id="service_type" required>
+                                            <option value="">Select Service Type</option>
+                                            <option value="High Risk Pregnancy">High Risk Pregnancy</option>
+                                            <option value="Family Planning">Family Planning</option>
+                                            <option value="Infertility">Infertility Treatment</option>
+                                            <option value="Laparoscopic Surgeries">Laparoscopic Surgeries</option>
+                                            <option value="Hysteroscopy">Hysteroscopy</option>
+                                            <option value="Cancer Screening & Surgery">Cancer Screening & Surgery
+                                            </option>
+                                            <option value="Colposcopy">Colposcopy</option>
+                                            <option value="Adolescent & Menopausal Problems">Adolescent & Menopausal
+                                                Problems</option>
+                                            <option value="Cosmetic Gynecology">Cosmetic Gynecology</option>
+                                            <option value="General Consultation">General Consultation</option>
+                                            <option value="Wellness & Yoga Session">Wellness & Yoga Session</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <div class="service-info">
+                                            Select the type of consultation you need for better preparation.
+                                        </div>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slot Availability Display -->
+                            <div id="slotAvailability" class="slot-availability" style="display: none;">
+                                <h6><i class="fas fa-info-circle"></i> Slot Availability</h6>
+                                <div id="availabilityContent"></div>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="mb-4">
+                                <label for="message" class="form-label">
+                                    <i class="fas fa-comment"></i> Additional Message (Optional)
+                                </label>
+                                <textarea name="message" id="message" class="form-control" rows="4"
+                                    placeholder="Any specific concerns or additional information you'd like to share..."></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-main btn-round-full" id="submitBtn">
+                                    <i class="fas fa-calendar-plus"></i> Book Appointment
+                                    <i class="icofont-simple-right ml-2"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-4 text-center">
+                            <button type="button" class="btn btn-outline-info btn-round-full" data-bs-toggle="modal"
+                                data-bs-target="#statusModal">
+                                <i class="fas fa-search"></i> Check Appointment Status
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Start -->
+    <footer class="footer section gray-bg">
+        <div class="container">
+            <div class="row">
+                <!-- About and Socials -->
+                <div class="col-lg-4 mr-auto col-sm-6">
+                    <div class="widget mb-5 mb-lg-0">
+                        <div class="logo mb-4">
+                            <img src="images/logo.webp" alt="Dr. Anjali's Women Wellness Centre" class="img-fluid">
+                        </div>
+                        <p>Dr. Anjali's Women Wellness Centre provides comprehensive women's healthcare including expert
+                            medical care, wellness programs, in-house pharmacy, and diagnostic services at our new
+                            location.</p>
+
+                        <ul class="list-inline footer-socials mt-4">
+                            <li class="list-inline-item"><a href="https://www.instagram.com/dr_anjali_gupta01/"><i
+                                        class="icofont-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="https://wa.me/9837033107"><i
+                                        class="icofont-whatsapp"></i></a></li>
+                            <li class="list-inline-item"><a href="https://www.youtube.com/@drvishal1"><i
+                                        class="icofont-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Useful Links -->
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="widget mb-5 mb-lg-0">
+                        <h4 class="text-capitalize mb-3">Quick Links</h4>
+                        <div class="divider mb-4"></div>
+
+                        <ul class="list-unstyled footer-menu lh-35">
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="service.html">Services</a></li>
+                            <li><a href="appointment.html">Appointment</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Google Map -->
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="widget widget-contact mb-5 mb-lg-0">
+                        <h4 class="text-capitalize mb-3">Our New Location</h4>
+                        <div class="divider mb-4"></div>
+                        <!-- Google Map for New Location -->
+                        <iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3490.8231900466467!2d77.744377!3d28.962968299999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c65a18f7aba67%3A0x994f279fe48581aa!2sShubh%20Medicos!5e0!3m2!1sen!2sin!4v1751349612150!5m2!1sen!2sin"
+							style="border:0;" allowfullscreen="" loading="lazy" class = "mapfoot"
 							referrerpolicy="no-referrer-when-downgrade"></iframe>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <!-- Essential Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-	<!-- 
-    Essential Scripts
-    =====================================-->
-	<script>
-		function sendToWhatsApp() {
-			const name = document.getElementById('name').value;
-			const phone = document.getElementById('phone').value;
-			const appointmentDate = document.getElementById('appointment_date').value;
-			const serviceType = document.getElementById('service_type').value;
-			const message = document.getElementById('message').value;
-		
-			const whatsappMessage = `Hello, I would like to book an appointment.\n\n` +
-				`*Name:* ${name}\n` +
-				`*Phone:* ${phone}\n` +
-				`*Preferred Date:* ${appointmentDate}\n` +
-				`*Service Type:* ${serviceType}\n` +
-				(message ? `*Message:* ${message}` : '');
-		
-			const whatsappURL = `https://wa.me/9837033107?text=${encodeURIComponent(whatsappMessage)}`;
-			window.open(whatsappURL, '_blank');
-		}
-	</script>
-	<!-- Main jQuery -->
-	<script src="plugins/jquery/jquery.js"></script>
-	<!-- Bootstrap 4.3.2 -->
-	<script src="plugins/bootstrap/js/popper.js"></script>
-	<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script src="plugins/counterup/jquery.easing.js"></script>
-	<!-- Slick Slider -->
-	<script src="plugins/slick-carousel/slick/slick.min.js"></script>
-	<!-- Counterup -->
-	<script src="plugins/counterup/jquery.waypoints.min.js"></script>
+    <script>
+        // Configuration
+        const API_BASE_URL = 'https://appointment-5tt0.onrender.com/api';
+        let currentSlotData = null;
 
-	<script src="plugins/shuffle/shuffle.min.js"></script>
-	<script src="plugins/counterup/jquery.counterup.min.js"></script>
-	<!-- Google Map -->
-	<script src="js/script.js"></script>
-	<script src="js/contact.js"></script>
+        // Updated slot configuration with 1-hour slots and 30-min final slots
+        const SLOT_CONFIG = {
+            '10:30 AM - 11:30 AM': { max: 4, name: 'Morning Slot 1', duration: '1 hour' },
+            '11:30 AM - 12:30 PM': { max: 4, name: 'Morning Slot 2', duration: '1 hour' },
+            '12:30 PM - 1:30 PM': { max: 4, name: 'Morning Slot 3', duration: '1 hour' },
+            '1:30 PM - 2:00 PM': { max: 2, name: 'Morning Slot 4', duration: '30 minutes' },
+            '4:30 PM - 5:30 PM': { max: 4, name: 'Evening Slot 1', duration: '1 hour' },
+            '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', duration: '30 minutes' }
+        };
 
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            initializePage();
+        });
+
+        // Initialize page
+        function initializePage() {
+            setupEventListeners();
+            setMinDate();
+            validatePhoneInput();
+        }
+
+        // Set minimum date to today
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointment_date').min = today;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Form submission
+            document.getElementById('appointmentForm').addEventListener('submit', handleFormSubmission);
+
+            // Date and time slot changes for availability checking
+            document.getElementById('appointment_date').addEventListener('change', checkSlotAvailability);
+            document.getElementById('time_slot').addEventListener('change', checkSlotAvailability);
+
+            // Status check
+            document.getElementById('checkStatusBtn').addEventListener('click', checkAppointmentStatus);
+
+            // Phone input validation
+            document.getElementById('phone').addEventListener('input', validatePhoneInput);
+            document.getElementById('statusPhone').addEventListener('input', validatePhoneInput);
+
+            // Enter key submissions
+            document.getElementById('statusPhone').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkAppointmentStatus();
+                }
+            });
+        }
+
+        // Validate phone input
+        function validatePhoneInput() {
+            const phoneInputs = document.querySelectorAll('#phone, #statusPhone');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function (e) {
+                    // Remove non-digits
+                    e.target.value = e.target.value.replace(/\D/g, '');
+
+                    // Validate length
+                    if (e.target.value.length === 10) {
+                        e.target.classList.remove('is-invalid');
+                        e.target.classList.add('is-valid');
+                    } else if (e.target.value.length > 0) {
+                        e.target.classList.remove('is-valid');
+                        e.target.classList.add('is-invalid');
+                        e.target.nextElementSibling.textContent = 'Phone number must be exactly 10 digits';
+                    } else {
+                        e.target.classList.remove('is-valid', 'is-invalid');
+                    }
+                });
+            });
+        }
+
+        // Check slot availability
+        async function checkSlotAvailability() {
+            const date = document.getElementById('appointment_date').value;
+            const timeSlot = document.getElementById('time_slot').value;
+
+            if (!date || !timeSlot) {
+                document.getElementById('slotAvailability').style.display = 'none';
+                return;
+            }
+
+            try {
+                showSlotLoading();
+
+                // First validate the appointment data
+                const validationResponse = await fetch(`${API_BASE_URL}/appointments/validate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        appointment_date: date,
+                        time_slot: timeSlot
+                    })
+                });
+
+                const validationData = await validationResponse.json();
+
+                if (validationResponse.ok) {
+                    if (validationData.valid) {
+                        // Get full slot data
+                        const slotsResponse = await fetch(`${API_BASE_URL}/available-slots/${date}`);
+                        const slotsData = await slotsResponse.json();
+
+                        if (slotsResponse.ok) {
+                            currentSlotData = {
+                                ...slotsData,
+                                estimatedTime: validationData.estimated_time,
+                                availableSlots: validationData.available_slots
+                            };
+                            displaySlotAvailability(slotsData, timeSlot, validationData.estimated_time);
+                        } else {
+                            showSlotError('Error fetching slot details');
+                        }
+                    } else {
+                        showSlotError(validationData.message);
+                    }
+                } else {
+                    const errorMsg = validationData.message || validationData.error || 'Error checking slot availability';
+                    showSlotError(errorMsg);
+                }
+            } catch (error) {
+                console.error('Error checking slot availability:', error);
+                showSlotError('Unable to check slot availability. Please check your connection and try again.');
+            }
+        }
+
+        // Show slot loading
+        function showSlotLoading() {
+            const slotDiv = document.getElementById('slotAvailability');
+            slotDiv.style.display = 'block';
+            slotDiv.innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Checking availability...
+                </div>
+            `;
+        }
+
+        // Display slot availability with new slot configuration
+        function displaySlotAvailability(data, selectedSlot) {
+            const SLOT_CONFIG = {
+                '10:30 AM - 11:30 AM': { max: 4, name: 'Morning Slot 1', duration: '1 hour', startHour: 10, startMinute: 30 },
+                '11:30 AM - 12:30 PM': { max: 4, name: 'Morning Slot 2', duration: '1 hour', startHour: 11, startMinute: 30 },
+                '12:30 PM - 1:30 PM': { max: 4, name: 'Morning Slot 3', duration: '1 hour', startHour: 12, startMinute: 30 },
+                '1:30 PM - 2:00 PM': { max: 2, name: 'Morning Slot 4', duration: '30 minutes', startHour: 13, startMinute: 30 },
+                '4:30 PM - 5:30 PM': { max: 4, name: 'Evening Slot 1', duration: '1 hour', startHour: 16, startMinute: 30 },
+                '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', duration: '30 minutes', startHour: 17, startMinute: 30 }
+            };
+
+            const slotDiv = document.getElementById('slotAvailability');
+
+            if (data.blocked) {
+                slotDiv.innerHTML = `
+            <div class="alert alert-danger mb-0">
+                <i class="fas fa-ban"></i>
+                <strong>Date Not Available</strong><br>
+                This date is blocked for appointments. Please choose another date.
+            </div>
+        `;
+                slotDiv.style.display = 'block';
+                return;
+            }
+
+            const slotsMap = {};
+            data.slots.forEach(slot => {
+                slotsMap[slot.time_slot] = slot;
+            });
+
+            const selectedSlotData = slotsMap[selectedSlot];
+            const config = SLOT_CONFIG[selectedSlot];
+
+            if (!selectedSlotData || !config) {
+                showSlotError('Selected time slot information not available');
+                return;
+            }
+
+            const availableSlots = selectedSlotData.available_slots;
+            const totalSlots = selectedSlotData.total_slots;
+            const bookedCount = totalSlots - availableSlots;
+
+            let statusClass, statusIcon, statusText;
+            if (availableSlots > totalSlots * 0.6) {
+                statusClass = 'alert-success';
+                statusIcon = 'fas fa-check-circle';
+                statusText = 'Available';
+            } else if (availableSlots > 0) {
+                statusClass = 'alert-warning';
+                statusIcon = 'fas fa-exclamation-triangle';
+                statusText = 'Limited Availability';
+            } else {
+                statusClass = 'alert-danger';
+                statusIcon = 'fas fa-times-circle';
+                statusText = 'Fully Booked';
+            }
+
+            // Calculate estimated appointment time
+            const estimatedMinutes = config.startMinute + 15 * bookedCount;
+            const estimatedHour = config.startHour + Math.floor(estimatedMinutes / 60);
+            const finalMinute = estimatedMinutes % 60;
+
+            const slotDate = new Date();
+            slotDate.setHours(estimatedHour, finalMinute, 0, 0);
+
+            const estimatedTime = slotDate.toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            let estimatedTimeDisplay = '';
+            if (availableSlots > 0) {
+                estimatedTimeDisplay = `
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-clock"></i>
+                <strong>Your Estimated Appointment Time: ${estimatedTime}</strong>
+                <br><small>This is an approximate time based on current bookings.</small>
+            </div>
+        `;
+            }
+
+            slotDiv.innerHTML = `
+        <div class="alert ${statusClass} mb-3">
+            <i class="${statusIcon}"></i>
+            <strong>${statusText}</strong><br>
+            ${availableSlots} of ${totalSlots} slots available for ${selectedSlot}
+        </div>
+        ${estimatedTimeDisplay}
+        <div class="row">
+            <div class="col-md-12">
+                <h6><i class="fas fa-clock"></i> All Time Slots for ${formatDate(document.getElementById('appointment_date').value)}</h6>
+                ${Object.entries(SLOT_CONFIG).map(([slot, slotCfg]) => {
+                const realSlot = slotsMap[slot] || { available_slots: 0, total_slots: slotCfg.max };
+                const slotAvailable = realSlot.available_slots;
+
+                return `
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <div>
+                                <span class="slot-indicator ${slotAvailable > slotCfg.max * 0.6 ? 'slot-available' : slotAvailable > 0 ? 'slot-limited' : 'slot-full'}"></span>
+                                <strong>${slot}</strong> <small class="text-muted">(${slotCfg.name} - ${slotCfg.duration})</small>
+                            </div>
+                            <div>
+                                <span class="badge ${slotAvailable > slotCfg.max * 0.6 ? 'bg-success' : slotAvailable > 0 ? 'bg-warning' : 'bg-danger'}">
+                                    ${slotAvailable}/${slotCfg.max} available
+                                </span>
+                            </div>
+                        </div>
+                    `;
+            }).join('')}
+            </div>
+        </div>
+    `;
+            slotDiv.style.display = 'block';
+        }
+
+        // Show slot error
+        function showSlotError(message) {
+            const slotDiv = document.getElementById('slotAvailability');
+            slotDiv.innerHTML = `
+                <div class="alert alert-warning mb-0">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ${message}
+                </div>
+            `;
+            slotDiv.style.display = 'block';
+        }
+
+        // Handle form submission
+        async function handleFormSubmission(event) {
+            event.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const formData = getFormData();
+
+            try {
+                showLoading('Checking appointment availability...');
+
+                const validationResponse = await fetch(`${API_BASE_URL}/appointments/validate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        appointment_date: formData.appointment_date,
+                        time_slot: formData.time_slot
+                    })
+                });
+
+                const validationData = await validationResponse.json();
+                hideLoading();
+
+                if (validationResponse.ok && validationData.valid) {
+                    // Use the estimated_time from the API response if available
+                    if (validationData.estimated_time) {
+                        formData.estimated_time = validationData.estimated_time;
+                    } else {
+                        // Fallback calculation if API doesn't provide estimated_time
+                        const slotConfig = getSlotConfig(formData.time_slot);
+                        if (slotConfig && validationData.available_slots !== undefined) {
+                            const bookedCount = slotConfig.max - validationData.available_slots;
+                            formData.estimated_time = calculateEstimatedTime(slotConfig, bookedCount);
+                        } else {
+                            formData.estimated_time = 'To be confirmed';
+                        }
+                    }
+
+                    formData.available_slots = validationData.available_slots;
+                    showConfirmationModal(formData);
+                } else {
+                    const errorMsg = validationData.message || validationData.error || 'Selected time slot is not available';
+                    showNotification(errorMsg, 'error');
+                    checkSlotAvailability();
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Error validating appointment:', error);
+                showNotification('Network error. Please check your connection and try again.', 'error');
+            }
+        }
+
+        // Add this helper function to get slot configuration
+        function getSlotConfig(timeSlot) {
+            const SLOT_CONFIG = {
+                '10:30 AM - 11:30 AM': { max: 4, name: 'Morning Slot 1', duration: '1 hour', startHour: 10, startMinute: 30 },
+                '11:30 AM - 12:30 PM': { max: 4, name: 'Morning Slot 2', duration: '1 hour', startHour: 11, startMinute: 30 },
+                '12:30 PM - 1:30 PM': { max: 4, name: 'Morning Slot 3', duration: '1 hour', startHour: 12, startMinute: 30 },
+                '1:30 PM - 2:00 PM': { max: 2, name: 'Morning Slot 4', duration: '30 minutes', startHour: 13, startMinute: 30 },
+                '4:30 PM - 5:30 PM': { max: 4, name: 'Evening Slot 1', duration: '1 hour', startHour: 16, startMinute: 30 },
+                '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', duration: '30 minutes', startHour: 17, startMinute: 30 }
+            };
+
+            return SLOT_CONFIG[timeSlot];
+        }
+
+        // Add this helper function to calculate estimated time
+        function calculateEstimatedTime(slotConfig, bookedCount) {
+            try {
+                // Start with the slot's start time
+                let hour = slotConfig.startHour;
+                let minute = slotConfig.startMinute;
+
+                // Add 15 minutes for each already booked appointment
+                minute += (bookedCount * 15);
+
+                // Handle minute overflow
+                while (minute >= 60) {
+                    hour += 1;
+                    minute -= 60;
+                }
+
+                // Convert 24-hour to 12-hour format
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                let displayHour = hour % 12;
+                if (displayHour === 0) displayHour = 12;
+
+                // Format with leading zero for minutes
+                const formattedMinute = minute.toString().padStart(2, '0');
+
+                return `${displayHour}:${formattedMinute} ${ampm}`;
+            } catch (error) {
+                console.error('Error calculating estimated time:', error);
+                return 'To be confirmed';
+            }
+        }
+
+        // Validate form
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['name', 'phone', 'appointment_date', 'time_slot', 'service_type'];
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const value = field.value.trim();
+
+                if (!value) {
+                    showFieldError(field, 'This field is required');
+                    isValid = false;
+                } else {
+                    clearFieldError(field);
+
+                    // Additional validation
+                    if (fieldId === 'phone' && value.length !== 10) {
+                        showFieldError(field, 'Phone number must be exactly 10 digits');
+                        isValid = false;
+                    }
+
+                    if (fieldId === 'appointment_date') {
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        if (selectedDate < today) {
+                            showFieldError(field, 'Cannot book appointments for past dates');
+                            isValid = false;
+                        }
+
+                        if (selectedDate.getDay() === 0) {
+                            showFieldError(field, 'Appointments cannot be booked on Sundays');
+                            isValid = false;
+                        }
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        // Show field error
+        function showFieldError(field, message) {
+            field.classList.add('is-invalid');
+            field.classList.remove('is-valid');
+            const feedback = field.parentNode.querySelector('.invalid-feedback');
+            if (feedback) {
+                feedback.textContent = message;
+            }
+        }
+
+        // Clear field error
+        function clearFieldError(field) {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+        }
+
+        // Get form data
+        function getFormData() {
+            return {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                appointment_date: document.getElementById('appointment_date').value,
+                time_slot: document.getElementById('time_slot').value,
+                service_type: document.getElementById('service_type').value,
+                message: document.getElementById('message').value.trim()
+            };
+        }
+
+        // Show confirmation modal
+        // Replace the showConfirmationModal function with this corrected version:
+
+        function showConfirmationModal(formData) {
+            const modalBody = document.getElementById('confirmationModalBody');
+
+            // Get the properly calculated estimated time from formData
+            let estimatedTime = formData.estimated_time;
+
+            // If estimated time is not available or is the slot range, calculate it properly
+            if (!estimatedTime || estimatedTime.includes(' - ') || estimatedTime === 'undefined') {
+                const config = getSlotConfig(formData.time_slot);
+                if (config && formData.available_slots !== undefined) {
+                    const bookedCount = config.max - formData.available_slots;
+                    estimatedTime = calculateEstimatedTime(config, bookedCount);
+                } else {
+                    estimatedTime = 'To be confirmed';
+                }
+            }
+
+            modalBody.innerHTML = `
+        <div class="text-center mb-4">
+            <i class="fas fa-calendar-check text-primary" style="font-size: 3rem;"></i>
+            <h4 class="mt-2">Confirm Your Appointment Details</h4>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="fas fa-user"></i> Patient Information</h6>
+                <p><strong>Name:</strong> ${formData.name}</p>
+                <p><strong>Phone:</strong> +91 ${formData.phone}</p>
+                ${formData.message ? `<p><strong>Message:</strong> ${formData.message}</p>` : ''}
+            </div>
+            <div class="col-md-6">
+                <h6><i class="fas fa-calendar-alt"></i> Appointment Details</h6>
+                <p><strong>Date:</strong> ${formatDate(formData.appointment_date)}</p>
+                <p><strong>Time Slot:</strong> ${formData.time_slot}</p>
+                <p><strong>Service:</strong> ${formData.service_type}</p>
+            </div>
+        </div>
+        
+        <div class="alert alert-primary text-center">
+            <i class="fas fa-clock fa-2x mb-2"></i>
+            <h5 class="mb-2">Your Estimated Appointment Time</h5>
+            <h3 class="text-primary mb-2">${estimatedTime}</h3>
+            <small>This is an approximate time based on current appointments. Please arrive 10 minutes early.</small>
+        </div>
+        
+        <div class="alert alert-info">
+            <h6><i class="fas fa-info-circle"></i> Please Note:</h6>
+            <ul class="mb-0">
+                <li>Your appointment will be confirmed after clicking "Confirm Appointment"</li>
+                <li>You will receive your appointment details</li>
+                <li>Please bring a valid ID and any previous medical reports</li>
+                <li>Contact us at +91 9837033107 if you need to reschedule</li>
+            </ul>
+        </div>
+    `;
+
+            // Store the corrected estimated time for final submission
+            formData.estimated_time = estimatedTime;
+            window.pendingAppointmentData = formData;
+            window.pendingEstimatedTime = estimatedTime;
+
+            const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            modal.show();
+        }
+        // Handle final confirmation
+        document.getElementById('finalConfirmBtn').addEventListener('click', async function () {
+            if (!window.pendingAppointmentData) {
+                showNotification('Appointment data not found. Please try again.', 'error');
+                return;
+            }
+
+            try {
+                // Hide confirmation modal
+                const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+                confirmModal.hide();
+
+                showLoading('Booking your appointment...');
+
+                const response = await fetch(`${API_BASE_URL}/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(window.pendingAppointmentData)
+                });
+
+                const result = await response.json();
+                hideLoading();
+
+                if (response.ok) {
+                    // Add estimated time to result
+                    result.estimated_time = window.pendingEstimatedTime;
+
+                    showSuccessModal(result);
+                    document.getElementById('appointmentForm').reset();
+                    setMinDate();
+                    document.getElementById('slotAvailability').style.display = 'none';
+
+                    // Clear pending data
+                    window.pendingAppointmentData = null;
+                    window.pendingEstimatedTime = null;
+                } else {
+                    handleBookingError(result);
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Error submitting appointment:', error);
+                showNotification('Network error. Please check your connection and try again.', 'error');
+            }
+        });
+
+        // Handle booking errors
+        function handleBookingError(result) {
+            switch (result.error_type) {
+                case 'sunday_blocked':
+                    showNotification('Appointments cannot be booked on Sundays. Please choose another date.', 'error');
+                    break;
+                case 'day_blocked':
+                    showNotification('This date is not available for appointments. Please choose another date.', 'error');
+                    break;
+                case 'slot_full':
+                    showNotification('This time slot is now full. Please choose another slot.', 'error');
+                    checkSlotAvailability(); // Refresh availability
+                    break;
+                default:
+                    showNotification(result.error || result.message || 'An error occurred while booking your appointment.', 'error');
+            }
+        }
+
+        // Show success modal
+        function showSuccessModal(result) {
+            const modalBody = document.getElementById('successModalBody');
+            modalBody.innerHTML = `
+                <div class="text-center mb-4">
+                    <div class="success-animation">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-calendar"></i> Appointment Details</h6>
+                        <p><strong>Date:</strong> ${formatDate(result.appointment_date)}</p>
+                        <p><strong>Time Slot:</strong> ${result.time_slot}</p>
+                        <p><strong>Estimated Time:</strong> <span class="text-success">${result.estimated_time}</span></p>
+                        <p><strong>Service:</strong> ${result.service_type}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-info-circle"></i> What's Next?</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> Your appointment is confirmed</li>
+                            <li><i class="fas fa-phone text-info"></i> We may call to confirm details</li>
+                            <li><i class="fas fa-clock text-warning"></i> Please arrive 10 minutes early</li>
+                            <li><i class="fas fa-id-card text-primary"></i> Bring a valid ID and any previous reports</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Tip:</strong> You can check your appointment status anytime using your phone number.
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('successModal'));
+            modal.show();
+
+            // Trigger success notification
+            showNotification('Appointment booked successfully!', 'success');
+        }
+
+        // Check appointment status
+        async function checkAppointmentStatus() {
+            const phoneNumber = document.getElementById('statusPhone').value.trim();
+
+            if (!phoneNumber) {
+                showNotification('Please enter your phone number.', 'error');
+                return;
+            }
+
+            if (phoneNumber.length !== 10) {
+                showNotification('Please enter a valid 10-digit phone number.', 'error');
+                return;
+            }
+
+            try {
+                document.getElementById('statusLoading').style.display = 'block';
+                document.getElementById('statusResults').innerHTML = '';
+
+                const response = await fetch(`${API_BASE_URL}/appointments/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phoneNumber })
+                });
+
+                const result = await response.json();
+                document.getElementById('statusLoading').style.display = 'none';
+
+                if (response.ok) {
+                    displayAppointmentStatus(result.appointments || []);
+                } else {
+                    document.getElementById('statusResults').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Error: ${result.error || 'Could not retrieve status.'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('statusLoading').style.display = 'none';
+                console.error('Error checking status:', error);
+                document.getElementById('statusResults').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Network error. Please check your connection and try again.
+                    </div>
+                `;
+            }
+        }
+
+        // Display appointment status
+        function displayAppointmentStatus(appointments) {
+            const resultsDiv = document.getElementById('statusResults');
+
+            if (appointments.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        No appointments found for this phone number.
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `<h6><i class="fas fa-list"></i> Your Appointments (${appointments.length} found):</h6>`;
+
+            appointments.forEach(appointment => {
+                const statusClass = getStatusClass(appointment.status);
+                const isUpcoming = new Date(appointment.appointment_date) >= new Date();
+
+                html += `
+                    <div class="status-card status-${appointment.status} fade-in">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-2">
+                                    <i class="fas fa-calendar-day"></i>
+                                    ${formatDate(appointment.appointment_date)}
+                                    ${isUpcoming ? '<span class="badge bg-info ms-2">Upcoming</span>' : '<span class="badge bg-secondary ms-2">Past</span>'}
+                                </h6>
+                                <p class="mb-1"><strong>Time Slot:</strong> ${appointment.time_slot}</p>
+                                ${appointment.given_time ? `<p class="mb-1"><strong>Appointment Time:</strong> <span class="text-success">${appointment.given_time}</span></p>` : ''}
+                                ${appointment.estimated_time ? `<p class="mb-1"><strong>Estimated Time:</strong> ${appointment.estimated_time}</p>` : ''}
+                                <p class="mb-1"><strong>Service:</strong> ${appointment.service_type || 'General Consultation'}</p>
+                                <small class="text-muted">Booked on: ${formatDateTime(appointment.created_at)}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge ${statusClass} mb-2">${appointment.status.toUpperCase()}</span>
+                                ${isUpcoming && appointment.status === 'pending' ?
+                        '<br><small class="text-muted">Awaiting confirmation</small>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Get status class for badges
+        function getStatusClass(status) {
+            switch (status) {
+                case 'pending': return 'bg-warning';
+                case 'confirmed': return 'bg-success';
+                case 'completed': return 'bg-info';
+                case 'cancelled': return 'bg-danger';
+                default: return 'bg-secondary';
+            }
+        }
+
+        // Book another appointment
+        function bookAnother() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('successModal'));
+            modal.hide();
+            document.getElementById('appointmentForm').reset();
+            setMinDate();
+            document.getElementById('slotAvailability').style.display = 'none';
+
+            // Scroll to form
+            document.getElementById('appointmentForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Show loading overlay
+        function showLoading(text = 'Processing...') {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+
+            const typeConfig = {
+                success: { class: 'alert-success', icon: 'fas fa-check-circle' },
+                error: { class: 'alert-danger', icon: 'fas fa-exclamation-triangle' },
+                warning: { class: 'alert-warning', icon: 'fas fa-exclamation-circle' },
+                info: { class: 'alert-info', icon: 'fas fa-info-circle' }
+            };
+
+            const config = typeConfig[type] || typeConfig.info;
+
+            notification.className = `alert ${config.class} alert-dismissible fade show notification`;
+            notification.innerHTML = `
+                <i class="${config.icon} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            container.appendChild(notification);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 150);
+                }
+            }, 5000);
+        }
+
+        // Utility functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Handle online/offline status
+        window.addEventListener('online', function () {
+            showNotification('Connection restored.', 'success');
+        });
+
+        window.addEventListener('offline', function () {
+            showNotification('Connection lost. Please check your internet connection.', 'warning');
+        });
+    </script>
 </body>
 
 </html>

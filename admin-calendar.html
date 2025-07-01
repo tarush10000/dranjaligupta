@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar View - Dr. Anjali Gupta Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #007bff;
+        }
+
+        .calendar-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background-color: #dee2e6;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .calendar-day-header {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            background-color: white;
+            min-height: 160px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day:hover {
+            background-color: #f8f9fa;
+            border-color: #007bff;
+            transform: scale(1.02);
+        }
+
+        .calendar-day.other-month {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            opacity: 0.6;
+        }
+
+        .calendar-day.blocked {
+            background-color: #ffebee;
+            color: #c62828;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            font-weight: bold;
+        }
+
+        .calendar-day.high-appointments {
+            background-color: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .appointment-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-bottom: 8px;
+            min-height: 80px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .appointment-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* New Time slot colors for 6 slots */
+        .appointment-indicator.slot1 {
+            background-color: #28a745; /* Morning Slot 1: 10:30-11:30 */
+        }
+
+        .appointment-indicator.slot2 {
+            background-color: #20c997; /* Morning Slot 2: 11:30-12:30 */
+        }
+
+        .appointment-indicator.slot3 {
+            background-color: #17a2b8; /* Morning Slot 3: 12:30-1:30 */
+        }
+
+        .appointment-indicator.slot4 {
+            background-color: #6f42c1; /* Morning Slot 4: 1:30-2:00 */
+        }
+
+        .appointment-indicator.slot5 {
+            background-color: #fd7e14; /* Evening Slot 1: 4:30-5:30 */
+        }
+
+        .appointment-indicator.slot6 {
+            background-color: #dc3545; /* Evening Slot 2: 5:30-6:00 */
+        }
+
+        /* Status overlays */
+        .appointment-indicator.pending {
+            border: 2px solid #6c757d;
+            opacity: 0.7;
+        }
+
+        .appointment-indicator.confirmed {
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+        }
+
+        .appointment-indicator.seen {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .appointment-indicator.seen::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 1px;
+            font-size: 10px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .appointment-indicator.completed {
+            border: 2px solid #28a745;
+            box-shadow: 0 0 6px rgba(40, 167, 69, 0.5);
+        }
+
+        .appointment-indicator.cancelled {
+            opacity: 0.3;
+            position: relative;
+        }
+
+        .appointment-indicator.cancelled::after {
+            content: '✕';
+            position: absolute;
+            top: -3px;
+            left: 1px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+        }
+
+        .appointment-count {
+            font-size: 0.75rem;
+            color: #495057;
+            margin-top: auto;
+            text-align: center;
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 8px;
+            padding: 3px 6px;
+        }
+
+        .blocked-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: #dc3545;
+            font-size: 1rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card h3 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .stats-card p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .month-year-display {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .month-year-display h3 {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .legend-slot {
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .status-breakdown {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+        }
+
+        .status-item.pending {
+            border-left-color: #6c757d;
+        }
+
+        .status-item.confirmed {
+            border-left-color: #007bff;
+        }
+
+        .status-item.seen {
+            border-left-color: #28a745;
+        }
+
+        .status-item.completed {
+            border-left-color: #17a2b8;
+        }
+
+        .status-item.cancelled {
+            border-left-color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                font-size: 0.8rem;
+            }
+            
+            .calendar-day {
+                min-height: 120px;
+                padding: 6px;
+            }
+            
+            .legend {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .legend-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+
+            .calendar-navigation {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calendar-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .appointment-indicators {
+                min-height: 60px;
+                max-height: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-day-header {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="calendar-container">
+            <!-- Header -->
+            <div class="calendar-header">
+                <h2>
+                    <i class="fas fa-calendar-alt"></i> 
+                    Monthly Calendar View
+                </h2>
+                <div class="calendar-navigation">
+                    <button class="btn btn-outline-primary" onclick="navigateMonth(-1)">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="goToToday()">
+                        <i class="fas fa-home"></i> Today
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="navigateMonth(1)">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="vr"></div>
+                    <button class="btn btn-outline-info" onclick="window.open('admin.html', '_blank')">
+                        <i class="fas fa-cog"></i> Admin Panel
+                    </button>
+                    <button class="btn btn-outline-success" onclick="refreshData()">
+                        <i class="fas fa-refresh"></i> Refresh
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-cards" id="statsCards">
+                <div class="stats-card">
+                    <h3 id="totalAppointments">0</h3>
+                    <p>Today's Appointments</p>
+                </div>
+                <div class="stats-card">
+                    <h3 id="pendingAppointments">0</h3>
+                    <p>Pending Appointments</p>
+                </div>
+                <div class="stats-card">
+                    <h3 id="monthlyAppointments">0</h3>
+                    <p>This Month's Total</p>
+                </div>
+                <div class="stats-card">
+                    <h3 id="blockedDays">0</h3>
+                    <p>Blocked Days</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="showTodayAppointments()">
+                    <i class="fas fa-eye"></i> Today's Appointments
+                </button>
+                <button class="btn btn-warning" onclick="showPendingAppointments()">
+                    <i class="fas fa-clock"></i> Pending Appointments
+                </button>
+                <button class="btn btn-success" onclick="showCompletedAppointments()">
+                    <i class="fas fa-check-circle"></i> Completed Today
+                </button>
+                <button class="btn btn-info" onclick="exportCurrentMonth()">
+                    <i class="fas fa-download"></i> Export Month
+                </button>
+                <button class="btn btn-outline-dark" onclick="printCalendar()">
+                    <i class="fas fa-print"></i> Print Calendar
+                </button>
+            </div>
+
+            <!-- Month/Year Display -->
+            <div class="month-year-display">
+                <h3 id="monthYearDisplay">Loading...</h3>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div id="calendarContainer">
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Loading Calendar Data...</h5>
+                </div>
+            </div>
+
+            <!-- Enhanced Legend -->
+            <div class="legend">
+                <div class="legend-slot">
+                    <h6 class="mb-2"><i class="fas fa-clock"></i> Time Slots:</h6>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot1"></div>
+                        <span>Slot 1: 10:30-11:30 AM (4)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot2"></div>
+                        <span>Slot 2: 11:30-12:30 PM (4)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot3"></div>
+                        <span>Slot 3: 12:30-1:30 PM (4)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot4"></div>
+                        <span>Slot 4: 1:30-2:00 PM (2)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot5"></div>
+                        <span>Slot 5: 4:30-5:30 PM (4)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator slot6"></div>
+                        <span>Slot 6: 5:30-6:00 PM (2)</span>
+                    </div>
+                </div>
+                <div class="legend-slot">
+                    <h6 class="mb-2"><i class="fas fa-user"></i> Status:</h6>
+                    <div class="legend-item">
+                        <div class="appointment-indicator pending slot1"></div>
+                        <span>Pending (gray border)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator confirmed slot2"></div>
+                        <span>Confirmed (white border)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator seen slot3"></div>
+                        <span>Seen ✓</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator completed slot4"></div>
+                        <span>Completed (green border)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="appointment-indicator cancelled slot5"></div>
+                        <span>Cancelled ✕</span>
+                    </div>
+                </div>
+                <div class="legend-slot">
+                    <h6 class="mb-2"><i class="fas fa-info-circle"></i> Other:</h6>
+                    <div class="legend-item">
+                        <i class="fas fa-ban" style="color: #dc3545;"></i>
+                        <span>Blocked/Closed</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 15px; height: 15px; background-color: #e3f2fd; border: 2px solid #2196f3; border-radius: 3px;"></div>
+                        <span>Today</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 15px; height: 15px; background-color: #fff3e0; border: 2px solid #ff9800; border-radius: 3px;"></div>
+                        <span>High Volume (15+ apps)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Details Modal -->
+    <div class="modal fade" id="dayDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dayDetailsTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="dayDetailsBody">
+                    <!-- Day details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="viewAppointmentsBtn">
+                        <i class="fas fa-eye"></i> View All Appointments
+                    </button>
+                    <button type="button" class="btn btn-info" id="exportDayBtn">
+                        <i class="fas fa-download"></i> Export Day
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Appointments Modal -->
+    <div class="modal fade" id="quickAppointmentsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickAppointmentsTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="quickAppointmentsBody">
+                    <!-- Quick appointments will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuration
+        const API_BASE_URL = 'https://appointment-5tt0.onrender.com/api';
+        const ADMIN_PASSWORD = 'admin@123';
+        let currentDate = new Date();
+        let calendarData = [];
+
+        // Updated slot configuration for new timings
+        const SLOT_CONFIG = {
+            '10:30 AM - 11:30 AM': { max: 4, name: 'Morning Slot 1', color: 'slot1', duration: '1 hour' },
+            '11:30 AM - 12:30 PM': { max: 4, name: 'Morning Slot 2', color: 'slot2', duration: '1 hour' },
+            '12:30 PM - 1:30 PM': { max: 4, name: 'Morning Slot 3', color: 'slot3', duration: '1 hour' },
+            '1:30 PM - 2:00 PM': { max: 2, name: 'Morning Slot 4', color: 'slot4', duration: '30 minutes' },
+            '4:30 PM - 5:30 PM': { max: 4, name: 'Evening Slot 1', color: 'slot5', duration: '1 hour' },
+            '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', color: 'slot6', duration: '30 minutes' }
+        };
+
+        // Initialize calendar when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, checking authentication...');
+            checkAuthentication();
+        });
+
+        // Check authentication
+        function checkAuthentication() {
+            const rememberedAuth = localStorage.getItem('adminAuth');
+            if (rememberedAuth) {
+                const authData = JSON.parse(rememberedAuth);
+                const now = new Date().getTime();
+                
+                if (now - authData.timestamp < 30 * 24 * 60 * 60 * 1000) {
+                    initializeCalendar();
+                    return;
+                }
+                
+                localStorage.removeItem('adminAuth');
+            }
+            
+            // Redirect to admin panel for login
+            window.location.href = 'admin.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminAuth');
+                window.location.href = 'admin.html';
+            }
+        }
+
+        // Initialize calendar
+        async function initializeCalendar() {
+            try {
+                await loadStats();
+                await loadCalendar();
+                
+                // Set up auto-refresh every 5 minutes
+                setInterval(async () => {
+                    await loadStats();
+                    await loadCalendar();
+                }, 5 * 60 * 1000);
+                
+                console.log('Calendar initialized successfully');
+            } catch (error) {
+                console.error('Error initializing calendar:', error);
+                showError('Failed to initialize calendar. Please refresh the page.');
+            }
+        }
+
+        // Load calendar data
+        async function loadCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+
+            console.log(`Loading calendar for ${year}-${month}`);
+
+            try {
+                showLoading();
+                await buildCalendarFromAppointments(year, month);
+                renderCalendar();
+            } catch (error) {
+                console.error('Error loading calendar:', error);
+                showError('Error loading calendar data. Please check your connection and ensure your server is running.');
+            }
+        }
+
+        // Build calendar data from appointments and blocked days tables
+        async function buildCalendarFromAppointments(year, month) {
+            try {
+                const startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+                const endDate = `${year}-${month.toString().padStart(2, '0')}-${new Date(year, month, 0).getDate().toString().padStart(2, '0')}`;
+                
+                console.log(`Fetching appointments from ${startDate} to ${endDate}`);
+                
+                // Fetch appointments for the entire month
+                const appointmentsPromises = [];
+                const daysInMonth = new Date(year, month, 0).getDate();
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    appointmentsPromises.push(
+                        fetch(`${API_BASE_URL}/admin/appointments?date=${dateStr}`)
+                            .then(response => response.json())
+                            .then(data => ({
+                                date: dateStr,
+                                appointments: data.appointments || []
+                            }))
+                            .catch(error => {
+                                console.error(`Error fetching appointments for ${dateStr}:`, error);
+                                return { date: dateStr, appointments: [] };
+                            })
+                    );
+                }
+                
+                // Fetch blocked days
+                const blockedDaysPromise = fetch(`${API_BASE_URL}/admin/blocked-days`)
+                    .then(response => response.json())
+                    .then(data => data.blocked_days || [])
+                    .catch(error => {
+                        console.error('Error fetching blocked days:', error);
+                        return [];
+                    });
+                
+                // Wait for all data
+                const [appointmentsByDate, blockedDays] = await Promise.all([
+                    Promise.all(appointmentsPromises),
+                    blockedDaysPromise
+                ]);
+                
+                console.log('Fetched appointments for', appointmentsByDate.length, 'days');
+                console.log('Fetched', blockedDays.length, 'blocked days');
+                
+                // Build calendar data
+                calendarData = [];
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    const date = new Date(year, month - 1, day);
+                    const dayOfWeek = date.getDay();
+                    
+                    // Check if day is blocked
+                    const isBlocked = dayOfWeek === 0 || blockedDays.some(blocked => blocked.date === dateStr);
+                    
+                    // Get appointments for this day
+                    const dayAppointments = appointmentsByDate.find(item => item.date === dateStr)?.appointments || [];
+                    
+                    // Count appointments by time slot AND status
+                    const slotCounts = {
+                        '10:30 AM - 11:30 AM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '11:30 AM - 12:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '12:30 PM - 1:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '1:30 PM - 2:00 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '4:30 PM - 5:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '5:30 PM - 6:00 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 }
+                    };
+                    
+                    dayAppointments.forEach(apt => {
+                        if (slotCounts[apt.time_slot]) {
+                            slotCounts[apt.time_slot].total++;
+                            slotCounts[apt.time_slot][apt.status] = (slotCounts[apt.time_slot][apt.status] || 0) + 1;
+                        }
+                    });
+                    
+                    calendarData.push({
+                        date: dateStr,
+                        day_name: date.toLocaleDateString('en-US', { weekday: 'long' }),
+                        is_blocked: isBlocked,
+                        total_appointments: dayAppointments.length,
+                        appointments: dayAppointments,
+                        slot_counts: slotCounts
+                    });
+                }
+                
+                console.log('Built calendar data for', calendarData.length, 'days');
+                
+            } catch (error) {
+                console.error('Error building calendar from appointments:', error);
+                calendarData = generateBasicCalendarStructure(year, month);
+            }
+        }
+
+        // Generate basic calendar structure when data is unavailable
+        function generateBasicCalendarStructure(year, month) {
+            const data = [];
+            const daysInMonth = new Date(year, month, 0).getDate();
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const date = new Date(year, month - 1, day);
+                const dayOfWeek = date.getDay();
+                
+                data.push({
+                    date: dateStr,
+                    day_name: date.toLocaleDateString('en-US', { weekday: 'long' }),
+                    is_blocked: dayOfWeek === 0,
+                    total_appointments: 0,
+                    appointments: [],
+                    slot_counts: {
+                        '10:30 AM - 11:30 AM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '11:30 AM - 12:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '12:30 PM - 1:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '1:30 PM - 2:00 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '4:30 PM - 5:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
+                        '5:30 PM - 6:00 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 }
+                    }
+                });
+            }
+            
+            return data;
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                console.log('Loading statistics...');
+                
+                const response = await fetch(`${API_BASE_URL}/admin/stats`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    console.log('Loaded stats:', data);
+                    renderStats(data);
+                } else {
+                    console.error('Error loading stats:', data.error);
+                    renderStats({
+                        today_appointments: 0,
+                        pending_appointments: 0,
+                        monthly_appointments: 0,
+                        blocked_days: 0
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                renderStats({
+                    today_appointments: 0,
+                    pending_appointments: 0,
+                    monthly_appointments: 0,
+                    blocked_days: 0
+                });
+            }
+        }
+
+        // Render statistics cards
+        function renderStats(stats) {
+            document.getElementById('totalAppointments').textContent = stats.today_appointments || 0;
+            document.getElementById('pendingAppointments').textContent = stats.pending_appointments || 0;
+            document.getElementById('monthlyAppointments').textContent = stats.monthly_appointments || 0;
+            document.getElementById('blockedDays').textContent = stats.blocked_days || 0;
+        }
+
+        // Render calendar grid
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // Update month/year display
+            document.getElementById('monthYearDisplay').textContent = 
+                currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            // Create calendar grid
+            const calendarGrid = document.createElement('div');
+            calendarGrid.className = 'calendar-grid';
+            calendarGrid.id = 'calendarGrid';
+
+            // Add day headers
+            const dayHeaders = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            dayHeaders.forEach(day => {
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'calendar-day-header';
+                headerDiv.textContent = day;
+                calendarGrid.appendChild(headerDiv);
+            });
+
+            // Get first day of month and calculate start date for calendar grid
+            const firstDay = new Date(year, month, 1);
+            const firstDayOfWeek = firstDay.getDay();
+            
+            // Calculate the starting date for the calendar grid
+            const startDate = new Date(year, month, 1 - firstDayOfWeek);
+
+            // Add calendar days (6 weeks = 42 days)
+            const today = new Date();
+            const todayDateStr = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+
+            for (let i = 0; i < 42; i++) {
+                const currentCellDate = new Date(startDate);
+                currentCellDate.setDate(startDate.getDate() + i);
+                
+                const cellYear = currentCellDate.getFullYear();
+                const cellMonth = currentCellDate.getMonth() + 1;
+                const cellDay = currentCellDate.getDate();
+                const dateStr = `${cellYear}-${cellMonth.toString().padStart(2, '0')}-${cellDay.toString().padStart(2, '0')}`;
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                
+                // Add classes for styling
+                if (currentCellDate.getMonth() !== month) {
+                    dayDiv.classList.add('other-month');
+                }
+                if (dateStr === todayDateStr) {
+                    dayDiv.classList.add('today');
+                }
+
+                // Find calendar data for this date
+                const dayData = calendarData.find(d => d.date === dateStr);
+                
+                if (dayData?.is_blocked) {
+                    dayDiv.classList.add('blocked');
+                    dayDiv.innerHTML = createBlockedDayContent(cellDay);
+                } else {
+                    // Check for high appointment volume (15+ appointments)
+                    if (dayData && dayData.total_appointments >= 15) {
+                        dayDiv.classList.add('high-appointments');
+                    }
+                    
+                    dayDiv.innerHTML = createDayContent(cellDay, dayData);
+                }
+
+                // Add click event
+                dayDiv.onclick = () => showDayDetails(dateStr, dayData);
+                
+                calendarGrid.appendChild(dayDiv);
+            }
+
+            // Replace the loading content with calendar
+            const container = document.getElementById('calendarContainer');
+            container.innerHTML = '';
+            container.appendChild(calendarGrid);
+        }
+
+        // Create content for blocked days
+        function createBlockedDayContent(dayNumber) {
+            return `
+                <div class="day-number">${dayNumber}</div>
+                <div class="blocked-indicator">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <div class="appointment-count">Closed</div>
+            `;
+        }
+
+        // Create content for regular days with appointment indicators
+        function createDayContent(dayNumber, dayData) {
+            let indicators = '';
+            
+            if (dayData && dayData.appointments) {
+                // Create appointment indicators for each appointment
+                dayData.appointments.forEach(appointment => {
+                    const slotConfig = SLOT_CONFIG[appointment.time_slot];
+                    const slotClass = slotConfig ? slotConfig.color : 'slot1';
+                    
+                    indicators += `<div class="appointment-indicator ${slotClass} ${appointment.status}" title="${appointment.name} - ${appointment.status} - ${appointment.time_slot}"></div>`;
+                });
+            }
+
+            return `
+                <div class="day-number">${dayNumber}</div>
+                <div class="appointment-indicators">${indicators}</div>
+                <div class="appointment-count">
+                    ${dayData ? `${dayData.total_appointments} apt${dayData.total_appointments !== 1 ? 's' : ''}` : ''}
+                </div>
+            `;
+        }
+
+        // Show day details in modal with all appointments
+        async function showDayDetails(dateStr, dayData) {
+            const date = new Date(dateStr);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            document.getElementById('dayDetailsTitle').innerHTML = `
+                <i class="fas fa-calendar-day"></i> ${formattedDate}
+            `;
+            
+            // Show loading while fetching detailed data
+            document.getElementById('dayDetailsBody').innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading appointment details...</p>
+                </div>
+            `;
+
+            // Show modal immediately
+            const modal = new bootstrap.Modal(document.getElementById('dayDetailsModal'));
+            modal.show();
+
+            try {
+                // Fetch detailed appointment data for this day
+                const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${dateStr}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const appointments = data.appointments || [];
+                    
+                    if (appointments.length === 0) {
+                        document.getElementById('dayDetailsBody').innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                No appointments scheduled for this date.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h6>Available Slots</h6>
+                                    <div class="row">
+                                        ${Object.entries(SLOT_CONFIG).map(([slot, config]) => `
+                                            <div class="col-md-4 mb-3">
+                                                <div class="border rounded p-3">
+                                                    <div class="appointment-indicator ${config.color} d-inline-block mb-2"></div>
+                                                    <h6>${config.name}</h6>
+                                                    <h4>0/${config.max}</h4>
+                                                    <small class="text-muted">${slot}</small>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // Group appointments by time slot and status
+                        const timeSlots = {
+                            '10:30 AM - 11:30 AM': appointments.filter(apt => apt.time_slot === '10:30 AM - 11:30 AM'),
+                            '11:30 AM - 12:30 PM': appointments.filter(apt => apt.time_slot === '11:30 AM - 12:30 PM'),
+                            '12:30 PM - 1:30 PM': appointments.filter(apt => apt.time_slot === '12:30 PM - 1:30 PM'),
+                            '1:30 PM - 2:00 PM': appointments.filter(apt => apt.time_slot === '1:30 PM - 2:00 PM'),
+                            '4:30 PM - 5:30 PM': appointments.filter(apt => apt.time_slot === '4:30 PM - 5:30 PM'),
+                            '5:30 PM - 6:00 PM': appointments.filter(apt => apt.time_slot === '5:30 PM - 6:00 PM')
+                        };
+
+                        // Calculate status counts
+                        const statusCounts = {
+                            pending: appointments.filter(apt => apt.status === 'pending').length,
+                            confirmed: appointments.filter(apt => apt.status === 'confirmed').length,
+                            seen: appointments.filter(apt => apt.status === 'seen').length,
+                            completed: appointments.filter(apt => apt.status === 'completed').length,
+                            cancelled: appointments.filter(apt => apt.status === 'cancelled').length
+                        };
+
+                        let statusBreakdown = '';
+                        Object.entries(statusCounts).forEach(([status, count]) => {
+                            if (count > 0) {
+                                statusBreakdown += `<div class="status-item ${status}"><strong>${count}</strong> ${status}</div>`;
+                            }
+                        });
+
+                        let slotsHtml = '';
+                        Object.entries(timeSlots).forEach(([slot, slotAppointments]) => {
+                            const config = SLOT_CONFIG[slot];
+                            if (slotAppointments.length > 0) {
+                                slotsHtml += `
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card">
+                                            <div class="card-header" style="background: var(--bs-primary); color: white;">
+                                                <h6 class="mb-0">
+                                                    <div class="appointment-indicator ${config.color} d-inline-block me-2"></div>
+                                                    ${config.name}
+                                                    <span class="badge bg-light text-dark ms-2">${slotAppointments.length}/${config.max}</span>
+                                                </h6>
+                                                <small>${slot}</small>
+                                            </div>
+                                            <div class="card-body p-2">
+                                `;
+                                
+                                slotAppointments.forEach(apt => {
+                                    slotsHtml += `
+                                        <div class="border-bottom py-2">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <strong>${apt.name}</strong><br>
+                                                    <small class="text-muted">${apt.phone}</small><br>
+                                                    <small class="text-info">${apt.service_type || 'General'}</small>
+                                                </div>
+                                                <span class="badge bg-${getStatusColor(apt.status)}">${apt.status}</span>
+                                            </div>
+                                            ${apt.given_time ? `<small class="text-success"><i class="fas fa-clock"></i> ${apt.given_time}</small>` : ''}
+                                            ${apt.estimated_time ? `<small class="text-primary"><i class="fas fa-clock"></i> Est: ${apt.estimated_time}</small>` : ''}
+                                            ${apt.message ? `<small class="text-muted d-block mt-1">${apt.message}</small>` : ''}
+                                        </div>
+                                    `;
+                                });
+                                
+                                slotsHtml += `
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        });
+
+                        document.getElementById('dayDetailsBody').innerHTML = `
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-calendar-check"></i> Total Appointments</h6>
+                                    <h3 class="text-primary">${appointments.length}</h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-chart-pie"></i> Status Breakdown</h6>
+                                    <div class="status-breakdown">
+                                        ${statusBreakdown}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h6><i class="fas fa-clock"></i> Appointments by Time Slot</h6>
+                            <div class="row">
+                                ${slotsHtml}
+                            </div>
+                        `;
+                    }
+                } else {
+                    document.getElementById('dayDetailsBody').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Error loading appointment details: ${data.error || 'Unknown error'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading day details:', error);
+                document.getElementById('dayDetailsBody').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error loading appointment details. Please check your connection.
+                    </div>
+                `;
+            }
+
+            // Set up buttons
+            const viewBtn = document.getElementById('viewAppointmentsBtn');
+            const exportBtn = document.getElementById('exportDayBtn');
+            
+            viewBtn.onclick = () => {
+                window.open(`admin.html?date=${dateStr}`, '_blank');
+            };
+            
+            exportBtn.onclick = () => {
+                window.open(`${API_BASE_URL}/admin/export/${dateStr}`, '_blank');
+            };
+        }
+
+        // Navigation functions
+        function navigateMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            loadCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            loadCalendar();
+        }
+
+        function refreshData() {
+            loadStats();
+            loadCalendar();
+        }
+
+        // Quick action functions
+        async function showTodayAppointments() {
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${today}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayQuickAppointments('Today\'s Appointments', data.appointments || []);
+                } else {
+                    alert('Error loading today\'s appointments: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error loading today\'s appointments:', error);
+                alert('Error loading today\'s appointments. Please check your connection.');
+            }
+        }
+
+        async function showPendingAppointments() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        status: 'pending',
+                        date_from: new Date().toISOString().split('T')[0]
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayQuickAppointments('Pending Appointments', result.appointments || []);
+                } else {
+                    alert('Error loading pending appointments: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error loading pending appointments:', error);
+                alert('Error loading pending appointments. Please check your connection.');
+            }
+        }
+
+        async function showCompletedAppointments() {
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        status: 'completed',
+                        date_from: today,
+                        date_to: today
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayQuickAppointments('Completed Today', result.appointments || []);
+                } else {
+                    alert('Error loading completed appointments: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error loading completed appointments:', error);
+                alert('Error loading completed appointments. Please check your connection.');
+            }
+        }
+
+        function displayQuickAppointments(title, appointments) {
+            document.getElementById('quickAppointmentsTitle').innerHTML = `
+                <i class="fas fa-list"></i> ${title} (${appointments.length})
+            `;
+
+            let html = '';
+            
+            if (appointments.length === 0) {
+                html = '<div class="alert alert-info">No appointments found.</div>';
+            } else {
+                // Group by time slot
+                const groupedAppointments = {
+                    '10:30 AM - 11:30 AM': [],
+                    '11:30 AM - 12:30 PM': [],
+                    '12:30 PM - 1:30 PM': [],
+                    '1:30 PM - 2:00 PM': [],
+                    '4:30 PM - 5:30 PM': [],
+                    '5:30 PM - 6:00 PM': []
+                };
+
+                appointments.forEach(apt => {
+                    if (groupedAppointments[apt.time_slot]) {
+                        groupedAppointments[apt.time_slot].push(apt);
+                    }
+                });
+
+                html = '<div class="row">';
+                
+                Object.entries(groupedAppointments).forEach(([slot, slotAppointments]) => {
+                    if (slotAppointments.length > 0) {
+                        const config = SLOT_CONFIG[slot];
+                        html += `
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <div class="card-header" style="background: var(--bs-primary); color: white;">
+                                        <h6 class="mb-0">
+                                            <div class="appointment-indicator ${config.color} d-inline-block me-2"></div>
+                                            ${config.name}
+                                            <span class="badge bg-light text-dark ms-2">${slotAppointments.length}</span>
+                                        </h6>
+                                        <small>${slot}</small>
+                                    </div>
+                                    <div class="card-body p-2">
+                        `;
+                        
+                        slotAppointments.forEach(apt => {
+                            html += `
+                                <div class="border-bottom py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>${apt.name}</strong><br>
+                                            <small class="text-muted">${apt.phone}</small><br>
+                                            <small class="text-info">${apt.service_type || 'General Consultation'}</small>
+                                        </div>
+                                        <span class="badge bg-${getStatusColor(apt.status)}">${apt.status}</span>
+                                    </div>
+                                    ${apt.given_time ? `<small class="text-success"><i class="fas fa-clock"></i> ${apt.given_time}</small>` : ''}
+                                    ${apt.estimated_time ? `<small class="text-primary"><i class="fas fa-clock"></i> Est: ${apt.estimated_time}</small>` : ''}
+                                    ${apt.appointment_date ? `<small class="text-muted d-block">${formatDate(apt.appointment_date)}</small>` : ''}
+                                </div>
+                            `;
+                        });
+                        
+                        html += `
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                html += '</div>';
+            }
+
+            document.getElementById('quickAppointmentsBody').innerHTML = html;
+            new bootstrap.Modal(document.getElementById('quickAppointmentsModal')).show();
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'pending': return 'warning';
+                case 'confirmed': return 'success';
+                case 'completed': return 'info';
+                case 'seen': return 'secondary';
+                case 'cancelled': return 'danger';
+                default: return 'secondary';
+            }
+        }
+
+        function exportCurrentMonth() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+            const monthName = currentDate.toLocaleDateString('en-US', { month: 'long' });
+            
+            if (confirm(`Export all appointments for ${monthName} ${year}?`)) {
+                const exportUrl = `${API_BASE_URL}/admin/export-month/${year}/${month}`;
+                
+                const link = document.createElement('a');
+                link.href = exportUrl;
+                link.download = `appointments_${monthName}_${year}.csv`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification(`Exporting appointments for ${monthName} ${year}...`, 'info');
+            }
+        }
+
+        function printCalendar() {
+            window.print();
+        }
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('calendarContainer').innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Loading Calendar Data...</h5>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('calendarContainer').innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle mb-3"></i>
+                    <h5>Error Loading Calendar</h5>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" onclick="refreshData()">
+                        <i class="fas fa-refresh"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        navigateMonth(-1);
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        navigateMonth(1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToToday();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        refreshData();
+                        break;
+                }
+            }
+        });
+
+        // Add notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

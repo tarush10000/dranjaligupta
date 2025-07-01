@@ -6,32 +6,32 @@
 <!-- Primary Meta Tags -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="Dr. Anjali Gupta - Best Gynecologist & Obstetrician in Meerut">
+<meta name="title" content="Dr. Anjali's Women Wellness Centre - Complete Women's Healthcare in Meerut">
 <meta name="description"
-	content="Dr. Anjali Gupta, Ex-CMO of CGHS Meerut, provides expert gynecological care, obstetrics, and laparoscopic surgery. 25+ years experience with 20000+ successful deliveries. Book your appointment today.">
+	content="Dr. Anjali's Women Wellness Centre - Your complete women's healthcare destination in Meerut. Expert gynecological care, pharmacy, pathology lab, and yoga sessions all under one roof.">
 <meta name="keywords"
-	content="gynecologist meerut, obstetrician meerut, dr anjali gupta, laparoscopic surgery, women's health, pregnancy care, CGHS doctor meerut">
-<meta name="author" content="Dr. Anjali Gupta">
+	content="women wellness centre meerut, gynecologist meerut, dr anjali gupta, women's health, pharmacy, pathology lab, yoga for women">
+<meta name="author" content="Dr. Anjali's Women Wellness Centre">
 <meta name="robots" content="index, follow">
 <meta name="language" content="English">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dranjaligupta.in/">
-<meta property="og:title" content="Dr. Anjali Gupta - Best Gynecologist & Obstetrician in Meerut">
+<meta property="og:title" content="Dr. Anjali's Women Wellness Centre - Complete Women's Healthcare in Meerut">
 <meta property="og:description"
-	content="Expert gynecological care and obstetrics with 25+ years experience. Specialized in laparoscopic surgery with 20000+ successful deliveries.">
+	content="Your complete women's healthcare destination with expert gynecological care, pharmacy, pathology lab, and yoga sessions all under one roof.">
 <meta property="og:image" content="https://dranjaligupta.in/images/logo2.svg">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://dranjaligupta.in/">
-<meta property="twitter:title" content="Dr. Anjali Gupta - Best Gynecologist & Obstetrician in Meerut">
+<meta property="twitter:title" content="Dr. Anjali's Women Wellness Centre - Complete Women's Healthcare in Meerut">
 <meta property="twitter:description"
-	content="Expert gynecological care and obstetrics with 25+ years experience. Specialized in laparoscopic surgery with 20000+ successful deliveries.">
+	content="Your complete women's healthcare destination with expert gynecological care, pharmacy, pathology lab, and yoga sessions all under one roof.">
 <meta property="twitter:image" content="https://dranjaligupta.in/images/logo2.svg">
 
-<title>Dr. Anjali Gupta - Best Gynaecologist in Meerut</title>
+<title>Dr. Anjali's Women Wellness Centre - Complete Women's Healthcare in Meerut</title>
 
 <!-- Favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
@@ -39,11 +39,587 @@
 <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
 <!-- Icon Font Css -->
 <link rel="stylesheet" href="plugins/icofont/icofont.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <!-- Slick Slider  CSS -->
 <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
 <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
 <!-- Main Stylesheet -->
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+	/* Location Update Popup Styles */
+	/* Location Update Popup Styles */
+	.location-popup-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.85);
+		z-index: 9999;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		animation: fadeIn 0.4s ease-out;
+		padding: 20px;
+		box-sizing: border-box;
+	}
+
+	.location-popup {
+		background: white;
+		border-radius: 24px;
+		max-width: 900px;
+		width: 100%;
+		max-height: 85vh;
+		overflow-y: auto;
+		/* Add this to enable scrolling */
+		position: relative;
+		animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+		box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		display: flex;
+		flex-direction: column;
+		/* Add this for proper mobile layout */
+	}
+
+	.popup-header {
+		background: linear-gradient(135deg, #223a66 0%, #4a6fa5 50%, #e12454 100%);
+		color: white;
+		padding: 25px 30px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.popup-header::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+		animation: shimmer 3s infinite;
+	}
+
+	.popup-header h3 {
+		color: white;
+		margin: 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		position: relative;
+		z-index: 2;
+	}
+
+	.popup-header p {
+		margin: 8px 0 0 0;
+		opacity: 0.95;
+		font-size: 1rem;
+		position: relative;
+		z-index: 2;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	}
+
+	.popup-close {
+		position: absolute;
+		top: 20px;
+		right: 25px;
+		background: rgba(255, 255, 255, 0.15);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		color: white;
+		font-size: 20px;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 3;
+		backdrop-filter: blur(10px);
+	}
+
+	.popup-close:hover {
+		background: rgba(255, 255, 255, 0.25);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: rotate(90deg) scale(1.1);
+	}
+
+	.popup-body {
+		padding: 0;
+		display: flex;
+		min-height: 400px;
+	}
+
+	.popup-content-left {
+		flex: 1.2;
+		padding: 40px;
+		background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		/* Change back to space-between for better distribution */
+		min-height: 450px;
+		/* Ensure minimum height */
+	}
+
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+		flex-grow: 1;
+		justify-content: center;
+	}
+
+	.button-wrapper {
+		margin-top: auto;
+		padding-top: 25px;
+	}
+
+	.popup-content-right {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		position: relative;
+		overflow: hidden;
+		background: #f0f2f5;
+	}
+
+	.location-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	.popup-content-right:hover .location-image {
+		transform: scale(1.05);
+	}
+
+	.address-section h4 {
+		color: #223a66;
+		margin-bottom: 12px;
+		font-size: 1.4rem;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.address-section h4::before {
+		content: '📍';
+		font-size: 1.2rem;
+	}
+
+	.address-text {
+		font-size: 1.1rem;
+		color: #2c3e50;
+		margin-bottom: 25px;
+		line-height: 1.5;
+	}
+
+	.address-text strong {
+		color: #223a66;
+		font-weight: 700;
+		display: block;
+		margin-bottom: 4px;
+	}
+
+	.address-text small {
+		color: #6c757d;
+		font-size: 0.95rem;
+		font-style: italic;
+	}
+
+	.features-list {
+		background: linear-gradient(135deg, #e8f4fd 0%, #dff0d8 100%);
+		border: 2px solid #b8dacc;
+		border-radius: 16px;
+		padding: 25px;
+		margin-bottom: 25px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.features-list::before {
+		content: '';
+		position: absolute;
+		top: -20px;
+		right: -20px;
+		width: 80px;
+		height: 80px;
+		background: radial-gradient(circle, rgba(40, 167, 69, 0.1) 0%, transparent 70%);
+		border-radius: 50%;
+	}
+
+	.features-list h6 {
+		color: #155724;
+		margin-bottom: 15px;
+		font-size: 1.1rem;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.features-list ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.features-list li {
+		color: #155724;
+		margin-bottom: 8px;
+		padding-left: 25px;
+		position: relative;
+		font-weight: 500;
+		line-height: 1.4;
+	}
+
+	.features-list li::before {
+		content: '✓';
+		position: absolute;
+		left: 0;
+		top: 0;
+		color: #28a745;
+		font-weight: bold;
+		font-size: 1.1rem;
+	}
+
+	.popup-buttons {
+		display: flex;
+		gap: 15px;
+		margin-top: auto;
+		flex-wrap: wrap;
+	}
+
+	.popup-btn {
+		flex: 1;
+		min-width: 160px;
+		padding: 16px 24px;
+		border: none;
+		border-radius: 50px;
+		font-weight: 700;
+		text-decoration: none;
+		text-align: center;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		font-size: 1rem;
+		position: relative;
+		overflow: hidden;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.popup-btn::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		transition: left 0.5s;
+	}
+
+	.popup-btn:hover::before {
+		left: 100%;
+	}
+
+	.btn-navigate {
+		background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+		color: white;
+		border: 2px solid transparent;
+	}
+
+	.btn-navigate:hover {
+		background: linear-gradient(135deg, #218838 0%, #17a2b8 100%);
+		color: white;
+		transform: translateY(-3px);
+		box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+	}
+
+	.btn-appointment {
+		background: linear-gradient(135deg, #e12454 0%, #dc3545 100%);
+		color: white;
+		border: 2px solid transparent;
+	}
+
+	.btn-appointment:hover {
+		background: linear-gradient(135deg, #c41e3a 0%, #bd2130 100%);
+		color: white;
+		transform: translateY(-3px);
+		box-shadow: 0 8px 25px rgba(225, 36, 84, 0.4);
+	}
+
+	/* Animations */
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			backdrop-filter: blur(0px);
+		}
+
+		to {
+			opacity: 1;
+			backdrop-filter: blur(4px);
+		}
+	}
+
+	@keyframes slideUp {
+		from {
+			opacity: 0;
+			transform: translateY(60px) scale(0.95);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			transform: translateX(-100%);
+		}
+
+		100% {
+			transform: translateX(100%);
+		}
+	}
+
+	/* Responsive Design */
+	@media (max-width: 768px) {
+		.location-popup-overlay {
+			padding: 15px;
+		}
+
+		.location-popup {
+			max-height: 90vh;
+			border-radius: 20px;
+		}
+
+		.popup-body {
+			flex-direction: column;
+		}
+
+		.popup-content-right {
+			order: -1;
+			height: 200px;
+			flex: none;
+		}
+
+		.popup-content-left {
+			flex: none;
+			padding: 25px;
+		}
+
+		.popup-header {
+			padding: 20px 25px;
+			text-align: center;
+		}
+
+		.popup-header h3 {
+			font-size: 1.3rem;
+		}
+
+		.popup-buttons {
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.popup-btn {
+			min-width: auto;
+			padding: 14px 20px;
+			font-size: 0.95rem;
+		}
+
+		.features-list {
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.address-section h4 {
+			font-size: 1.2rem;
+		}
+
+		.address-text {
+			font-size: 1rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.location-popup-overlay {
+			padding: 10px;
+		}
+
+		.popup-content-left {
+			padding: 20px;
+		}
+
+		.popup-header {
+			padding: 18px 20px;
+		}
+
+		.popup-close {
+			top: 15px;
+			right: 20px;
+			width: 32px;
+			height: 32px;
+			font-size: 18px;
+		}
+	}
+
+	/* New Sections Styles */
+	.wellness-highlight {
+		background: #fff;
+		padding: 100px 0;
+		position: relative;
+	}
+
+	.relocation-banner {
+		background: linear-gradient(135deg, #d4edda, #c3e6cb);
+		border: 2px solid #b8dacc;
+		border-radius: 15px;
+		padding: 25px;
+		margin-bottom: 60px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.relocation-banner::before {
+		content: '';
+		position: absolute;
+		top: -20px;
+		right: -20px;
+		width: 100px;
+		height: 100px;
+		background: rgba(40, 167, 69, 0.1);
+		border-radius: 50%;
+		z-index: 1;
+	}
+
+	.relocation-banner h4 {
+		color: #155724;
+		margin-bottom: 8px;
+		position: relative;
+		z-index: 2;
+	}
+
+	.relocation-banner p {
+		color: #155724;
+		margin-bottom: 0;
+		font-weight: 500;
+		position: relative;
+		z-index: 2;
+	}
+
+	.wellness-cards-container {
+		margin-top: 30px;
+	}
+
+	.wellness-card {
+		background: white;
+		border-radius: 20px;
+		padding: 40px 25px;
+		text-align: center;
+		box-shadow: 0 8px 25px rgba(34, 58, 102, 0.08);
+		transition: all 0.3s ease;
+		position: relative;
+		height: 100%;
+		margin-bottom: 30px;
+		border: 1px solid rgba(34, 58, 102, 0.05);
+	}
+
+	.wellness-card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 15px 40px rgba(34, 58, 102, 0.15);
+		border-color: rgba(225, 36, 84, 0.2);
+	}
+
+	.wellness-icon {
+		width: 80px;
+		height: 80px;
+		background: linear-gradient(45deg, #e12454, #223a66);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 25px;
+		color: white;
+		font-size: 28px;
+		box-shadow: 0 8px 20px rgba(225, 36, 84, 0.3);
+	}
+
+	.wellness-card h5 {
+		color: #223a66;
+		font-weight: 600;
+		margin-bottom: 15px;
+		font-size: 1.25rem;
+	}
+
+	.wellness-card p {
+		color: #6c757d;
+		line-height: 1.6;
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+
+	.new-badge {
+		position: absolute;
+		top: -8px;
+		right: 15px;
+		background: linear-gradient(45deg, #28a745, #20c997);
+		color: white;
+		padding: 6px 12px;
+		border-radius: 15px;
+		font-size: 11px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+	}
+
+	.wellness-section-title {
+		text-align: center;
+		margin-bottom: 50px;
+	}
+
+	.wellness-section-title h2 {
+		color: #223a66;
+		font-weight: 700;
+		margin-bottom: 15px;
+	}
+
+	.wellness-section-title p {
+		color: #6c757d;
+		font-size: 16px;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	@media (max-width: 768px) {
+		.popup-buttons {
+			flex-direction: column;
+		}
+
+		.wellness-highlight {
+			padding: 60px 0;
+		}
+
+		.wellness-card {
+			padding: 30px 20px;
+			margin-bottom: 20px;
+		}
+	}
+</style>
 
 </head>
 <!-- Google tag (gtag.js) -->
@@ -52,11 +628,60 @@
 	window.dataLayer = window.dataLayer || [];
 	function gtag() { dataLayer.push(arguments); }
 	gtag('js', new Date());
-
 	gtag('config', 'G-QQS3K4V1RE');
 </script>
 
 <body id="top">
+	<!-- Location Update Popup -->
+	<div class="location-popup-overlay" id="locationPopup">
+		<div class="location-popup">
+			<div class="popup-header">
+				<button class="popup-close" onclick="closeLocationPopup()">&times;</button>
+				<h3 style="color: white;"><i class="fas fa-map-marker-alt"></i> We've Moved to a Better Location!</h3>
+				<p class="mb-0">Dr. Anjali's Women Wellness Centre is now at our new, state-of-the-art facility</p>
+			</div>
+			<div class="popup-body">
+				<div class="popup-content-left">
+					<div class="content-wrapper">
+						<div class="address-section">
+							<h4>New Address</h4>
+							<p class="address-text">
+								<strong>Plot - 22, Harsh Commercial Park, Meerut</strong>
+								<small>Near Bikanerwala</small>
+							</p>
+						</div>
+
+						<div class="features-list">
+							<h6><i class="fas fa-star"></i> What's New at Our Wellness Centre:</h6>
+							<ul>
+								<li>Complete Women's Healthcare Facility</li>
+								<li>In-house Pharmacy (Shubh Medicos)</li>
+								<li>RedCliffe Pathology Collection Centre</li>
+								<li>Dedicated Yoga Room for Women</li>
+								<li>and much more...</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="button-wrapper">
+						<div class="popup-buttons">
+							<a href="https://maps.app.goo.gl/GhJmyHSCR1PuwTGf7" target="_blank"
+								class="popup-btn btn-navigate">
+								<i class="fas fa-directions"></i> Get Directions
+							</a>
+							<a href="appointment.html" class="popup-btn btn-appointment">
+								<i class="fas fa-calendar-plus"></i> Book Appointment
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="popup-content-right">
+					<img src="images/wellness.jpg" alt="New Dr. Anjali's Women Wellness Centre Location"
+						class="location-image" onerror="this.style.display='none'">
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<header>
 		<div class="header-top-bar">
@@ -64,10 +689,10 @@
 				<div class="row align-items-center">
 					<div class="col-lg-6">
 						<ul class="top-bar-info list-inline-item pl-0 mb-0">
-							<li class="list-inline-item"><a href="mailto:anjali.agarwal.clinic@gmail.com"><i
-										class="icofont-support-faq mr-2"></i>anjali.agarwal.clinic@gmail.com</a></li>
-							<li class="list-inline-item"><i class="icofont-location-pin mr-2"></i>Shop No.4, Kirti
-								Plaza, Meerut</li>
+							<li class="list-inline-item"><a href="mailto:dranjaliwwc@outlook.com"><i
+										class="icofont-support-faq mr-2"></i>dranjaliwwc@outlook.com</a></li>
+							<li class="list-inline-item"><i class="icofont-location-pin mr-2"></i>Plot - 22, Harsh
+								Commercial Park, Meerut</li>
 						</ul>
 					</div>
 					<div class="col-lg-6">
@@ -84,7 +709,8 @@
 		<nav class="navbar navbar-expand-lg navigation" id="navbar">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
-					<img src="images/logo.webp" alt="Dr. Anjali Gupta" class="img-fluid" style="height: 70px;">
+					<img src="images/logo.webp" alt="Dr. Anjali's Women Wellness Centre" class="img-fluid"
+						style="height: 70px;">
 				</a>
 
 				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain"
@@ -112,23 +738,99 @@
 				<div class="col-lg-6 col-md-12 col-xl-7">
 					<div class="block">
 						<div class="divider mb-3"></div>
-						<span class="text-uppercase text-sm letter-spacing ">Expert Gynecologist & Obstetrician</span>
-						<h1 class="mb-3 mt-3">Dr. Anjali Gupta</h1>
+						<span class="text-uppercase text-sm letter-spacing">Complete Women's Wellness Centre</span>
+						<h1 class="mb-3 mt-3">Dr. Anjali's Women Wellness Centre</h1>
 
-						<p class="mb-4 pr-5">Ex-CMO of CGHS, Meerut with highest ratings in the region. Specialized in
-							Gynecology, Obstetrics, Laparoscopic Surgery and Cosmetic Gynaecology with extensive
-							experience at prestigious
-							institutions.</p>
-						<div class="btn-container ">
+						<p class="mb-4 pr-5">Your comprehensive women's healthcare destination in Meerut. Now at our new
+							location with enhanced facilities including expert gynecological care, in-house pharmacy,
+							pathology lab, and dedicated yoga sessions - all under one roof for your complete wellness
+							journey.</p>
+						<div class="btn-container">
 							<a href="appointment.html" target="_blank"
-								class="btn btn-main-2 btn-icon btn-round-full">Make appointment <i
-									class="icofont-simple-right ml-2  "></i></a>
+								class="btn btn-main-2 btn-icon btn-round-full">Book Appointment <i
+									class="icofont-simple-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	<!-- New Location Highlight -->
+	<section class="wellness-highlight">
+		<div class="container">
+			<!-- Relocation Banner -->
+			<div class="relocation-banner">
+				<div class="row align-items-center">
+					<div class="col-md-1 text-center">
+						<i class="fas fa-map-marker-alt" style="font-size: 2rem; color: #28a745;"></i>
+					</div>
+					<div class="col-md-11">
+						<h4><i class="fas fa-home"></i> We've Relocated to Serve You Better!</h4>
+						<p>Visit us at our new, state-of-the-art facility at <strong>Plot - 22, Harsh Commercial Park,
+								Meerut</strong></p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Section Title -->
+			<div class="wellness-section-title">
+				<h2>Complete Women's Wellness Under One Roof</h2>
+				<p>Experience comprehensive healthcare with our new integrated facilities designed specifically for
+					women's health and wellness needs.</p>
+			</div>
+
+			<!-- Wellness Cards -->
+			<div class="wellness-cards-container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6">
+						<div class="wellness-card">
+							<div class="new-badge">New</div>
+							<div class="wellness-icon">
+								<i class="fas fa-pills"></i>
+							</div>
+							<h5>Shubh Medicos</h5>
+							<p>In-house pharmacy with all essential medicines and healthcare products for women's
+								wellness needs.</p>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="wellness-card">
+							<div class="new-badge">New</div>
+							<div class="wellness-icon">
+								<i class="fas fa-microscope"></i>
+							</div>
+							<h5>RedCliffe Pathology</h5>
+							<p>Official collection centre for comprehensive diagnostic tests and health check-ups with
+								accurate results.</p>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="wellness-card">
+							<div class="new-badge">New</div>
+							<div class="wellness-icon">
+								<i class="fas fa-spa"></i>
+							</div>
+							<h5>Women's Yoga Room</h5>
+							<p>Dedicated space for prenatal yoga, postnatal recovery, and general wellness sessions for
+								women of all ages.</p>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="wellness-card">
+							<div class="wellness-icon">
+								<i class="fas fa-user-md"></i>
+							</div>
+							<h5>Expert Medical Care</h5>
+							<p>Comprehensive gynecological and obstetric services by Dr. Anjali Gupta with 25+ years of
+								experience.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section class="features">
 		<div class="container">
 			<div class="row">
@@ -139,9 +841,11 @@
 								<i class="icofont-surgeon-alt"></i>
 							</div>
 							<span>Clinic Hours</span>
-							<h4 class="mb-3">Agarwal Clinic</h4>
+							<h4 class="mb-3">Dr. Anjali's Women Wellness Centre</h4>
 							<ul class="w-hours list-unstyled">
-								<li class="d-flex justify-content-between">Mon - Sat : <span>9:30 AM - 1:30 PM</span>
+								<li class="d-flex justify-content-between">Mon - Sat : <span>10:30 AM - 2:00 PM</span>
+								</li>
+								<li class="d-flex justify-content-between">Mon - Sat : <span>4:30 PM - 6:00 PM</span>
 								</li>
 								<li class="d-flex justify-content-between">Sunday : <span>Closed</span></li>
 							</ul>
@@ -165,7 +869,7 @@
 								<i class="icofont-support"></i>
 							</div>
 							<span>Appointments</span>
-							<h4 class="mb-3">0121-4330908</h4>
+							<h4 class="mb-3">+91 9837033107</h4>
 							<ul class="w-hours list-unstyled">
 								<li>Call between 8:30 AM - 1:00 PM on weekdays</li>
 								<li>Emergency: 9837033107 / 9837794524</li>
@@ -178,7 +882,6 @@
 		</div>
 	</section>
 
-
 	<section class="section about">
 		<div class="container">
 			<div class="row align-items-center">
@@ -190,26 +893,25 @@
 				</div>
 				<div class="col-lg-4 col-sm-6">
 					<div class="about-img mt-4 mt-lg-0">
-						<img src="images/about/img-3.webp" alt="Dr. Anjali performing a surgery" class="img-fluid">
+						<img src="images/about/img-3.webp" alt="Women's wellness centre" class="img-fluid">
 					</div>
 				</div>
 				<div class="col-lg-4">
 					<div class="about-content pl-4 mt-4 mt-lg-0">
-						<h2 class="title-color">Personalized Care<br>& Women's Health</h2>
-						<p class="mt-4 mb-5">We offer specialized gynecological and obstetric care,
-							focusing on both personal attention and advanced medical solutions. With extensive
-							experience
-							in laparoscopic surgeries and women's health, we are dedicated to ensuring the highest
-							standards
-							of treatment for all our patients.</p>
+						<h2 class="title-color">Complete Women's<br>Healthcare Journey</h2>
+						<p class="mt-4 mb-5">At Dr. Anjali's Women Wellness Centre, we believe in holistic women's
+							healthcare. From expert medical consultations and advanced treatments to wellness activities
+							and essential health products - we provide everything a woman needs for her complete health
+							journey, all in one convenient location.</p>
 
-						<a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Services<i
+						<a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Our Services<i
 								class="icofont-simple-right ml-3"></i></a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
 	<section class="cta-section ">
 		<div class="container">
 			<div class="cta position-relative">
@@ -228,7 +930,6 @@
 							<p>Happy Reviews</p>
 						</div>
 					</div>
-
 					<div class="col-lg-3 col-md-6 col-sm-6">
 						<div class="counter-stat">
 							<i class="icofont-badge"></i>
@@ -247,16 +948,18 @@
 			</div>
 		</div>
 	</section>
+
 	<section class="section service gray-bg">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-7 text-center">
 					<div class="section-title">
-						<h2>Award winning patient care</h2>
+						<h2>Comprehensive Women's Wellness Services</h2>
 						<div class="divider mx-auto my-4"></div>
-						<p>We are committed to providing exceptional healthcare services
-							tailored to women's health. Our expertise spans a wide range of treatments
-							and procedures to ensure the best possible care for every patient.</p>
+						<p>We are committed to providing exceptional healthcare services tailored specifically for
+							women's health. Our expertise spans a wide range of treatments, wellness programs, and
+							support services to ensure the best possible care for every woman at every stage of life.
+						</p>
 					</div>
 				</div>
 			</div>
@@ -266,26 +969,11 @@
 					<div class="service-item mb-4">
 						<div class="icon d-flex align-items-center">
 							<i class="icofont-medical-sign-alt text-lg"></i>
-							<h4 class="mt-3 mb-3">Comprehensive Gynecology Services</h4>
-						</div>
-
-						<div class="content">
-							<p class="mb-4">From routine check-ups to complex gynecological procedures,
-								we offer personalized care to address all aspects of women's reproductive health.</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="service-item mb-4">
-						<div class="icon d-flex align-items-center">
-							<i class="icofont-heart-beat-alt text-lg"></i>
-							<h4 class="mt-3 mb-3">Obstetric Care & Pregnancy Management</h4>
+							<h4 class="mt-3 mb-3">Expert Gynecological Care</h4>
 						</div>
 						<div class="content">
-							<p class="mb-4">Dedicated support throughout pregnancy, including prenatal check-ups,
-								delivery planning, postnatal care, along with Yoga and meditation ensuring the
-								well-being of both mother and baby.
+							<p class="mb-4">Comprehensive gynecological services from routine check-ups to advanced
+								procedures, ensuring personalized care for all aspects of women's reproductive health.
 							</p>
 						</div>
 					</div>
@@ -294,29 +982,25 @@
 				<div class="col-lg-4 col-md-6 col-sm-6">
 					<div class="service-item mb-4">
 						<div class="icon d-flex align-items-center">
+							<i class="icofont-heart-beat-alt text-lg"></i>
+							<h4 class="mt-3 mb-3">Pregnancy & Maternal Care</h4>
+						</div>
+						<div class="content">
+							<p class="mb-4">Complete pregnancy support from preconception counseling to postnatal care,
+								including prenatal yoga and wellness programs for healthy motherhood.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6 col-sm-6">
+					<div class="service-item mb-4">
+						<div class="icon d-flex align-items-center">
 							<i class="icofont-surgeon text-lg"></i>
-							<h4 class="mt-3 mb-3">Laparoscopic Surgeries</h4>
+							<h4 class="mt-3 mb-3">Advanced Laparoscopic Surgery</h4>
 						</div>
 						<div class="content">
-							<p class="mb-4">Utilizing advanced minimally invasive techniques, we specialize in
-								laparoscopic procedures for gynecological conditions, promoting faster recovery and
-								minimal discomfort.</p>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="service-item mb-4">
-						<div class="icon d-flex align-items-center">
-							<i class="icofont-doctor text-lg"></i>
-							<h4 class="mt-3 mb-3">Fertility Counseling</h4>
-						</div>
-
-						<div class="content">
-							<p class="mb-4">Expert guidance and support for women and couples navigating fertility
-								challenges, offering both medical and emotional care to help you on your journey to
-								parenthood.</p>
+							<p class="mb-4">State-of-the-art minimally invasive surgical procedures for gynecological
+								conditions, ensuring faster recovery and minimal discomfort.</p>
 						</div>
 					</div>
 				</div>
@@ -324,12 +1008,12 @@
 				<div class="col-lg-4 col-md-6 col-sm-6">
 					<div class="service-item mb-4">
 						<div class="icon d-flex align-items-center">
-							<i class="icofont-girl-alt text-lg"></i>
-							<h4 class="mt-3 mb-3">Menstrual & Hormonal Health</h4>
+							<i class="fas fa-spa text-lg"></i>
+							<h4 class="mt-3 mb-3">Wellness & Yoga Programs</h4>
 						</div>
 						<div class="content">
-							<p class="mb-4">Specialized treatment for menstrual irregularities, PCOS, and other hormonal
-								disorders affecting women's health.</p>
+							<p class="mb-4">Dedicated yoga sessions for women including prenatal yoga, postnatal
+								recovery, and general wellness programs for physical and mental health.</p>
 						</div>
 					</div>
 				</div>
@@ -337,12 +1021,25 @@
 				<div class="col-lg-4 col-md-6 col-sm-6">
 					<div class="service-item mb-4">
 						<div class="icon d-flex align-items-center">
-							<i class="icofont-dna-alt-1 text-lg"></i>
-							<h4 class="mt-3 mb-3">Cancer Screening & Prevention</h4>
+							<i class="fas fa-microscope text-lg"></i>
+							<h4 class="mt-3 mb-3">Diagnostic Services</h4>
 						</div>
 						<div class="content">
-							<p class="mb-4">Early detection and prevention of gynecological cancers through regular
-								screenings, including Pap smears, HPV testing and vaccination.</p>
+							<p class="mb-4">Complete diagnostic facility with RedCliffe Pathology collection centre for
+								accurate and timely test results for all health assessments.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6 col-sm-6">
+					<div class="service-item mb-4">
+						<div class="icon d-flex align-items-center">
+							<i class="fas fa-pills text-lg"></i>
+							<h4 class="mt-3 mb-3">In-House Pharmacy</h4>
+						</div>
+						<div class="content">
+							<p class="mb-4">Shubh Medicos - our in-house pharmacy provides all essential medicines and
+								healthcare products, ensuring convenient access to quality medications.</p>
 						</div>
 					</div>
 				</div>
@@ -354,10 +1051,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<h2 class="title-color">Stay Informed with Our Latest Videos</h2>
+					<h2 class="title-color">Women's Health Education & Awareness</h2>
 					<div class="divider mx-auto my-4"></div>
-					<p>Watch the most recent expert insights, tips, and updates from Dr. Anjali Gupta on women's health,
-						gynecology, and more.</p>
+					<p>Stay informed with the latest insights on women's health, wellness tips, and expert guidance from
+						Dr. Anjali Gupta and our healthcare team.</p>
 					<div id="youtubeCarousel" class="carousel slide" data-ride="carousel">
 						<div class="carousel-inner">
 							<!-- First slide with 3 videos -->
@@ -445,12 +1142,11 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-7">
 					<div class="section-title text-center">
-						<h2>We've served over 30000 Patients</h2>
+						<h2>Trusted by 30000+ Women</h2>
 						<div class="divider mx-auto my-4"></div>
-						<p>Dr. Anjali Gupta has been providing compassionate and expert care,
-							specializing in gynecology, obstetrics, and advanced laparoscopic surgeries.
-							<br>Join the community of women who trust us for their health and well-being.
-						</p>
+						<p>Dr. Anjali's Women Wellness Centre has been providing compassionate and expert care,
+							specializing in comprehensive women's health services. Our patients trust us for their
+							complete wellness journey from adolescence to menopause and beyond.</p>
 					</div>
 				</div>
 			</div>
@@ -467,15 +1163,15 @@
 						</div>
 
 						<div class="client-info ">
-							<h4>Compassionate and Skilled!</h4>
+							<h4>Compassionate and Skilled Care!</h4>
 							<span>Anuj Singh</span>
 							<p>
 								We had the pleasure of having Dr. Anjali Gupta as our obstetrician for the delivery of
-								our second baby, and we couldn't be happier with the care we received. Dr. Anjali was
-								extremely knowledgeable, always explaining things clearly and thoroughly. She made us
-								feel confident and informed every step of the way.
-								<br>We are so grateful to her for helping us bring our precious baby into the world. We
-								highly recommend her to anyone looking for a skilled and compassionate obstetrician.
+								our second baby, and we couldn't be happier with the care we received. The new wellness
+								centre provides such a comfortable environment for expecting mothers. Dr. Anjali was
+								extremely knowledgeable, always explaining things clearly and thoroughly.
+								<br>We are so grateful to her and the entire team at the Women's Wellness Centre for
+								helping us bring our precious baby into the world safely.
 							</p>
 						</div>
 					</div>
@@ -486,17 +1182,17 @@
 						</div>
 
 						<div class="client-info">
-							<h4>Smooth, stress-free experience</h4>
+							<h4>Complete Wellness Experience</h4>
 							<span>Malvika Bansal</span>
 							<p>
-								I cannot thank Dr. Anjali Gupta enough for the incredible care and support I received
-								throughout my pregnancy journey. From the moment I began planning to conceive, she was
-								always there with her expert advice, patience, and understanding. She encouraged me and
-								positively pushed me through the process, which enhanced my confidence in becoming a
-								mother despite health complications.
-								<br>I wholeheartedly recommend Dr Anjali Gupta at Agarwal Clinic, Meerut to anyone
-								looking for a compassionate and knowledgeable gynaecologist. Ma'am along with her staff
-								truly made my pregnancy a positive and empowering experience.
+								I cannot thank Dr. Anjali Gupta and the Women's Wellness Centre enough for the
+								incredible care and support I received
+								throughout my pregnancy journey. From prenatal yoga sessions to having the pharmacy
+								right there for my medications - everything was so convenient. The team encouraged me
+								and
+								positively supported me through the entire process.
+								<br>I wholeheartedly recommend Dr. Anjali's Women Wellness Centre to anyone looking for
+								comprehensive women's healthcare in one place.
 							</p>
 						</div>
 
@@ -509,15 +1205,14 @@
 						</div>
 
 						<div class="client-info">
-							<h4>Exceptional patient dedication!</h4>
+							<h4>Exceptional Holistic Care!</h4>
 							<span>Reena Goriyan</span>
 							<p>
-								I wanted to take a moment to express my heartfelt gratitude for the exceptional care I
-								received during my recent visit to your office. From the moment I walked in, I felt
-								welcomed and at ease, thanks to your warm and professional demeanor.
-								<br>Thank you for your dedication to your patients' well-being and for providing such
-								outstanding care. I feel fortunate to have you as my gynecologist and look forward to
-								continuing my healthcare journey with your guidance and support.
+								The new Women's Wellness Centre is amazing! From the moment I walked in, I felt welcomed
+								and at ease. Having the pathology lab, pharmacy, and yoga room all in one place makes
+								healthcare so much more convenient. Dr. Anjali's expertise combined with the
+								comprehensive facilities creates the perfect environment for women's health.
+								<br>Thank you for creating such a wonderful space dedicated to women's wellness.
 							</p>
 						</div>
 
@@ -530,15 +1225,15 @@
 						</div>
 
 						<div class="client-info">
-							<h4>Personal touches, professional care</h4>
+							<h4>Outstanding Facility & Care</h4>
 							<span>Kapil Chauhan</span>
 							<p class="mt-4">
-								Wonderful experience with Agarwal Clinic. Dr. Angali Gupta was a wonderful Gyne,
-								surgeon, and the staff was always helpful and kind. They ensured I had a smooth prep,
-								surgery, and follow-up.Dr. Angali Gupta is incredible. Not only has she taken great care
-								of my wife's health, but also she is lovely to speak with at every appointment. It’s
-								rare to find a doctor that combines such personal touches and care for a patient I am so
-								glad We chose Agarwal Clinic and would highly recommend to anyone.
+								Wonderful experience with the new Women's Wellness Centre. Dr. Anjali Gupta is an
+								incredible gynecologist and surgeon, and the entire facility is designed with women's
+								comfort in mind. The staff is always helpful and kind, ensuring a smooth experience from
+								consultation to follow-up. Having everything under one roof - medical care, pharmacy,
+								tests, and wellness activities - is truly exceptional.
+								<br>We highly recommend Dr. Anjali's Women Wellness Centre to everyone.
 							</p>
 						</div>
 						<i class="icofont-quote-right"></i>
@@ -550,14 +1245,14 @@
 						</div>
 
 						<div class="client-info">
-							<h4>Always available for support</h4>
+							<h4>Always Available Support</h4>
 							<span>Namrata Anand</span>
 							<p>
-								Dr. Anjali gupta ma'am is a very nice doctor in Meerut. Highly highly recommendes. Very
-								sweet and soft spoken🙂. Understand the problem. give her proper time. always picks up
-								the phone pick and reply on whatsApp at your requirement. My pregnancy journey with
-								ma'am was very nice and good.
-								<br>God bless ma'am💐
+								Dr. Anjali ma'am and her team at the Women's Wellness Centre are wonderful. Very
+								sweet and soft spoken, they understand every concern and give proper time to each
+								patient. The convenience of having yoga sessions, pharmacy, and lab tests all in one
+								location is incredible. Ma'am is always available on phone and WhatsApp for any queries.
+								<br>My entire wellness journey has been amazing here. God bless the team💐
 								<br>Lots of love❤
 							</p>
 						</div>
@@ -573,7 +1268,7 @@
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<h2 class="title-color">Frequently Asked Questions</h2>
-					<p>Find answers to some of the common questions about women's health, treatments, and our services.
+					<p>Find answers to common questions about our women's wellness services, facilities, and treatments.
 					</p>
 				</div>
 			</div>
@@ -586,14 +1281,15 @@
 								<h5 class="mb-0">
 									<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
 										data-target="#faq1" aria-expanded="false" aria-controls="faq1">
-										What are your clinic hours?
+										What are your new clinic hours at the Women's Wellness Centre?
 									</button>
 								</h5>
 							</div>
 							<div id="faq1" class="collapse" aria-labelledby="faqHeading1" data-parent="#faqAccordion">
 								<div class="card-body">
-									Our clinic is open from Monday to Saturday, 9:30 AM to 1:30 PM. We are closed on
-									Sundays.
+									Our Women's Wellness Centre is open Monday to Saturday with three time slots: 11:00
+									AM - 1:00 PM, 1:00 PM - 3:00 PM, and 3:30 PM - 5:30 PM. We are closed on Sundays.
+									The pharmacy and pathology services have extended hours for your convenience.
 								</div>
 							</div>
 						</div>
@@ -603,15 +1299,16 @@
 								<h5 class="mb-0">
 									<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
 										data-target="#faq2" aria-expanded="false" aria-controls="faq2">
-										How can I book an appointment?
+										What services are available at your new location?
 									</button>
 								</h5>
 							</div>
 							<div id="faq2" class="collapse" aria-labelledby="faqHeading2" data-parent="#faqAccordion">
 								<div class="card-body">
-									You can book an appointment by calling us at +91 9837033107 / 9837794524 or by
-									visiting the
-									appointment section on our website.
+									Our comprehensive facility includes expert gynecological care, in-house pharmacy
+									(Shubh Medicos), RedCliffe Pathology collection centre, dedicated women's yoga room,
+									prenatal and postnatal care, and advanced laparoscopic surgery services - all under
+									one roof.
 								</div>
 							</div>
 						</div>
@@ -621,32 +1318,15 @@
 								<h5 class="mb-0">
 									<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
 										data-target="#faq3" aria-expanded="false" aria-controls="faq3">
-										Do you offer laparoscopic surgery?
+										Do you offer yoga and wellness programs?
 									</button>
 								</h5>
 							</div>
 							<div id="faq3" class="collapse" aria-labelledby="faqHeading3" data-parent="#faqAccordion">
 								<div class="card-body">
-									Yes, Dr. Anjali Gupta specializes in advanced laparoscopic surgeries for
-									gynecological conditions.
-								</div>
-							</div>
-						</div>
-						<!-- Question 4 -->
-						<div class="card">
-							<div class="card-header" id="faqHeading4">
-								<h5 class="mb-0">
-									<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-										data-target="#faq4" aria-expanded="false" aria-controls="faq4">
-										What insurance plans do you accept?
-									</button>
-								</h5>
-							</div>
-							<div id="faq4" class="collapse" aria-labelledby="faqHeading4" data-parent="#faqAccordion">
-								<div class="card-body">
-									We accept CGHS, ECHS, and various other private health panels. <br>For more details,
-									please
-									contact the clinic.
+									Yes! We have a dedicated yoga room offering prenatal yoga, postnatal recovery
+									sessions, general wellness yoga for women of all ages, and meditation programs
+									specifically designed for women's health and wellness.
 								</div>
 							</div>
 						</div>
@@ -656,14 +1336,15 @@
 								<h5 class="mb-0">
 									<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
 										data-target="#faq5" aria-expanded="false" aria-controls="faq5">
-										Do you provide prenatal care services?
+										How can I book an appointment at the new centre?
 									</button>
 								</h5>
 							</div>
 							<div id="faq5" class="collapse" aria-labelledby="faqHeading5" data-parent="#faqAccordion">
 								<div class="card-body">
-									Yes, we offer comprehensive prenatal care, including regular check-ups and guidance
-									throughout your pregnancy.
+									You can book appointments by calling +91 9837033107, using our online booking
+									system, or visiting us directly at our new location. We also offer emergency
+									consultations and accept CGHS, ECHS, and private health insurance panels.
 								</div>
 							</div>
 						</div>
@@ -681,10 +1362,11 @@
 				<div class="col-lg-4 mr-auto col-sm-6">
 					<div class="widget mb-5 mb-lg-0">
 						<div class="logo mb-4">
-							<img src="images/logo.webp" alt="Dr. Anjali Gupta" class="img-fluid">
+							<img src="images/logo.webp" alt="Dr. Anjali's Women Wellness Centre" class="img-fluid">
 						</div>
-						<p>Dr. Anjali Gupta provides personalized gynecological and obstetric care, including advanced
-							laparoscopic surgery. Visit us for compassionate, expert care.</p>
+						<p>Dr. Anjali's Women Wellness Centre provides comprehensive women's healthcare including expert
+							medical care, wellness programs, in-house pharmacy, and diagnostic services - all designed
+							for your complete wellness journey.</p>
 
 						<ul class="list-inline footer-socials mt-4">
 							<li class="list-inline-item"><a href="https://www.instagram.com/dr_anjali_gupta01/"><i
@@ -705,7 +1387,7 @@
 
 						<ul class="list-unstyled footer-menu lh-35">
 							<li><a href="about.html">About</a></li>
-							<li><a href="services.html">Services</a></li>
+							<li><a href="service.html">Services</a></li>
 							<li><a href="appointment.html">Appointment</a></li>
 							<li><a href="contact.html">Contact</a></li>
 						</ul>
@@ -715,12 +1397,12 @@
 				<!-- Google Map -->
 				<div class="col-lg-4 col-md-6 col-sm-6">
 					<div class="widget widget-contact mb-5 mb-lg-0">
-						<h4 class="text-capitalize mb-3">Our Location</h4>
+						<h4 class="text-capitalize mb-3">Our New Location</h4>
 						<div class="divider mb-4"></div>
-						<!-- Google Map -->
+						<!-- Google Map for New Location -->
 						<iframe
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d65073868.81759184!2d25.88822224999998!3d5.4482515647680385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c7b03f190045f%3A0xb9cb079cc7bf070e!2sAgarwal%20Clinic%20(Dr.%20Anjali%20Gupta)!5e0!3m2!1sen!2sin!4v1729783504327!5m2!1sen!2sin"
-							width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3490.8231900466467!2d77.744377!3d28.962968299999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c65a18f7aba67%3A0x994f279fe48581aa!2sShubh%20Medicos!5e0!3m2!1sen!2sin!4v1751349612150!5m2!1sen!2sin"
+							style="border:0;" allowfullscreen="" loading="lazy" class = "mapfoot"
 							referrerpolicy="no-referrer-when-downgrade"></iframe>
 					</div>
 				</div>
@@ -728,11 +1410,7 @@
 		</div>
 	</footer>
 
-	<!-- 
-    Essential Scripts
-    =====================================-->
-
-
+	<!-- Essential Scripts -->
 	<!-- Main jQuery -->
 	<script src="plugins/jquery/jquery.js"></script>
 	<!-- Bootstrap 4.3.2 -->
@@ -743,12 +1421,48 @@
 	<script src="plugins/slick-carousel/slick/slick.min.js"></script>
 	<!-- Counterup -->
 	<script src="plugins/counterup/jquery.waypoints.min.js"></script>
-
 	<script src="plugins/shuffle/shuffle.min.js"></script>
 	<script src="plugins/counterup/jquery.counterup.min.js"></script>
-	<!-- Google Map -->
+	<!-- Main Script -->
 	<script src="js/script.js"></script>
 	<script src="js/contact.js"></script>
+
+	<!-- Location Popup Script -->
+	<script>
+		// Show popup when page loads
+		document.addEventListener('DOMContentLoaded', function () {
+			// Check if popup has been shown in this session
+			const popupShown = sessionStorage.getItem('locationPopupShown');
+
+			if (!popupShown) {
+				// Show popup after a small delay
+				setTimeout(function () {
+					document.getElementById('locationPopup').style.display = 'flex';
+				}, 1000);
+			}
+		});
+
+		// Close popup function
+		function closeLocationPopup() {
+			document.getElementById('locationPopup').style.display = 'none';
+			// Remember that popup was shown in this session
+			sessionStorage.setItem('locationPopupShown', 'true');
+		}
+
+		// Close popup when clicking outside
+		document.getElementById('locationPopup').addEventListener('click', function (e) {
+			if (e.target === this) {
+				closeLocationPopup();
+			}
+		});
+
+		// Close popup with ESC key
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') {
+				closeLocationPopup();
+			}
+		});
+	</script>
 
 </body>
 
