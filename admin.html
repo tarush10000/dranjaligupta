@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Dr. Anjali's Women Wellness Centre</title>
-
+    <script src="js/config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -1078,7 +1078,6 @@
 
     <script>
         const API_BASE_URL = 'https://appointment-5tt0.onrender.com/api';
-        const ADMIN_PASSWORD = 'admin@123'; // In production, use environment variable
         let selectedAppointments = [];
         let currentAppointments = [];
 
@@ -1118,54 +1117,116 @@
             }, 2 * 60 * 1000);
         });
 
-        function checkRememberedLogin() {
-            const rememberedAuth = localStorage.getItem('adminAuth');
-            if (rememberedAuth) {
-                const authData = JSON.parse(rememberedAuth);
-                const now = new Date().getTime();
-
-                if (now - authData.timestamp < 30 * 24 * 60 * 60 * 1000) {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('adminSection').style.display = 'block';
-                    loadDashboardStats();
-                    loadBlockedDays();
-                    setDefaultDates();
-                    return;
-                }
-
-                localStorage.removeItem('adminAuth');
-            }
-        }
-
-        function loginAdmin() {
+        async function loginAdmin() {
             const password = document.getElementById('adminPassword').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             const destination = document.querySelector('input[name="loginDestination"]:checked').value;
 
-            if (password === ADMIN_PASSWORD) {
-                if (rememberMe) {
-                    const authData = {
-                        timestamp: new Date().getTime(),
-                        destination: destination
-                    };
-                    localStorage.setItem('adminAuth', JSON.stringify(authData));
+            if (!password.trim()) {
+                showNotification('Please enter a password', 'error');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const loginBtn = document.querySelector('button[onclick="loginAdmin()"]');
+                const originalText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                loginBtn.disabled = true;
+
+                // Verify password with backend
+                const response = await fetch(`${API_BASE_URL}/verify-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    showNotification('Unable to verify credentials. Please try again later.', 'error');
+                    return;
                 }
 
-                if (destination === 'calendar') {
-                    window.location.href = 'admin-calendar.html';
+                if (result.valid) {
+                    if (rememberMe) {
+                        // For remember me, we can use a simple token or hash
+                        const authData = {
+                            timestamp: new Date().getTime(),
+                            destination: destination,
+                            authenticated: true
+                        };
+                        localStorage.setItem('adminAuth', JSON.stringify(authData));
+                    }
+
+                    if (destination === 'calendar') {
+                        window.location.href = 'admin-calendar.html';
+                    } else {
+                        document.getElementById('loginSection').style.display = 'none';
+                        document.getElementById('adminSection').style.display = 'block';
+                        loadDashboardStats();
+                        loadBlockedDays();
+                        setDefaultDates();
+                    }
                 } else {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('adminSection').style.display = 'block';
-                    loadDashboardStats();
-                    loadBlockedDays();
-                    setDefaultDates();
+                    showNotification('Incorrect password. Please try again.', 'error');
+                    document.getElementById('adminPassword').value = '';
+
+                    // Add simple brute force protection
+                    const attempts = sessionStorage.getItem('loginAttempts') || 0;
+                    const newAttempts = parseInt(attempts) + 1;
+                    sessionStorage.setItem('loginAttempts', newAttempts);
+
+                    if (newAttempts >= 5) {
+                        document.getElementById('adminPassword').disabled = true;
+                        loginBtn.disabled = true;
+                        showNotification('Too many failed attempts. Please refresh the page.', 'error');
+                    }
                 }
-            } else {
-                alert('Incorrect password. Please try again.');
-                document.getElementById('adminPassword').value = '';
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('Login failed. Please check your connection and try again.', 'error');
+            } finally {
+                // Reset button state
+                const loginBtn = document.querySelector('button[onclick="loginAdmin()"]');
+                if (!loginBtn.disabled) {
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                    loginBtn.disabled = false;
+                }
             }
         }
 
+        async function checkRememberedLogin() {
+            const rememberedAuth = localStorage.getItem('adminAuth');
+            if (!rememberedAuth) return;
+
+            try {
+                const authData = JSON.parse(rememberedAuth);
+                const now = new Date().getTime();
+
+                // Check if session is still valid
+                if (now - authData.timestamp < CONFIG.ADMIN_SESSION_DURATION) {
+                    // Verify the stored hash is still valid
+                    const validPasswordHash = await getPasswordHash();
+
+                    if (validPasswordHash && authData.hash === validPasswordHash) {
+                        document.getElementById('loginSection').style.display = 'none';
+                        document.getElementById('adminSection').style.display = 'block';
+                        loadDashboardStats();
+                        loadBlockedDays();
+                        setDefaultDates();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('Invalid auth data:', e);
+            }
+
+            // Clear invalid session
+            localStorage.removeItem('adminAuth');
+        }
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('adminAuth');

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar View - Dr. Anjali Gupta Admin</title>
+    <script src="js/config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -122,32 +124,38 @@
             display: inline-block;
             position: relative;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         /* New Time slot colors for 6 slots */
         .appointment-indicator.slot1 {
-            background-color: #28a745; /* Morning Slot 1: 10:30-11:30 */
+            background-color: #28a745;
+            /* Morning Slot 1: 10:30-11:30 */
         }
 
         .appointment-indicator.slot2 {
-            background-color: #20c997; /* Morning Slot 2: 11:30-12:30 */
+            background-color: #20c997;
+            /* Morning Slot 2: 11:30-12:30 */
         }
 
         .appointment-indicator.slot3 {
-            background-color: #17a2b8; /* Morning Slot 3: 12:30-1:30 */
+            background-color: #17a2b8;
+            /* Morning Slot 3: 12:30-1:30 */
         }
 
         .appointment-indicator.slot4 {
-            background-color: #6f42c1; /* Morning Slot 4: 1:30-2:00 */
+            background-color: #6f42c1;
+            /* Morning Slot 4: 1:30-2:00 */
         }
 
         .appointment-indicator.slot5 {
-            background-color: #fd7e14; /* Evening Slot 1: 4:30-5:30 */
+            background-color: #fd7e14;
+            /* Evening Slot 1: 4:30-5:30 */
         }
 
         .appointment-indicator.slot6 {
-            background-color: #dc3545; /* Evening Slot 2: 5:30-6:00 */
+            background-color: #dc3545;
+            /* Evening Slot 2: 5:30-6:00 */
         }
 
         /* Status overlays */
@@ -158,7 +166,7 @@
 
         .appointment-indicator.confirmed {
             border: 2px solid #ffffff;
-            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
         }
 
         .appointment-indicator.seen {
@@ -174,7 +182,7 @@
             font-size: 10px;
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
         }
 
         .appointment-indicator.completed {
@@ -195,7 +203,7 @@
             font-size: 12px;
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
         }
 
         .appointment-count {
@@ -345,12 +353,12 @@
             .calendar-grid {
                 font-size: 0.8rem;
             }
-            
+
             .calendar-day {
                 min-height: 120px;
                 padding: 6px;
             }
-            
+
             .legend {
                 flex-direction: column;
                 gap: 1rem;
@@ -386,7 +394,7 @@
             .stats-cards {
                 grid-template-columns: 1fr;
             }
-            
+
             .calendar-day-header {
                 padding: 0.5rem;
                 font-size: 0.8rem;
@@ -399,13 +407,14 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="calendar-container">
             <!-- Header -->
             <div class="calendar-header">
                 <h2>
-                    <i class="fas fa-calendar-alt"></i> 
+                    <i class="fas fa-calendar-alt"></i>
                     Monthly Calendar View
                 </h2>
                 <div class="calendar-navigation">
@@ -544,11 +553,15 @@
                         <span>Blocked/Closed</span>
                     </div>
                     <div class="legend-item">
-                        <div style="width: 15px; height: 15px; background-color: #e3f2fd; border: 2px solid #2196f3; border-radius: 3px;"></div>
+                        <div
+                            style="width: 15px; height: 15px; background-color: #e3f2fd; border: 2px solid #2196f3; border-radius: 3px;">
+                        </div>
                         <span>Today</span>
                     </div>
                     <div class="legend-item">
-                        <div style="width: 15px; height: 15px; background-color: #fff3e0; border: 2px solid #ff9800; border-radius: 3px;"></div>
+                        <div
+                            style="width: 15px; height: 15px; background-color: #fff3e0; border: 2px solid #ff9800; border-radius: 3px;">
+                        </div>
                         <span>High Volume (15+ apps)</span>
                     </div>
                 </div>
@@ -602,7 +615,6 @@
     <script>
         // Configuration
         const API_BASE_URL = 'https://appointment-5tt0.onrender.com/api';
-        const ADMIN_PASSWORD = 'admin@123';
         let currentDate = new Date();
         let calendarData = [];
 
@@ -617,28 +629,78 @@
         };
 
         // Initialize calendar when page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('Page loaded, checking authentication...');
             checkAuthentication();
         });
 
         // Check authentication
-        function checkAuthentication() {
+        async function checkAuthentication() {
             const rememberedAuth = localStorage.getItem('adminAuth');
-            if (rememberedAuth) {
+            if (!rememberedAuth) {
+                redirectToLogin();
+                return;
+            }
+
+            try {
                 const authData = JSON.parse(rememberedAuth);
                 const now = new Date().getTime();
-                
-                if (now - authData.timestamp < 30 * 24 * 60 * 60 * 1000) {
+                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+                // Check if session is still valid (within 24 hours)
+                if (authData.authenticated && (now - authData.timestamp) < oneDay) {
+                    // Session is valid, initialize calendar
                     initializeCalendar();
                     return;
+                } else {
+                    // Session expired
+                    console.log('Session expired');
                 }
-                
-                localStorage.removeItem('adminAuth');
+            } catch (e) {
+                console.error('Invalid auth data:', e);
             }
-            
-            // Redirect to admin panel for login
-            window.location.href = 'admin.html';
+
+            // Clear invalid/expired session and redirect
+            localStorage.removeItem('adminAuth');
+            redirectToLogin();
+        }
+
+        function redirectToLogin() {
+            // Show a loading message briefly before redirect
+            document.body.innerHTML = `
+        <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        ">
+            <div style="text-align: center;">
+                <div style="
+                    width: 50px;
+                    height: 50px;
+                    border: 5px solid #f3f3f3;
+                    border-top: 5px solid #007bff;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 20px;
+                "></div>
+                <h3>Redirecting to login...</h3>
+                <p>Please wait while we redirect you to the admin login page.</p>
+            </div>
+        </div>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    `;
+
+            setTimeout(() => {
+                window.location.href = 'admin.html';
+            }, 1500);
         }
 
         function logout() {
@@ -653,13 +715,13 @@
             try {
                 await loadStats();
                 await loadCalendar();
-                
+
                 // Set up auto-refresh every 5 minutes
                 setInterval(async () => {
                     await loadStats();
                     await loadCalendar();
                 }, 5 * 60 * 1000);
-                
+
                 console.log('Calendar initialized successfully');
             } catch (error) {
                 console.error('Error initializing calendar:', error);
@@ -689,13 +751,13 @@
             try {
                 const startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
                 const endDate = `${year}-${month.toString().padStart(2, '0')}-${new Date(year, month, 0).getDate().toString().padStart(2, '0')}`;
-                
+
                 console.log(`Fetching appointments from ${startDate} to ${endDate}`);
-                
+
                 // Fetch appointments for the entire month
                 const appointmentsPromises = [];
                 const daysInMonth = new Date(year, month, 0).getDate();
-                
+
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                     appointmentsPromises.push(
@@ -711,7 +773,7 @@
                             })
                     );
                 }
-                
+
                 // Fetch blocked days
                 const blockedDaysPromise = fetch(`${API_BASE_URL}/admin/blocked-days`)
                     .then(response => response.json())
@@ -720,30 +782,30 @@
                         console.error('Error fetching blocked days:', error);
                         return [];
                     });
-                
+
                 // Wait for all data
                 const [appointmentsByDate, blockedDays] = await Promise.all([
                     Promise.all(appointmentsPromises),
                     blockedDaysPromise
                 ]);
-                
+
                 console.log('Fetched appointments for', appointmentsByDate.length, 'days');
                 console.log('Fetched', blockedDays.length, 'blocked days');
-                
+
                 // Build calendar data
                 calendarData = [];
-                
+
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                     const date = new Date(year, month - 1, day);
                     const dayOfWeek = date.getDay();
-                    
+
                     // Check if day is blocked
                     const isBlocked = dayOfWeek === 0 || blockedDays.some(blocked => blocked.date === dateStr);
-                    
+
                     // Get appointments for this day
                     const dayAppointments = appointmentsByDate.find(item => item.date === dateStr)?.appointments || [];
-                    
+
                     // Count appointments by time slot AND status
                     const slotCounts = {
                         '10:30 AM - 11:30 AM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
@@ -753,14 +815,14 @@
                         '4:30 PM - 5:30 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 },
                         '5:30 PM - 6:00 PM': { total: 0, pending: 0, confirmed: 0, seen: 0, completed: 0, cancelled: 0 }
                     };
-                    
+
                     dayAppointments.forEach(apt => {
                         if (slotCounts[apt.time_slot]) {
                             slotCounts[apt.time_slot].total++;
                             slotCounts[apt.time_slot][apt.status] = (slotCounts[apt.time_slot][apt.status] || 0) + 1;
                         }
                     });
-                    
+
                     calendarData.push({
                         date: dateStr,
                         day_name: date.toLocaleDateString('en-US', { weekday: 'long' }),
@@ -770,9 +832,9 @@
                         slot_counts: slotCounts
                     });
                 }
-                
+
                 console.log('Built calendar data for', calendarData.length, 'days');
-                
+
             } catch (error) {
                 console.error('Error building calendar from appointments:', error);
                 calendarData = generateBasicCalendarStructure(year, month);
@@ -783,12 +845,12 @@
         function generateBasicCalendarStructure(year, month) {
             const data = [];
             const daysInMonth = new Date(year, month, 0).getDate();
-            
+
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                 const date = new Date(year, month - 1, day);
                 const dayOfWeek = date.getDay();
-                
+
                 data.push({
                     date: dateStr,
                     day_name: date.toLocaleDateString('en-US', { weekday: 'long' }),
@@ -805,7 +867,7 @@
                     }
                 });
             }
-            
+
             return data;
         }
 
@@ -813,10 +875,10 @@
         async function loadStats() {
             try {
                 console.log('Loading statistics...');
-                
+
                 const response = await fetch(`${API_BASE_URL}/admin/stats`);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     console.log('Loaded stats:', data);
                     renderStats(data);
@@ -852,9 +914,9 @@
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            
+
             // Update month/year display
-            document.getElementById('monthYearDisplay').textContent = 
+            document.getElementById('monthYearDisplay').textContent =
                 currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
             // Create calendar grid
@@ -874,7 +936,7 @@
             // Get first day of month and calculate start date for calendar grid
             const firstDay = new Date(year, month, 1);
             const firstDayOfWeek = firstDay.getDay();
-            
+
             // Calculate the starting date for the calendar grid
             const startDate = new Date(year, month, 1 - firstDayOfWeek);
 
@@ -885,15 +947,15 @@
             for (let i = 0; i < 42; i++) {
                 const currentCellDate = new Date(startDate);
                 currentCellDate.setDate(startDate.getDate() + i);
-                
+
                 const cellYear = currentCellDate.getFullYear();
                 const cellMonth = currentCellDate.getMonth() + 1;
                 const cellDay = currentCellDate.getDate();
                 const dateStr = `${cellYear}-${cellMonth.toString().padStart(2, '0')}-${cellDay.toString().padStart(2, '0')}`;
-                
+
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'calendar-day';
-                
+
                 // Add classes for styling
                 if (currentCellDate.getMonth() !== month) {
                     dayDiv.classList.add('other-month');
@@ -904,7 +966,7 @@
 
                 // Find calendar data for this date
                 const dayData = calendarData.find(d => d.date === dateStr);
-                
+
                 if (dayData?.is_blocked) {
                     dayDiv.classList.add('blocked');
                     dayDiv.innerHTML = createBlockedDayContent(cellDay);
@@ -913,13 +975,13 @@
                     if (dayData && dayData.total_appointments >= 15) {
                         dayDiv.classList.add('high-appointments');
                     }
-                    
+
                     dayDiv.innerHTML = createDayContent(cellDay, dayData);
                 }
 
                 // Add click event
                 dayDiv.onclick = () => showDayDetails(dateStr, dayData);
-                
+
                 calendarGrid.appendChild(dayDiv);
             }
 
@@ -943,13 +1005,13 @@
         // Create content for regular days with appointment indicators
         function createDayContent(dayNumber, dayData) {
             let indicators = '';
-            
+
             if (dayData && dayData.appointments) {
                 // Create appointment indicators for each appointment
                 dayData.appointments.forEach(appointment => {
                     const slotConfig = SLOT_CONFIG[appointment.time_slot];
                     const slotClass = slotConfig ? slotConfig.color : 'slot1';
-                    
+
                     indicators += `<div class="appointment-indicator ${slotClass} ${appointment.status}" title="${appointment.name} - ${appointment.status} - ${appointment.time_slot}"></div>`;
                 });
             }
@@ -966,17 +1028,17 @@
         // Show day details in modal with all appointments
         async function showDayDetails(dateStr, dayData) {
             const date = new Date(dateStr);
-            const formattedDate = date.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            const formattedDate = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
 
             document.getElementById('dayDetailsTitle').innerHTML = `
                 <i class="fas fa-calendar-day"></i> ${formattedDate}
             `;
-            
+
             // Show loading while fetching detailed data
             document.getElementById('dayDetailsBody').innerHTML = `
                 <div class="text-center">
@@ -995,10 +1057,10 @@
                 // Fetch detailed appointment data for this day
                 const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${dateStr}`);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     const appointments = data.appointments || [];
-                    
+
                     if (appointments.length === 0) {
                         document.getElementById('dayDetailsBody').innerHTML = `
                             <div class="alert alert-info">
@@ -1067,7 +1129,7 @@
                                             </div>
                                             <div class="card-body p-2">
                                 `;
-                                
+
                                 slotAppointments.forEach(apt => {
                                     slotsHtml += `
                                         <div class="border-bottom py-2">
@@ -1085,7 +1147,7 @@
                                         </div>
                                     `;
                                 });
-                                
+
                                 slotsHtml += `
                                             </div>
                                         </div>
@@ -1135,11 +1197,11 @@
             // Set up buttons
             const viewBtn = document.getElementById('viewAppointmentsBtn');
             const exportBtn = document.getElementById('exportDayBtn');
-            
+
             viewBtn.onclick = () => {
                 window.open(`admin.html?date=${dateStr}`, '_blank');
             };
-            
+
             exportBtn.onclick = () => {
                 window.open(`${API_BASE_URL}/admin/export/${dateStr}`, '_blank');
             };
@@ -1167,7 +1229,7 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/admin/appointments?date=${today}`);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     displayQuickAppointments('Today\'s Appointments', data.appointments || []);
                 } else {
@@ -1191,7 +1253,7 @@
                 });
 
                 const result = await response.json();
-                
+
                 if (response.ok) {
                     displayQuickAppointments('Pending Appointments', result.appointments || []);
                 } else {
@@ -1217,7 +1279,7 @@
                 });
 
                 const result = await response.json();
-                
+
                 if (response.ok) {
                     displayQuickAppointments('Completed Today', result.appointments || []);
                 } else {
@@ -1235,7 +1297,7 @@
             `;
 
             let html = '';
-            
+
             if (appointments.length === 0) {
                 html = '<div class="alert alert-info">No appointments found.</div>';
             } else {
@@ -1256,7 +1318,7 @@
                 });
 
                 html = '<div class="row">';
-                
+
                 Object.entries(groupedAppointments).forEach(([slot, slotAppointments]) => {
                     if (slotAppointments.length > 0) {
                         const config = SLOT_CONFIG[slot];
@@ -1273,7 +1335,7 @@
                                     </div>
                                     <div class="card-body p-2">
                         `;
-                        
+
                         slotAppointments.forEach(apt => {
                             html += `
                                 <div class="border-bottom py-2">
@@ -1291,7 +1353,7 @@
                                 </div>
                             `;
                         });
-                        
+
                         html += `
                                     </div>
                                 </div>
@@ -1299,7 +1361,7 @@
                         `;
                     }
                 });
-                
+
                 html += '</div>';
             }
 
@@ -1322,10 +1384,10 @@
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth() + 1;
             const monthName = currentDate.toLocaleDateString('en-US', { month: 'long' });
-            
+
             if (confirm(`Export all appointments for ${monthName} ${year}?`)) {
                 const exportUrl = `${API_BASE_URL}/admin/export-month/${year}/${month}`;
-                
+
                 const link = document.createElement('a');
                 link.href = exportUrl;
                 link.download = `appointments_${monthName}_${year}.csv`;
@@ -1333,7 +1395,7 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
+
                 showNotification(`Exporting appointments for ${monthName} ${year}...`, 'info');
             }
         }
@@ -1369,15 +1431,15 @@
 
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
         }
 
         // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.ctrlKey || e.metaKey) {
                 switch (e.key) {
                     case 'ArrowLeft':
@@ -1409,9 +1471,9 @@
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-            
+
             document.body.appendChild(notification);
-            
+
             // Auto remove after 5 seconds
             setTimeout(() => {
                 if (notification.parentNode) {
@@ -1421,4 +1483,5 @@
         }
     </script>
 </body>
+
 </html>
