@@ -394,7 +394,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title text-white">
                             <i class="fas fa-clock"></i> Confirm Your Appointment
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -402,10 +402,7 @@
                     <div class="modal-body" id="confirmationModalBody">
                         <!-- Confirmation details will be populated here -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
+                    <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-primary" id="finalConfirmBtn">
                             <i class="fas fa-check"></i> Confirm Appointment
                         </button>
@@ -734,6 +731,28 @@
             '5:30 PM - 6:00 PM': { max: 2, name: 'Evening Slot 2', duration: '30 minutes' }
         };
 
+        function isSlotTimeAvailable(timeSlot, appointmentDate) {
+            const now = new Date();
+            const appointmentDateTime = new Date(appointmentDate);
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const appointmentDay = new Date(appointmentDate);
+            appointmentDay.setHours(0, 0, 0, 0);
+            
+            if (appointmentDay > today) {
+                return true;
+            }
+            
+            const slotConfig = getSlotConfig(timeSlot);
+            if (!slotConfig) return false;
+            
+            const slotStartTime = new Date();
+            slotStartTime.setHours(slotConfig.startHour, slotConfig.startMinute, 0, 0);
+            
+            return now < slotStartTime;
+        }
+
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function () {
             initializePage();
@@ -807,6 +826,14 @@
 
             if (!date || !timeSlot) {
                 document.getElementById('slotAvailability').style.display = 'none';
+                return;
+            }
+
+            if (!isSlotTimeAvailable(timeSlot, date)) {
+                document.getElementById('slotAvailability').innerHTML = 
+                    '<i class="fas fa-clock"></i> This time slot has already started or ended. Please select a different slot.';
+                document.getElementById('slotAvailability').className = 'alert alert-danger';
+                document.getElementById('slotAvailability').style.display = 'block';
                 return;
             }
 
@@ -1187,22 +1214,22 @@
 
             modalBody.innerHTML = `
         <div class="text-center mb-4">
-            <i class="fas fa-calendar-check text-primary" style="font-size: 3rem;"></i>
-            <h4 class="mt-2">Confirm Your Appointment Details</h4>
+            <i class="fas fa-calendar text-primary" style="font-size: 3rem;"></i>
+            <h4 class="mt-2">Review Your Appointment Details</h4>
         </div>
         
         <div class="row">
             <div class="col-md-6">
                 <h6><i class="fas fa-user"></i> Patient Information</h6>
-                <p><strong>Name:</strong> ${formData.name}</p>
-                <p><strong>Phone:</strong> +91 ${formData.phone}</p>
-                ${formData.message ? `<p><strong>Message:</strong> ${formData.message}</p>` : ''}
+                <p class="mb-1"><strong>Name:</strong> ${formData.name}</p>
+                <p class="mb-1"><strong>Phone:</strong> +91 ${formData.phone}</p>
+                ${formData.message ? `<p class="mb-1"><strong>Message:</strong> ${formData.message}</p>` : ''}
             </div>
             <div class="col-md-6">
                 <h6><i class="fas fa-calendar-alt"></i> Appointment Details</h6>
-                <p><strong>Date:</strong> ${formatDate(formData.appointment_date)}</p>
-                <p><strong>Time Slot:</strong> ${formData.time_slot}</p>
-                <p><strong>Service:</strong> ${formData.service_type}</p>
+                <p class="mb-1"><strong>Date:</strong> ${formatDate(formData.appointment_date)}</p>
+                <p class="mb-1"><strong>Time Slot:</strong> ${formData.time_slot}</p>
+                <p class="mb-1"><strong>Service:</strong> ${formData.service_type}</p>
             </div>
         </div>
         

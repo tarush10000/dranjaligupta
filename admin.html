@@ -879,28 +879,202 @@
                     <div id="searchResults"></div>
                 </div>
 
-                <!-- Blocked Days Tab -->
+                <!-- Enhanced Blocked Days Tab -->
                 <div class="tab-pane fade" id="blocked-days">
-                    <h5><i class="fas fa-ban"></i> Manage Blocked Days</h5>
+                    <h5><i class="fas fa-ban"></i> Manage Blocked Days & Slots</h5>
 
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <label for="blockDate" class="form-label">Block New Date:</label>
-                            <input type="date" id="blockDate" class="form-control">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button class="btn btn-danger" onclick="blockDay()">
-                                <i class="fas fa-ban"></i> Block Day
-                            </button>
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end justify-content-end">
-                            <button class="btn btn-outline-info" onclick="loadBlockedDays()">
-                                <i class="fas fa-refresh"></i> Refresh List
-                            </button>
+                    <!-- Block Options -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="blockDate" class="form-label">Select Date:</label>
+                                    <input type="date" id="blockDate" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="blockType" class="form-label">Block Type:</label>
+                                    <select class="form-select" id="blockType" onchange="toggleSlotOptions()">
+                                        <option value="full_day">Full Day</option>
+                                        <option value="specific_slots">Specific Slots</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" id="slotSelectionContainer" style="display: none;">
+                                    <label class="form-label">Select Slots to Block:</label>
+                                    <div class="slot-checkboxes">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="10:30 AM - 11:30 AM"
+                                                id="slot1">
+                                            <label class="form-check-label" for="slot1">10:30 AM - 11:30 AM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="11:30 AM - 12:30 PM"
+                                                id="slot2">
+                                            <label class="form-check-label" for="slot2">11:30 AM - 12:30 PM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="12:30 PM - 1:30 PM"
+                                                id="slot3">
+                                            <label class="form-check-label" for="slot3">12:30 PM - 1:30 PM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1:30 PM - 2:00 PM"
+                                                id="slot4">
+                                            <label class="form-check-label" for="slot4">1:30 PM - 2:00 PM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="4:30 PM - 5:30 PM"
+                                                id="slot5">
+                                            <label class="form-check-label" for="slot5">4:30 PM - 5:30 PM</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="5:30 PM - 6:00 PM"
+                                                id="slot6">
+                                            <label class="form-check-label" for="slot6">5:30 PM - 6:00 PM</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="blockReason" class="form-label">Reason:</label>
+                                    <input type="text" id="blockReason" class="form-control"
+                                        placeholder="Holiday/Blocked">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button class="btn btn-danger me-2" onclick="blockDayOrSlots()">
+                                        <i class="fas fa-ban"></i> <span id="blockButtonText">Block Day</span>
+                                    </button>
+                                    <button class="btn btn-outline-info me-2" onclick="loadBlockedItems()">
+                                        <i class="fas fa-refresh"></i> Refresh List
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="bulkUnblock()">
+                                        <i class="fas fa-check-circle"></i> Bulk Unblock
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="blockedDaysTable"></div>
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6><i class="fas fa-lightning"></i> Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group">
+                                <button class="btn btn-outline-warning btn-sm" onclick="blockAllMorningSlots()">
+                                    <i class="fas fa-sun"></i> Block All Morning
+                                </button>
+                                <button class="btn btn-outline-warning btn-sm" onclick="blockAllEveningSlots()">
+                                    <i class="fas fa-moon"></i> Block All Evening
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-primary btn-sm" onclick="showBulkBlockModal()">
+                                    <i class="fas fa-calendar-week"></i> Block Multiple Days
+                                </button>
+                                <button class="btn btn-outline-success btn-sm" onclick="copyBlockPattern()">
+                                    <i class="fas fa-copy"></i> Copy Pattern
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Tables -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6><i class="fas fa-calendar-times"></i> Blocked Days</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="blockedDaysTable"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6><i class="fas fa-clock"></i> Blocked Slots</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="blockedSlotsTable"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Block Modal -->
+                <div class="modal fade" id="bulkBlockModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Bulk Block Multiple Days</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Start Date:</label>
+                                    <input type="date" class="form-control" id="bulkStartDate">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">End Date:</label>
+                                    <input type="date" class="form-control" id="bulkEndDate">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Block Type:</label>
+                                    <select class="form-select" id="bulkBlockType">
+                                        <option value="full_day">Full Days</option>
+                                        <option value="weekends_only">Weekends Only</option>
+                                        <option value="specific_weekdays">Specific Weekdays</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="weekdaySelection" style="display: none;">
+                                    <label class="form-label">Select Days:</label>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="1" id="monday">
+                                        <label class="form-check-label" for="monday">Mon</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="2" id="tuesday">
+                                        <label class="form-check-label" for="tuesday">Tue</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="3" id="wednesday">
+                                        <label class="form-check-label" for="wednesday">Wed</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="4" id="thursday">
+                                        <label class="form-check-label" for="thursday">Thu</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="5" id="friday">
+                                        <label class="form-check-label" for="friday">Fri</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="6" id="saturday">
+                                        <label class="form-check-label" for="saturday">Sat</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="0" id="sunday">
+                                        <label class="form-check-label" for="sunday">Sun</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Reason:</label>
+                                    <input type="text" class="form-control" id="bulkReason"
+                                        placeholder="Holiday period">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" onclick="executeBulkBlock()">
+                                    <i class="fas fa-ban"></i> Block Days
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1645,7 +1819,7 @@
                     status: 'confirmed'
                 };
 
-                const response = await fetch(`${API_BASE_URL}/appointments`, {
+                const response = await fetch(`${API_BASE_URL}/admin/emergency-appointment`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(appointmentData)
@@ -2290,14 +2464,39 @@
             }
         }
 
-        async function blockDay() {
+        function toggleSlotOptions() {
+            const blockType = document.getElementById('blockType').value;
+            const slotContainer = document.getElementById('slotSelectionContainer');
+            const buttonText = document.getElementById('blockButtonText');
+
+            if (blockType === 'specific_slots') {
+                slotContainer.style.display = 'block';
+                buttonText.textContent = 'Block Selected Slots';
+            } else {
+                slotContainer.style.display = 'none';
+                buttonText.textContent = 'Block Full Day';
+            }
+        }
+
+        async function blockDayOrSlots() {
             const date = document.getElementById('blockDate').value;
+            const blockType = document.getElementById('blockType').value;
+            const reason = document.getElementById('blockReason').value.trim() || 'Holiday/Blocked';
+
             if (!date) {
-                alert('Please select a date to block.');
+                alert('Please select a date.');
                 return;
             }
 
-            if (!confirm(`Are you sure you want to block ${formatDate(date)}? No appointments can be booked on this day.`)) {
+            if (blockType === 'full_day') {
+                await blockFullDay(date, reason);
+            } else {
+                await blockSelectedSlots(date, reason);
+            }
+        }
+
+        async function blockFullDay(date, reason) {
+            if (!confirm(`Are you sure you want to block the entire day of ${formatDate(date)}?`)) {
                 return;
             }
 
@@ -2305,16 +2504,15 @@
                 const response = await fetch(`${API_BASE_URL}/admin/block`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ date })
+                    body: JSON.stringify({ date, reason })
                 });
 
                 const result = await response.json();
 
                 if (response.ok) {
                     showNotification('Day blocked successfully!', 'success');
-                    document.getElementById('blockDate').value = '';
-                    loadBlockedDays();
-                    loadDashboardStats();
+                    clearBlockForm();
+                    loadBlockedItems();
                 } else {
                     alert('Error: ' + (result.error || 'Failed to block day'));
                 }
@@ -2413,6 +2611,346 @@
             }
         }
 
+        async function blockSelectedSlots(date, reason) {
+            const checkboxes = document.querySelectorAll('.slot-checkboxes input[type="checkbox"]:checked');
+            const selectedSlots = Array.from(checkboxes).map(cb => cb.value);
+
+            if (selectedSlots.length === 0) {
+                alert('Please select at least one time slot to block.');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to block ${selectedSlots.length} time slots on ${formatDate(date)}?`)) {
+                return;
+            }
+
+            try {
+                const promises = selectedSlots.map(timeSlot =>
+                    fetch(`${API_BASE_URL}/admin/block-slot`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date, time_slot: timeSlot, reason })
+                    })
+                );
+
+                const responses = await Promise.all(promises);
+                const results = await Promise.all(responses.map(r => r.json()));
+
+                const successful = responses.filter(r => r.ok).length;
+                const failed = responses.length - successful;
+
+                if (successful > 0) {
+                    showNotification(`${successful} slots blocked successfully!${failed > 0 ? ` (${failed} failed)` : ''}`,
+                        failed > 0 ? 'warning' : 'success');
+                    clearBlockForm();
+                    loadBlockedItems();
+                } else {
+                    alert('Failed to block slots. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error blocking slots:', error);
+                alert('Error blocking slots. Please try again.');
+            }
+        }
+
+        // Quick action: Block all morning slots
+        async function blockAllMorningSlots() {
+            const date = document.getElementById('blockDate').value;
+            if (!date) {
+                alert('Please select a date first.');
+                return;
+            }
+
+            const morningSlots = [
+                '10:30 AM - 11:30 AM',
+                '11:30 AM - 12:30 PM',
+                '12:30 PM - 1:30 PM',
+                '1:30 PM - 2:00 PM'
+            ];
+
+            await blockMultipleSlots(date, morningSlots, 'Morning session blocked');
+        }
+
+        // Quick action: Block all evening slots
+        async function blockAllEveningSlots() {
+            const date = document.getElementById('blockDate').value;
+            if (!date) {
+                alert('Please select a date first.');
+                return;
+            }
+
+            const eveningSlots = [
+                '4:30 PM - 5:30 PM',
+                '5:30 PM - 6:00 PM'
+            ];
+
+            await blockMultipleSlots(date, eveningSlots, 'Evening session blocked');
+        }
+
+        // Helper function to block multiple slots
+        async function blockMultipleSlots(date, slots, reason) {
+            if (!confirm(`Block all ${slots.length} ${reason.includes('Morning') ? 'morning' : 'evening'} slots on ${formatDate(date)}?`)) {
+                return;
+            }
+
+            try {
+                const promises = slots.map(timeSlot =>
+                    fetch(`${API_BASE_URL}/admin/block-slot`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date, time_slot: timeSlot, reason })
+                    })
+                );
+
+                const responses = await Promise.all(promises);
+                const successful = responses.filter(r => r.ok).length;
+
+                if (successful > 0) {
+                    showNotification(`${successful} slots blocked successfully!`, 'success');
+                    loadBlockedItems();
+                }
+            } catch (error) {
+                console.error('Error blocking multiple slots:', error);
+                alert('Error blocking slots. Please try again.');
+            }
+        }
+
+        // Load both blocked days and blocked slots
+        async function loadBlockedItems() {
+            await loadBlockedDays();
+            await loadBlockedSlots();
+        }
+
+        // Enhanced blocked days display
+        function displayBlockedDays(blockedDays) {
+            const container = document.getElementById('blockedDaysTable');
+
+            if (blockedDays.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No blocked days found.</div>';
+                return;
+            }
+
+            let html = `
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+            blockedDays.forEach(day => {
+                html += `
+            <tr>
+                <td>${formatDate(day.date)}</td>
+                <td>${day.reason || 'Holiday/Blocked'}</td>
+                <td>
+                    <button class="btn btn-sm btn-success" onclick="unblockDay('${day.date}')">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+            });
+
+            html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+            container.innerHTML = html;
+        }
+
+        // Enhanced blocked slots display
+        function displayBlockedSlots(blockedSlots) {
+            const container = document.getElementById('blockedSlotsTable');
+
+            if (blockedSlots.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No blocked slots found.</div>';
+                return;
+            }
+
+            // Group slots by date for better display
+            const groupedSlots = blockedSlots.reduce((acc, slot) => {
+                if (!acc[slot.date]) {
+                    acc[slot.date] = [];
+                }
+                acc[slot.date].push(slot);
+                return acc;
+            }, {});
+
+            let html = `
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time Slot</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+            Object.keys(groupedSlots).sort().forEach(date => {
+                groupedSlots[date].forEach((slot, index) => {
+                    html += `
+                <tr>
+                    ${index === 0 ? `<td rowspan="${groupedSlots[date].length}">${formatDate(date)}</td>` : ''}
+                    <td><small>${slot.time_slot}</small></td>
+                    <td><small>${slot.reason}</small></td>
+                    <td>
+                        <button class="btn btn-sm btn-success" onclick="quickUnblockSlot('${slot.date}', '${slot.time_slot}')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                });
+            });
+
+            html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+            container.innerHTML = html;
+        }
+
+        // Clear form after successful blocking
+        function clearBlockForm() {
+            document.getElementById('blockReason').value = '';
+            document.getElementById('blockType').value = 'full_day';
+            toggleSlotOptions();
+
+            // Uncheck all slot checkboxes
+            document.querySelectorAll('.slot-checkboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+
+        // Show bulk block modal
+        function showBulkBlockModal() {
+            const modal = new bootstrap.Modal(document.getElementById('bulkBlockModal'));
+            modal.show();
+
+            // Show/hide weekday selection based on bulk block type
+            document.getElementById('bulkBlockType').addEventListener('change', function () {
+                const weekdayDiv = document.getElementById('weekdaySelection');
+                weekdayDiv.style.display = this.value === 'specific_weekdays' ? 'block' : 'none';
+            });
+        }
+
+        // Execute bulk blocking
+        async function executeBulkBlock() {
+            const startDate = document.getElementById('bulkStartDate').value;
+            const endDate = document.getElementById('bulkEndDate').value;
+            const blockType = document.getElementById('bulkBlockType').value;
+            const reason = document.getElementById('bulkReason').value.trim() || 'Holiday period';
+
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('Start date must be before end date.');
+                return;
+            }
+
+            // Generate date list based on block type
+            const datesToBlock = generateDateList(startDate, endDate, blockType);
+
+            if (datesToBlock.length === 0) {
+                alert('No dates to block based on your selection.');
+                return;
+            }
+
+            if (!confirm(`This will block ${datesToBlock.length} days. Continue?`)) {
+                return;
+            }
+
+            try {
+                const promises = datesToBlock.map(date =>
+                    fetch(`${API_BASE_URL}/admin/block`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date, reason })
+                    })
+                );
+
+                const responses = await Promise.all(promises);
+                const successful = responses.filter(r => r.ok).length;
+
+                showNotification(`${successful} days blocked successfully!`, 'success');
+
+                // Close modal and refresh
+                const modal = bootstrap.Modal.getInstance(document.getElementById('bulkBlockModal'));
+                modal.hide();
+                loadBlockedItems();
+
+            } catch (error) {
+                console.error('Error bulk blocking:', error);
+                alert('Error blocking days. Please try again.');
+            }
+        }
+
+        // Generate list of dates to block
+        function generateDateList(startDate, endDate, blockType) {
+            const dates = [];
+            const current = new Date(startDate);
+            const end = new Date(endDate);
+
+            while (current <= end) {
+                const dayOfWeek = current.getDay();
+                let shouldInclude = false;
+
+                switch (blockType) {
+                    case 'full_day':
+                        shouldInclude = true;
+                        break;
+                    case 'weekends_only':
+                        shouldInclude = dayOfWeek === 0 || dayOfWeek === 6;
+                        break;
+                    case 'specific_weekdays':
+                        const selectedDays = Array.from(document.querySelectorAll('#weekdaySelection input:checked'))
+                            .map(cb => parseInt(cb.value));
+                        shouldInclude = selectedDays.includes(dayOfWeek);
+                        break;
+                }
+
+                if (shouldInclude) {
+                    dates.push(current.toISOString().split('T')[0]);
+                }
+
+                current.setDate(current.getDate() + 1);
+            }
+
+            return dates;
+        }
+
+        // Bulk unblock function
+        async function bulkUnblock() {
+            const selectedDays = Array.from(document.querySelectorAll('#blockedDaysTable input[type="checkbox"]:checked'));
+            const selectedSlots = Array.from(document.querySelectorAll('#blockedSlotsTable input[type="checkbox"]:checked'));
+
+            if (selectedDays.length === 0 && selectedSlots.length === 0) {
+                alert('Please select items to unblock first.');
+                return;
+            }
+
+            // Implement bulk unblock logic here
+            // This is a placeholder for the actual implementation
+            alert('Bulk unblock feature - to be implemented based on your specific needs');
+        }
+
         function exportAppointments() {
             const date = document.getElementById('viewDate').value;
             if (!date) {
@@ -2420,17 +2958,17 @@
                 return;
             }
 
-            window.open(`${API_BASE_URL}/admin/export/${date}`, '_blank');
+            window.open(`${ API_BASE_URL } /admin/export / ${ date } `, '_blank');
         }
 
         function showLoading(elementId, message) {
             document.getElementById(elementId).innerHTML = `
-                <div class="loading">
+            < div class="loading" >
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <p class="mt-2">${message}</p>
-                </div>
+                </div >
             `;
         }
 
@@ -2456,12 +2994,12 @@
 
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
-            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.className = `alert alert - ${ type } alert - dismissible fade show position - fixed`;
             notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
             notification.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
+                ${ message }
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
 
             document.body.appendChild(notification);
 
@@ -2651,72 +3189,72 @@
         Extract appointment information from this text and return ONLY a valid JSON object with these exact fields:
         {
             "name": "patient name",
-            "phone": "10-digit phone number only",
-            "appointment_date": "YYYY-MM-DD format (today or future date)",
-            "time_slot": "exactly one of: '11 AM - 1 PM', '1 PM - 3 PM', '3:30 PM - 5:30 PM'",
-            "service_type": "one of: High Risk Pregnancy, Family Planning, Infertility, Laparoscopic Surgeries, Hysteroscopy, Cancer Screening & Surgery, Colposcopy, Adolescent & Menopausal Problems, Cosmetic Gynecology, General Consultation, Other",
-            "message": "any additional notes"
+                "phone": "10-digit phone number only",
+                    "appointment_date": "YYYY-MM-DD format (today or future date)",
+                        "time_slot": "exactly one of: '11 AM - 1 PM', '1 PM - 3 PM', '3:30 PM - 5:30 PM'",
+                            "service_type": "one of: High Risk Pregnancy, Family Planning, Infertility, Laparoscopic Surgeries, Hysteroscopy, Cancer Screening & Surgery, Colposcopy, Adolescent & Menopausal Problems, Cosmetic Gynecology, General Consultation, Other",
+                                "message": "any additional notes"
         }
-        
+
         Rules:
         - For "noon" or "11-1" use "11 AM - 1 PM"
-        - For "afternoon" or "1-3" use "1 PM - 3 PM"
-        - For "evening" or "3:30-5:30" use "3:30 PM - 5:30 PM"
-        - If no date specified, use today's date
-        - Phone must be exactly 10 digits
-        - Choose the most appropriate service_type based on the context
+            - For "afternoon" or "1-3" use "1 PM - 3 PM"
+                - For "evening" or "3:30-5:30" use "3:30 PM - 5:30 PM"
+                    - If no date specified, use today's date
+                        - Phone must be exactly 10 digits
+                            - Choose the most appropriate service_type based on the context
         
         Text to process: "${inputText}"
         `;
 
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+        method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }]
-                    })
+        body: JSON.stringify({
+            contents: [{
+                parts: [{
+                    text: prompt
+                }]
+            }]
+        })
                 });
 
-                const data = await response.json();
+        const data = await response.json();
 
-                if (response.ok && data.candidates && data.candidates[0]) {
-                    const generatedText = data.candidates[0].content.parts[0].text;
+        if (response.ok && data.candidates && data.candidates[0]) {
+            const generatedText = data.candidates[0].content.parts[0].text;
 
-                    // Extract JSON from the response
-                    const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        try {
-                            aiProcessedData = JSON.parse(jsonMatch[0]);
+            // Extract JSON from the response
+            const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    aiProcessedData = JSON.parse(jsonMatch[0]);
 
-                            // Validate and clean the data
-                            aiProcessedData = validateAndCleanAIData(aiProcessedData);
+                    // Validate and clean the data
+                    aiProcessedData = validateAndCleanAIData(aiProcessedData);
 
-                            showAIResults(aiProcessedData);
-                        } catch (parseError) {
-                            console.error('JSON parse error:', parseError);
-                            showNotification('AI returned invalid data format', 'error');
-                        }
-                    } else {
-                        showNotification('Could not extract appointment data from the text', 'error');
-                    }
-                } else {
-                    console.error('Gemini API error:', data);
-                    showNotification('AI processing failed: ' + (data.error?.message || 'Unknown error'), 'error');
+                    showAIResults(aiProcessedData);
+                } catch (parseError) {
+                    console.error('JSON parse error:', parseError);
+                    showNotification('AI returned invalid data format', 'error');
                 }
+            } else {
+                showNotification('Could not extract appointment data from the text', 'error');
+            }
+        } else {
+            console.error('Gemini API error:', data);
+            showNotification('AI processing failed: ' + (data.error?.message || 'Unknown error'), 'error');
+        }
 
             } catch (error) {
-                console.error('Error processing with AI:', error);
-                showNotification('Network error while processing with AI', 'error');
-            } finally {
-                document.getElementById('aiProcessingStatus').style.display = 'none';
-                document.getElementById('processAIBtn').disabled = false;
-            }
+            console.error('Error processing with AI:', error);
+            showNotification('Network error while processing with AI', 'error');
+        } finally {
+            document.getElementById('aiProcessingStatus').style.display = 'none';
+            document.getElementById('processAIBtn').disabled = false;
+        }
         }
 
         // Validate and clean AI data
